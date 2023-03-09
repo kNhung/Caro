@@ -17,6 +17,8 @@ bool FullBoard(_POINT _A[BOARD_SIZE][BOARD_SIZE]) {
 //5 cái liên tục thì thắng
 bool WinCheck(_POINT _A[BOARD_SIZE][BOARD_SIZE], int pX, int pY) {
 	int i = 0, j = 0, n = 1;
+	char type = NULL;
+	vector <_POINT> winLine;
 	//Tìm vị trí của người chơi trong mảng
 	//Xét trục hoành x tương ứng với các cột j
 	//Xét trục tung y tương ứng với các hàng i
@@ -33,7 +35,10 @@ bool WinCheck(_POINT _A[BOARD_SIZE][BOARD_SIZE], int pX, int pY) {
 		++j;
 		++n;
 	}
-	if (n == GOAL) return 1;
+	if (n == GOAL) {
+		type = 'r'; //row
+		return 1;
+	}
 
 	//Hàng dọc
 	//Chạy hẳn lên trên rồi đếm
@@ -44,7 +49,10 @@ bool WinCheck(_POINT _A[BOARD_SIZE][BOARD_SIZE], int pX, int pY) {
 		++i;
 		++n;
 	}
-	if (n == GOAL) return 1;
+	if (n == GOAL) {
+		type = 'c'; //column
+		return 1;
+	}
 
 	//Chéo chính
 	//Chạy hẳn lên phía trên rồi xét chéo xuống
@@ -58,7 +66,10 @@ bool WinCheck(_POINT _A[BOARD_SIZE][BOARD_SIZE], int pX, int pY) {
 		++j;
 		++n;
 	}
-	if (n == GOAL) return 1;
+	if (n == GOAL) {
+		type = 'd'; //main diagonal
+		return 1;
+	}
 
 	//Chéo phụ
 	//Chạy hẳn lên phía trên rồi xét chéo xuống
@@ -72,7 +83,13 @@ bool WinCheck(_POINT _A[BOARD_SIZE][BOARD_SIZE], int pX, int pY) {
 		--j;
 		n++;
 	}
-	if (n == GOAL) return 1;
+	if (n == GOAL) {
+		type = 's'; //sub-diagonal
+		return 1;
+	}
+
+	GetWinLine(winLine, i, j, type);
+	HighlightWin(winLine);
 
 	return 0;
 }
@@ -80,8 +97,9 @@ bool WinCheck(_POINT _A[BOARD_SIZE][BOARD_SIZE], int pX, int pY) {
 int TestBoard() {
 	if (FullBoard(_A)) return 0;
 	else {
-		if (WinCheck(_A, _X, _Y) == 1)
+		if (WinCheck(_A, _X, _Y) == 1) {
 			return (_TURN == true ? -1 : 1);
+		}
 		else
 			return 2;
 	}

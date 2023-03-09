@@ -2,12 +2,44 @@
 #include "model.h"
 #include "view.h"
 
-//Chưa chạy được :<
 void FixConsoleWindow() {
-	HWND consoleWindow = GetConsoleWindow();
-	LONG style = GetWindowLong(consoleWindow, GWL_STYLE);
-	style = style & ~(WS_MAXIMIZEBOX | WS_MINIMIZEBOX) & ~(WS_THICKFRAME);
-	SetWindowLong(consoleWindow, GWL_STYLE, style);
+	HWND myConsole = GetConsoleWindow();
+	HDC mdc = GetDC(myConsole);
+
+	CONSOLE_FONT_INFOEX info;
+	info.cbSize = sizeof(info);
+	GetCurrentConsoleFontEx(myConsole, FALSE, &info);
+	info.dwFontSize.X = 12;
+	info.dwFontSize.Y = 24;
+	wcscpy_s(info.FaceName, L"Consolas");
+	SetCurrentConsoleFontEx(myConsole, FALSE, &info);
+
+	RECT rectClient, rectWindow;
+	GetClientRect(myConsole, &rectClient), GetWindowRect(myConsole, &rectWindow);
+	int width = 1216;
+	int height = 784;
+	int posX = (GetSystemMetrics(SM_CXSCREEN) - width) / 2,
+		posY = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
+	MoveWindow(myConsole, posX, posY, width, height, TRUE);
+
+	SetWindowLong(myConsole, GWL_STYLE,
+		GetWindowLong(myConsole, GWL_STYLE) & ~(WS_MAXIMIZEBOX) & ~(WS_THICKFRAME));
+
+	ShowScrollBar(myConsole, SB_BOTH, 0);
+
+	DWORD prev_mode;
+	HANDLE hInput = GetStdHandle(STD_INPUT_HANDLE);
+	GetConsoleMode(hInput, &prev_mode);
+	SetConsoleMode(hInput, prev_mode & ~ENABLE_QUICK_EDIT_MODE);
+
+	// Lấy handle của menu system
+	HMENU hMenu = GetSystemMenu(myConsole, FALSE);
+	// Lấy ID của nút Maximum
+	UINT uID = SC_MAXIMIZE;
+	// Làm mờ nút Maximum bằng ID
+	EnableMenuItem(hMenu, uID, MF_BYCOMMAND | MF_GRAYED);
+	// Cập nhật lại menu
+	DrawMenuBar(myConsole);
 }
 
 void GotoXY(int x, int y) {
@@ -28,6 +60,7 @@ void ResetData() {
 	_TURN = true; _COMMAND = -1;
 	_X = _A[0][0].x; _Y = _A[0][0].y;
 }
+
 
 void DrawBoard(int pSize) {
 	for (int i = 0;i <= pSize;i++) {
@@ -55,19 +88,67 @@ void DrawExistedData() {
 
 void DrawMenu() {
 	system("color 79");
-	GotoXY(40, 10); cout << "New";
-	GotoXY(40, 12); cout << "Continue";
-	GotoXY(40, 14); cout << "About";
-	GotoXY(40, 16); cout << "Exit";
+	GotoXY(CENTER_X, CENTER_Y); cout << "New";
+	GotoXY(CENTER_X, CENTER_Y + 2); cout << "Continue";
+	GotoXY(CENTER_X, CENTER_Y + 4); cout << "About";
+	GotoXY(CENTER_X, CENTER_Y + 6); cout << "Exit";
 }
 
 void DrawMatchList() {
 	system("color 79");
 	for (int i = 0; i < MATCH_LIST_SIZE; i++) {
-		GotoXY(40, 10 + i * 2);
+		GotoXY(CENTER_X, 10 + i * 2);
 		cout << _MATCH_LIST[i].item;
 	}
 }
+
+void GetWinLine(vector <_POINT>& winLine, int i, int j, char type) {
+	if (type == 'r') { //Ngang
+		while (_A[i][j - 1].c == _A[i][j].c) {
+			winLine.push_back(_A[i][j]);
+			--j;
+		}
+	}
+
+	else if (type == 'c') { //Dọc
+		while (_A[i - 1][j].c == _A[i][j].c) {
+			winLine.push_back(_A[i][j]);
+			--i;
+		}
+	}
+
+	else if (type == 'd') { //Chéo chính
+		while (_A[i - 1][j - 1].c == _A[i][j].c) {
+			winLine.push_back(_A[i][j]);
+			--i;
+			--j;
+		}
+	}
+
+	else if (type == 's') { //Chéo phụ
+		while (_A[i - 1][j + 1].c == _A[i][j].c) {
+			winLine.push_back(_A[i][j]);
+			--i;
+			++j;
+		}
+	}
+}
+
+void SetColor(int backgoundColor, int textColor) {
+	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+	int colorCode = backgoundColor * 16 + textColor;
+	SetConsoleTextAttribute(hStdout, colorCode);
+}
+
+void HighlightWin(vector <_POINT>& winLine) {
+	for (int i = 0;i < winLine.size();i++) {
+		GotoXY(winLine[i].x, winLine[i].y);
+		SetColor(7, 13);
+		if (_TURN == 1) cout << "X";
+		else cout << "O";
+	}
+}
+
 
 int ProcessFinish(int pWhoWin) {
 	GotoXY(0, _A[BOARD_SIZE - 1][BOARD_SIZE - 1].y + 2);
@@ -178,12 +259,11 @@ void ShowPage(int page) {
 	}
 }
 
-
 void ShowMenu() {
 	HANDLE word;
 	MODE = 1;
 	NEW_GAME = 1;
-	_X = 40;_Y = 10;
+	_X = CENTER_X;_Y = CENTER_Y;
 	while (1) {
 		DrawMenu();
 		word = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -266,23 +346,23 @@ void ShowAbout() {
 void ShowFileGame() {
 	HANDLE word;
 	MODE = 3;
-	_X = 40; _Y = 10;
+	_X = CENTER_X; _Y = CENTER_Y;
 	GetMatchListSize();
 	while (1) {
 		DrawMatchList();
 		word = GetStdHandle(STD_OUTPUT_HANDLE);
 		SetConsoleTextAttribute(word, 7 * 16 + 12);
-		GotoXY(38, _Y); cout << ">";
+		GotoXY(CENTER_X - 2, _Y); cout << ">";
 		GotoXY(_X, _Y);
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 'W') {
 			MoveUp();
-			GotoXY(38, _Y);
+			GotoXY(CENTER_X - 2, _Y);
 			cout << ">";
 		}
 		else if (_COMMAND == 'S') {
 			MoveDown();
-			GotoXY(38, _Y);
+			GotoXY(CENTER_X - 2, _Y);
 			cout << ">";
 		}
 		else if (_COMMAND == 27) {
@@ -318,7 +398,7 @@ void GetMatchListSize() {
 		cout << "Cannot get match list size";
 		return;
 	}
-	_X = 40;_Y = 10;
+	_X = CENTER_X;_Y = CENTER_Y;
 	if (MATCH_LIST_SIZE == 0) {
 		while (getline(file, line)) {
 			++MATCH_LIST_SIZE;

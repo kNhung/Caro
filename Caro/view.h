@@ -10,6 +10,9 @@ void DrawBoard(int pSize);
 void DrawExistedData();
 void DrawMenu(); 
 void DrawMatchList();
+void GetWinLine(vector <_POINT>& winLine, int i,int j, char type);
+void SetColor(int backgoundColor, int textColor);
+void HighlightWin(vector <_POINT>& winLine);
 
 int ProcessFinish(int pWhoWin);
 int AskContinue();
