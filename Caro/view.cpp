@@ -340,7 +340,14 @@ void ShowGame() {
 }
 
 void ShowAbout() {
-
+	//Vẽ About ở đây...
+	
+	_COMMAND = toupper(_getch()); //_getch() chu khong phai getch()
+	if (_COMMAND == 27) {
+		ShowLoadingPage();
+		ShowMenu();
+		return;
+	}
 }
 
 void ShowFileGame() {
