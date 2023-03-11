@@ -14,8 +14,8 @@ using namespace std;
 #define BOARD_SIZE 10
 #define LEFT 3
 #define TOP 1
-#define CENTER_X 40
-#define CENTER_Y 10
+#define CENTER_X 55
+#define CENTER_Y 12
 #define GOAL 5
 #define MENU_SIZE 4
 
@@ -36,3 +36,7 @@ extern bool NEW_GAME; //1:reset data 2:mở game từ file
 extern ofstream _MATCH_LIST_FILE;
 extern int MATCH_LIST_SIZE;
 extern vector<_LIST> _MATCH_LIST;
+
+extern unsigned char L[], O[], A[], D[], G[], M[], E[];
+extern unsigned char* LETTER_LIST[];
+extern int LETTER_LIST_SIZE;

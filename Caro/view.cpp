@@ -1,18 +1,10 @@
-﻿#include "control.h"
+#include "control.h"
 #include "model.h"
 #include "view.h"
 
 void FixConsoleWindow() {
 	HWND myConsole = GetConsoleWindow();
 	HDC mdc = GetDC(myConsole);
-
-	CONSOLE_FONT_INFOEX info;
-	info.cbSize = sizeof(info);
-	GetCurrentConsoleFontEx(myConsole, FALSE, &info);
-	info.dwFontSize.X = 12;
-	info.dwFontSize.Y = 24;
-	wcscpy_s(info.FaceName, L"Consolas");
-	SetCurrentConsoleFontEx(myConsole, FALSE, &info);
 
 	RECT rectClient, rectWindow;
 	GetClientRect(myConsole, &rectClient), GetWindowRect(myConsole, &rectWindow);
@@ -40,6 +32,18 @@ void FixConsoleWindow() {
 	EnableMenuItem(hMenu, uID, MF_BYCOMMAND | MF_GRAYED);
 	// Cập nhật lại menu
 	DrawMenuBar(myConsole);
+}
+
+void SetFontSize(int fontSize) {
+	CONSOLE_FONT_INFOEX info = { 0 };
+	info.cbSize = sizeof(info);
+	info.nFont = 0;
+	info.dwFontSize.X = fontSize; // Chiều rộng của mỗi ký tự trong font
+	info.dwFontSize.Y = fontSize; // Chiều cao
+	info.FontFamily = FF_DONTCARE;
+	info.FontWeight = FW_NORMAL;
+	wcscpy_s(info.FaceName, L"Lucida Console");
+	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), NULL, &info);
 }
 
 void GotoXY(int x, int y) {
@@ -95,11 +99,114 @@ void DrawMenu() {
 }
 
 void DrawMatchList() {
-	system("color 79");
+	system("color 16");
+	//Vẽ nút Trở về
+	GotoXY(90, 25);
+	cout << "Press ESC to back to menu";
+
+	//Vẽ chữ LOAD GAME
+	int logo_x = 22, logo_y = 3;
+	DrawLetter(L, logo_x, logo_y);
+	DrawLetter(O, logo_x + 9, logo_y);
+	DrawLetter(A, logo_x + 9 * 2, logo_y);
+	DrawLetter(D, logo_x + 9 * 3, logo_y);
+	DrawLetter(G, logo_x + 9 * 4 + 3, logo_y);
+	DrawLetter(A, logo_x + 9 * 5 + 3, logo_y);
+	DrawLetter(M, logo_x + 9 * 6 + 3, logo_y);
+	DrawLetter(E, logo_x + 9 * 7 + 3, logo_y);
+
+	//Vẽ các phần tử của danh sách
 	for (int i = 0; i < MATCH_LIST_SIZE; i++) {
-		GotoXY(CENTER_X, 10 + i * 2);
-		cout << _MATCH_LIST[i].item;
+		GotoXY(CENTER_X - 3, CENTER_Y + i * 3 - 1);
+		cout << char(218); //Góc trên trái
+
+		GotoXY(CENTER_X - 2, CENTER_Y + i * 3 - 1);
+		for (int i = 0;i < 15;i++)
+			cout << char(2500); //Đường ngang trên
+
+		GotoXY(CENTER_X + 13, CENTER_Y + i * 3 - 1);
+		cout << char(191); //Góc trên phải
+
+		GotoXY(CENTER_X - 3, CENTER_Y + i * 3);
+		cout << char(179); //Đường thẳng trái
+
+		GotoXY(CENTER_X, CENTER_Y + i * 3);
+		cout << _MATCH_LIST[i].item; 
+
+		GotoXY(CENTER_X + 13, CENTER_Y + i * 3);
+		cout << char(179); //Đường thẳng phải
+
+		GotoXY(CENTER_X - 3, CENTER_Y + i * 3 + 1);
+		cout << char(192); //Góc dưới trái
+
+		GotoXY(CENTER_X - 2, CENTER_Y + i * 3 + 1);
+		for (int i = 0;i < 15;i++)
+			cout << char(2500); //Đường ngang dưới
+
+		GotoXY(CENTER_X + 13, CENTER_Y + i * 3 + 1);
+		cout << char(217); //Góc dưới phải
 	}
+
+	//Vẽ mây trái
+	SetColor(1, 7);
+	GotoXY(0, 19);
+	for (int i = 0;i < 6;i++)
+		cout << char(219);
+	GotoXY(0, 20);
+	for(int i=0;i<8;i++)
+		cout << char(219);
+	GotoXY(0, 20 + 1);
+	for(int i=0;i<10;i++)
+		cout << char(219);
+	GotoXY(0, 20 + 2);
+	for (int i = 0;i < 12;i++)
+		cout << char(219);
+	GotoXY(0, 20 + 3);
+	for (int i = 0;i < 12;i++)
+		cout << char(219);
+	GotoXY(0, 20 + 4);
+	for (int i = 0;i < 11;i++)
+		cout << char(219);
+
+	//Vẽ mây phải
+	GotoXY(112, 12);
+	for (int i = 0;i < 8;i++)
+		cout << char(219);
+	GotoXY(109, 13);
+	for (int i = 0;i < 11;i++)
+		cout << char(219);
+	GotoXY(108, 14);
+	for (int i = 0;i < 12;i++)
+		cout << char(219);
+	GotoXY(104, 15);
+	for (int i = 0;i < 16;i++)
+		cout << char(219);
+	GotoXY(104, 16);
+	for (int i = 0;i < 16;i++)
+		cout << char(219);
+	GotoXY(107, 17);
+	for (int i = 0;i < 13;i++)
+		cout << char(219);
+	
+	GotoXY(CENTER_X, CENTER_Y);
+}
+
+void DrawLetter(unsigned char letter[], int X, int Y) {
+	int m = 0;
+	for (int k = 0;k < LETTER_LIST_SIZE;k++) {
+		if (LETTER_LIST[k]==letter) {
+			m = 0;
+			GotoXY(X, Y);
+			for (int i = 1;i <= 5;i++) {
+				for (int j = 1;j <= 7;j++) {
+					cout << LETTER_LIST[k][m];
+					++m;
+				}
+				GotoXY(X, ++Y);
+			}
+		}
+	}
+	
 }
 
 void GetWinLine(vector <_POINT>& winLine, int i, int j, char type) {
@@ -264,21 +371,29 @@ void ShowMenu() {
 	MODE = 1;
 	NEW_GAME = 1;
 	_X = CENTER_X;_Y = CENTER_Y;
+	DrawMenu();
+	SetColor(7, 12);
+	GotoXY(CENTER_X - 2, CENTER_Y);
+	cout << ">";
 	while (1) {
-		DrawMenu();
 		word = GetStdHandle(STD_OUTPUT_HANDLE);
 		SetConsoleTextAttribute(word, 7 * 16 + 12);
-		GotoXY(38, _Y); cout << ">";
 		GotoXY(_X, _Y);
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 'W') {
 			MoveUp();
-			GotoXY(38, _Y);
+			SetColor(7, 7);
+			GotoXY(CENTER_X - 2, _Y + 2); cout << ">";
+			SetColor(7, 12);
+			GotoXY(CENTER_X - 2, _Y);
 			cout << ">";
 		}
 		else if (_COMMAND == 'S') {
 			MoveDown();
-			GotoXY(38, _Y);
+			SetColor(7, 7);
+			GotoXY(CENTER_X - 2, _Y - 2); cout << ">";
+			SetColor(7, 12);
+			GotoXY(CENTER_X - 2, _Y);
 			cout << ">";
 		}
 		else if (_COMMAND == 13) {
@@ -287,7 +402,7 @@ void ShowMenu() {
 				if (_Y == _MENU[i].y)
 					ShowPage(_MENU[i].c);
 		}
-		system("cls");
+		//system("cls");
 	}
 }
 
@@ -355,21 +470,26 @@ void ShowFileGame() {
 	MODE = 3;
 	_X = CENTER_X; _Y = CENTER_Y;
 	GetMatchListSize();
+	DrawMatchList();
 	while (1) {
-		DrawMatchList();
 		word = GetStdHandle(STD_OUTPUT_HANDLE);
-		SetConsoleTextAttribute(word, 7 * 16 + 12);
-		GotoXY(CENTER_X - 2, _Y); cout << ">";
+		SetConsoleTextAttribute(word, 1 * 16 + 6);
 		GotoXY(_X, _Y);
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 'W') {
 			MoveUp();
-			GotoXY(CENTER_X - 2, _Y);
+			SetColor(1, 1);
+			GotoXY(CENTER_X - 5, _Y + 3);cout << ">";
+			SetColor(1, 6);
+			GotoXY(CENTER_X - 5, _Y);
 			cout << ">";
 		}
 		else if (_COMMAND == 'S') {
 			MoveDown();
-			GotoXY(CENTER_X - 2, _Y);
+			SetColor(1, 1);
+			GotoXY(CENTER_X - 5, _Y - 3);cout << ">";
+			SetColor(1, 6);
+			GotoXY(CENTER_X - 5, _Y);
 			cout << ">";
 		}
 		else if (_COMMAND == 27) {
@@ -394,7 +514,7 @@ void ShowFileGame() {
 				}
 			}
 		}
-		system("cls");
+		//system("cls");
 	}
 }
 
@@ -411,23 +531,23 @@ void GetMatchListSize() {
 			++MATCH_LIST_SIZE;
 			_LIST list = { _X,_Y,line };
 			_MATCH_LIST.push_back(list);
-			_Y += 2;
+			_Y += 3;
 		}
-		_Y -= 2;
+		_Y -= 3;
 	}
 	else {
 		int i = -1;
 		while (getline(file, line)) {
 			++i;
-			_Y += 2;
+			_Y += 3;
 			if (i == MATCH_LIST_SIZE && CheckSameString(line,_MATCH_LIST[i-1].item)==0) {
-				_Y -= 2;
+				_Y -= 3;
 				_LIST list = { _X,_Y,line };
 				_MATCH_LIST.push_back(list);
 				++MATCH_LIST_SIZE;
 			}
 		}
-		_Y -= 2;
+		_Y -= 9;
 	}
 	file.close();
 }
