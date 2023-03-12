@@ -91,15 +91,132 @@ void DrawExistedData() {
 }
 
 void DrawMenu() {
-	system("color 79");
+	system("color E1");
+	int left = CENTER_X - 3, top = CENTER_Y - 1;
+
+	//Vẽ tiêu đề trang menu
+	PrintMenuLogo();
+	PrintHeart(CENTER_Y - 10, CENTER_X - 43);
+	PrintHeart(CENTER_Y - 10, CENTER_X + 39);
+
+
+	//In góc trên bên trái thanh menu
+	GotoXY(left, top);
+	putchar(201);
+	//In ra bề rộng của thanh menu
+	for (int i = 1; i < 12; i++)
+	{
+		putchar(205);
+	}
+	//In góc trên bên phải thanh menu
+	putchar(187);
+	//In ra bề dài của thanh menu
+	for (int i = 1; i < 8; i++) // Số 4 ở đây là số option hiện trong bảng menu 
+	{
+		GotoXY(left ,top + i);
+		if (i % 2 != 0)
+		{
+			putchar(186);
+			GotoXY(left + 12, top + i);
+			putchar(186);
+		}
+		else
+		{
+			putchar(199);
+			for (int i = 1; i < 12; i++)
+			{
+				putchar(196);
+			}
+			putchar(182);
+		}
+
+		//Vẽ khung trang menu
+		PrintRectangle(0, 1, 116, 28);
+		
+	}
+	//Vẽ các lựa chọn
 	GotoXY(CENTER_X, CENTER_Y); cout << "New";
 	GotoXY(CENTER_X, CENTER_Y + 2); cout << "Continue";
 	GotoXY(CENTER_X, CENTER_Y + 4); cout << "About";
 	GotoXY(CENTER_X, CENTER_Y + 6); cout << "Exit";
+	//In ra góc dưới trái
+	GotoXY(left, top + 8);///dn24
+	putchar(200);
+	//In ra bề rộng ở phía dưới của bảng menu
+	for (int i = 1; i < 12; i++)
+	{
+		putchar(205);
+	}
+	putchar(188);
+}
+
+void PrintMenuLogo() {
+	unsigned char logo[] = {
+		32,219,219,219,219,219,219,187,32,219,219,219,219,219,219,187,32,32,32,32,32,32,32,219,219,219,219,219,219,187,32,219,219,219,219,219,187,32,219,219,219,219,219,219,187,32,32,219,219,219,219,219,219,187,32,
+219,219,201,205,205,205,205,188,219,219,201,205,205,205,219,219,187,32,32,32,32,32,219,219,201,205,205,205,205,188,219,219,201,205,205,219,219,187,219,219,201,205,205,219,219,187,219,219,201,205,205,205,219,219,187,
+219,219,186,32,32,32,32,32,219,219,186,32,32,32,219,219,186,32,32,32,32,32,219,219,186,32,32,32,32,32,219,219,219,219,219,219,219,186,219,219,219,219,219,219,201,188,219,219,186,32,32,32,219,219,186,
+219,219,186,32,32,32,32,32,219,219,186,32,32,32,219,219,186,32,32,32,32,32,219,219,186,32,32,32,32,32,219,219,201,205,205,219,219,186,219,219,201,205,205,219,219,187,219,219,186,32,32,32,219,219,186,
+200,219,219,219,219,219,219,187,200,219,219,219,219,219,219,201,188,32,32,32,32,32,200,219,219,219,219,219,219,187,219,219,186,32,32,219,219,186,219,219,186,32,32,219,219,186,200,219,219,219,219,219,219,201,188,
+32,200,205,205,205,205,205,188,32,200,205,205,205,205,205,188,32,32,32,32,32,32,32,200,205,205,205,205,205,188,200,205,188,32,32,200,205,188,200,205,188,32,32,200,205,188,32,200,205,205,205,205,205,188,32 };
+	int top = CENTER_Y - 10, left = CENTER_X - 23;
+	int num_lines = 6, num_chars = 55;
+	for (int i = 0; i < num_lines; i++)
+	{
+		GotoXY(left, i + top);
+		for (int j = 0; j < num_chars; j++)
+			putchar(logo[i * num_chars + j]);
+	}
+
+}
+
+void PrintHeart(int top, int left) {
+	unsigned char logo[] = {//32,32,32,219,32,219,32,32,32
+		32,32,219,219,219,32,32,32,219,219,219,32,32
+		,32,219,219,219,219,219,32,219,219,219,219,219,32
+		,219,219,219,219,219,219,219,219,219,219,219,219,219
+		,219,219,219,219,219,219,219,219,219,219,219,219,219
+		,32,219,219,219,219,219,219,219,219,219,219,219,32
+		,32,32,219,219,219,219,219,219,219,219,219,32,32
+		,32,32,32,32,219,219,219,219,219,32,32,32,32 };
+	int num_lines = 7, num_chars = 13;
+	for (int i = 0; i < num_lines; i++)
+	{
+		GotoXY(left, i + top);
+		for (int j = 0; j < num_chars; j++)
+			putchar(logo[i * num_chars + j]);
+	}
+
+}
+
+void PrintRectangle(int top, int left, int width, int height) {
+	GotoXY(left, top);
+	for (int i = 1;i <= width;i++) {
+		cout << char(196);
+	}
+	GotoXY(left, top);
+	cout << char(218);
+	for (int i = 1;i <= height;i++) {
+		GotoXY(left, top + i);
+		cout << char(179) << endl;
+	}
+	GotoXY(left, top + height);
+	for (int i = 1;i <= width;i++) {
+		cout << char(196);
+	}
+	GotoXY(left, top + height);
+	cout << char(192);
+	GotoXY(left + width, top);
+	cout << char(191);
+	for (int i = 1;i < height; i++) {
+		GotoXY(left + width, top+i);
+		cout << char(179) << endl;
+	}
+	GotoXY(left + width, top + height);
+	cout << char(217);
 }
 
 void DrawMatchList() {
-	system("color 16");
+	system("color E1");
 	//Vẽ nút Trở về
 	GotoXY(90, 25);
 	cout << "Press ESC to back to menu";
@@ -148,7 +265,7 @@ void DrawMatchList() {
 	}
 
 	//Vẽ mây trái
-	SetColor(1, 7);
+	SetColor(14, 15);
 	GotoXY(0, 19);
 	for (int i = 0;i < 6;i++)
 		cout << char(219);
@@ -169,6 +286,7 @@ void DrawMatchList() {
 		cout << char(219);
 
 	//Vẽ mây phải
+	//SetColor(14, 15);
 	GotoXY(112, 12);
 	for (int i = 0;i < 8;i++)
 		cout << char(219);
@@ -371,29 +489,30 @@ void ShowMenu() {
 	MODE = 1;
 	NEW_GAME = 1;
 	_X = CENTER_X;_Y = CENTER_Y;
+	int backgroundColor = LIGHT_YELLOW, textColor = BLUE;
 	DrawMenu();
-	SetColor(7, 12);
-	GotoXY(CENTER_X - 2, CENTER_Y);
+	SetColor(backgroundColor, textColor);
+	GotoXY(CENTER_X - 5, CENTER_Y);
 	cout << ">";
 	while (1) {
 		word = GetStdHandle(STD_OUTPUT_HANDLE);
-		SetConsoleTextAttribute(word, 7 * 16 + 12);
+		SetConsoleTextAttribute(word, textColor * 16 + backgroundColor);
 		GotoXY(_X, _Y);
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 'W') {
 			MoveUp();
-			SetColor(7, 7);
-			GotoXY(CENTER_X - 2, _Y + 2); cout << ">";
-			SetColor(7, 12);
-			GotoXY(CENTER_X - 2, _Y);
+			SetColor(backgroundColor, backgroundColor);
+			GotoXY(CENTER_X - 5, _Y + 2); cout << ">";
+			SetColor(backgroundColor, textColor);
+			GotoXY(CENTER_X - 5, _Y);
 			cout << ">";
 		}
 		else if (_COMMAND == 'S') {
 			MoveDown();
-			SetColor(7, 7);
-			GotoXY(CENTER_X - 2, _Y - 2); cout << ">";
-			SetColor(7, 12);
-			GotoXY(CENTER_X - 2, _Y);
+			SetColor(backgroundColor, backgroundColor);
+			GotoXY(CENTER_X - 5, _Y - 2); cout << ">";
+			SetColor(backgroundColor, textColor);
+			GotoXY(CENTER_X - 5, _Y);
 			cout << ">";
 		}
 		else if (_COMMAND == 13) {
@@ -402,7 +521,6 @@ void ShowMenu() {
 				if (_Y == _MENU[i].y)
 					ShowPage(_MENU[i].c);
 		}
-		//system("cls");
 	}
 }
 
@@ -467,28 +585,32 @@ void ShowAbout() {
 
 void ShowFileGame() {
 	HANDLE word;
+	int backgroundColor = LIGHT_YELLOW, textColor = BLUE;
 	MODE = 3;
 	_X = CENTER_X; _Y = CENTER_Y;
 	GetMatchListSize();
 	DrawMatchList();
+	SetColor(backgroundColor, textColor);
+	GotoXY(CENTER_X - 5, CENTER_Y);
+	cout << ">";
 	while (1) {
 		word = GetStdHandle(STD_OUTPUT_HANDLE);
-		SetConsoleTextAttribute(word, 1 * 16 + 6);
+		SetConsoleTextAttribute(word, backgroundColor * 16 + textColor);
 		GotoXY(_X, _Y);
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 'W') {
 			MoveUp();
-			SetColor(1, 1);
+			SetColor(backgroundColor, backgroundColor);
 			GotoXY(CENTER_X - 5, _Y + 3);cout << ">";
-			SetColor(1, 6);
+			SetColor(backgroundColor, textColor);
 			GotoXY(CENTER_X - 5, _Y);
 			cout << ">";
 		}
 		else if (_COMMAND == 'S') {
 			MoveDown();
-			SetColor(1, 1);
+			SetColor(backgroundColor, backgroundColor);
 			GotoXY(CENTER_X - 5, _Y - 3);cout << ">";
-			SetColor(1, 6);
+			SetColor(backgroundColor, textColor);
 			GotoXY(CENTER_X - 5, _Y);
 			cout << ">";
 		}
@@ -514,7 +636,6 @@ void ShowFileGame() {
 				}
 			}
 		}
-		//system("cls");
 	}
 }
 
@@ -547,7 +668,7 @@ void GetMatchListSize() {
 				++MATCH_LIST_SIZE;
 			}
 		}
-		_Y -= 9;
+		_Y -= 3*MATCH_LIST_SIZE;
 	}
 	file.close();
 }

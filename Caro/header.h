@@ -15,7 +15,7 @@ using namespace std;
 #define LEFT 3
 #define TOP 1
 #define CENTER_X 55
-#define CENTER_Y 12
+#define CENTER_Y 15
 #define GOAL 5
 #define MENU_SIZE 4
 #define BLACK 0
