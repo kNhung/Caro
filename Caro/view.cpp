@@ -347,13 +347,7 @@ void RemoveMatchFile(string matchName) {
 
 //Hiện trang chuyển
 void ShowLoadingPage() {
-	system("cls");
-	//Code backgroud, khung menu...
 	system("color 79");
-	GotoXY(40, 15);
-	cout << "This is loading page...";
-	Sleep(500);
-	system("cls");
 }
 
 //Chuyển trang
