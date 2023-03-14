@@ -37,18 +37,24 @@ void MoveLeft() {
 
 void MoveDown() {
 	if ((MODE == 2 && _Y < _A[BOARD_SIZE - 1][BOARD_SIZE - 1].y)
-		 || (MODE == 1  && _Y < _MENU[MENU_SIZE-1].y)
-		 || (MODE == 3 && _Y <_MATCH_LIST[MATCH_LIST_SIZE-1].y)) {
+		|| (MODE == 1 && _Y < _MENU[MENU_SIZE - 1].y)) {
 		_Y += 2;
+		GotoXY(_X, _Y);
+	}
+	if (MODE == 3 && _Y < _MATCH_LIST[MATCH_LIST_SIZE - 1].y) {
+		_Y += 3;
 		GotoXY(_X, _Y);
 	}
 }
 
 void MoveUp() {
 	if ((MODE == 2 && _Y > _A[0][0].y)
-		|| (MODE == 1 && _Y > _MENU[0].y)
-		|| (MODE == 3 && _Y >_MATCH_LIST[0].y)) {
+		|| (MODE == 1 && _Y > _MENU[0].y)) {
 		_Y -= 2;
+		GotoXY(_X, _Y);
+	}
+	if (MODE == 3 && _Y > _MATCH_LIST[0].y) {
+		_Y -= 3;
 		GotoXY(_X, _Y);
 	}
 }

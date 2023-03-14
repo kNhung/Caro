@@ -14,10 +14,27 @@ using namespace std;
 #define BOARD_SIZE 10
 #define LEFT 3
 #define TOP 1
-#define CENTER_X 40
-#define CENTER_Y 10
+#define CENTER_X 55
+#define CENTER_Y 15
 #define GOAL 5
 #define MENU_SIZE 4
+#define BLACK 0
+#define BLUE 1
+#define GREEN 2
+#define AQUA 3
+#define RED 4
+#define PURPLE 5
+#define YELLOW 6
+#define WHITE 7
+#define GRAY 8
+#define LIGHT_BLUE 9
+#define LIGHT_GREEN 10
+#define LIGHT_AQUA 11
+#define LIGHT_RED 12
+#define LIGHT_PURPLE 13
+#define LIGHT_YELLOW 14
+#define BRIGHT_WHITE 15
+
 
 struct _POINT { int x, y, c; };
 struct _LIST {
@@ -36,3 +53,7 @@ extern bool NEW_GAME; //1:reset data 2:mở game từ file
 extern ofstream _MATCH_LIST_FILE;
 extern int MATCH_LIST_SIZE;
 extern vector<_LIST> _MATCH_LIST;
+
+extern unsigned char L[], O[], A[], D[], G[], M[], E[], I[], N[];
+extern unsigned char* LETTER_LIST[];
+extern int LETTER_LIST_SIZE;
