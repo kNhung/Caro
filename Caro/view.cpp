@@ -65,7 +65,6 @@ void ResetData() {
 	_X = _A[0][0].x; _Y = _A[0][0].y;
 }
 
-
 void DrawBoard(int pSize) {
 	for (int i = 0;i <= pSize;i++) {
 		for (int j = 0;j <= pSize;j++) {
@@ -231,6 +230,71 @@ void PrintRectangle(int top, int left, int width, int height) {
 	cout << char(217);
 }
 
+void PrintTree(int x, int y) {
+	GotoXY(x, y);cout << "               ,@@@@@@@,";
+	GotoXY(x, y + 1);cout << "      ,,,.   ,@@@@@@/@@,  .oo8888o.";
+	GotoXY(x, y + 2);cout << "    ,&%%&%&&%,@@@@@/@@@@@@,8888\88/8o";
+	GotoXY(x, y + 3);cout << "   ,%&\%&&%&&%,@@@\@@@/@@@88\88888/88'";
+	GotoXY(x, y + 4);cout << "   %&&%&%&/%&&%@@\@@/ /@@@88888\88888'";
+	GotoXY(x, y + 5);cout << "   %&&%/ %&%%&&@@\ V /@@' `88\8 `/88'";
+	GotoXY(x, y + 6);cout << "   `&%\ ` /%&'    |.|        \ '|8'";
+	GotoXY(x, y + 7);cout << "       |o|        | |         | |";
+	GotoXY(x, y + 8);cout << "       |.|        | |         | |";
+	GotoXY(x, y + 9);cout << "/_. \\/ ._\//_/__/  ,\_//__\\/.  \_//__/_";
+}
+
+void PrintCloud(int left, int top, int type) {
+	//Type 1: nửa trái ; 2: nửa phải ; 3: nguyên đám
+	int m = 0;
+	unsigned char cloud_left[] = {	   219 ,219 ,219 ,219 ,219 ,219 ,219 ,219,32 ,32 ,32 ,32 ,32 , 32,
+									   219 ,219 ,219 ,219 ,219 ,219 ,219 ,219 ,219,219,32,32,32,32,
+									   219 ,219 ,219 ,219 ,219 ,219 ,219 ,219,219,219,219,219,32,32,
+									   219 ,219 ,219 ,219 ,219 ,219 ,219 ,219,219,219,219,219,219,219,
+									   219 ,219 ,219 ,219 ,219 ,219 ,219 ,219,219,219,219,219,219,219,
+									   219 ,219 ,219 ,219 ,219 ,219 ,219 ,219,219,219,219,219,32,32 };
+	unsigned char cloud_right[]={32,32,32,32,32,32,32,32,219,219,219,219,219,219,219,219,219,
+								32,32,32,32,32,219,219,219,219,219,219,219,219,219,219,219,219,
+								32,32,32,32,219,219,219,219,219,219,219,219,219,219,219,219,219,
+								219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,
+								219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,
+								32,32,32,219,219,219,219,219,219,219,219,219,219,219,219,219,219 };
+	unsigned char cloud_full[]= { 32,32,32,32,32,32,32,32,219,219,219,219,219,219,32,32,32,32,
+								32,32,32,32,32,219,219,219,219,219,219,219,219,219,219,219,32,32,
+								32,32,32,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,
+								219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,
+								219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,32,
+								32,32,32,219,219,219,219,219,219,219,219,219,219,219,219,32,32,32 };
+	switch (type) {
+	case 1:
+		for (int i = 0;i < 6;i++) {
+			GotoXY(left, top + i);
+			for (int j = 0;j < 14;j++) {
+				cout << cloud_left[m];
+				++m;
+			}
+		}
+		break;
+	case 2:
+		for (int i = 0;i < 6;i++) {
+			GotoXY(left, top + i);
+			for (int j = 0;j < 17;j++) {
+				cout << cloud_right[m];
+				++m;
+			}
+		}
+		break;
+	case 3:
+		for (int i = 0;i < 6;i++) {
+			GotoXY(left, top + i);
+			for (int j = 0;j < 18;j++) {
+				cout << cloud_full[m];
+				++m;
+			}
+		}
+		break;
+	}
+}
+
 void DrawMatchList() {
 	system("color E1");
 	//Vẽ nút Trở về
@@ -280,48 +344,10 @@ void DrawMatchList() {
 		cout << char(217); //Góc dưới phải
 	}
 
-	//Vẽ mây trái
-	SetColor(14, 15);
-	GotoXY(0, 19);
-	for (int i = 0;i < 6;i++)
-		cout << char(219);
-	GotoXY(0, 20);
-	for(int i=0;i<8;i++)
-		cout << char(219);
-	GotoXY(0, 20 + 1);
-	for(int i=0;i<10;i++)
-		cout << char(219);
-	GotoXY(0, 20 + 2);
-	for (int i = 0;i < 12;i++)
-		cout << char(219);
-	GotoXY(0, 20 + 3);
-	for (int i = 0;i < 12;i++)
-		cout << char(219);
-	GotoXY(0, 20 + 4);
-	for (int i = 0;i < 11;i++)
-		cout << char(219);
-
-	//Vẽ mây phải
-	//SetColor(14, 15);
-	GotoXY(112, 12);
-	for (int i = 0;i < 8;i++)
-		cout << char(219);
-	GotoXY(109, 13);
-	for (int i = 0;i < 11;i++)
-		cout << char(219);
-	GotoXY(108, 14);
-	for (int i = 0;i < 12;i++)
-		cout << char(219);
-	GotoXY(104, 15);
-	for (int i = 0;i < 16;i++)
-		cout << char(219);
-	GotoXY(104, 16);
-	for (int i = 0;i < 16;i++)
-		cout << char(219);
-	GotoXY(107, 17);
-	for (int i = 0;i < 13;i++)
-		cout << char(219);
-	
+	//Vẽ mây
+	SetColor(LIGHT_YELLOW, BRIGHT_WHITE);
+	PrintCloud(0, 20, 1);
+	PrintCloud(103, 10, 2);
 	GotoXY(CENTER_X, CENTER_Y);
 }
 
@@ -486,7 +512,7 @@ void ShowLoadingPage() {
 	//Vẽ khung
 	PrintRectangle(0, 1, 116, 28);
 	//Vẽ chữ LOADING
-	int logo_x = 22, logo_y = 15;
+	int logo_x = 25, logo_y = 5;
 	DrawLetter(L, logo_x, logo_y);
 	DrawLetter(O, logo_x + 9, logo_y);
 	DrawLetter(A, logo_x + 9 * 2, logo_y);
@@ -504,6 +530,8 @@ void ShowLoadingPage() {
 		GotoXY(logo_x + 20 + 12*i, logo_y - 3);
 		cout << char(003) << "  ";
 	}
+	//Vẽ cây
+	PrintTree(logo_x+15, logo_y + 10);
 
 	Sleep(500);
 	system("cls");
