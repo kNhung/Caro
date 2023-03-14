@@ -188,6 +188,22 @@ void PrintHeart(int top, int left) {
 
 }
 
+void PrintSmallHeart(int x, int y) {
+	int m = 0;
+	unsigned char heart_s[] = {32,254,32,32,32,254,32,
+							   219,254,254,32,254,254,254,
+							   32,254,254,254,254,254,32,
+							   32,32,254,254,254,32,32,
+							   32,32,32,254,32,32,32};
+	GotoXY(x, y);
+	for (int i = 0;i < 5;i++) {
+		for (int i = 0;i < 7;i++) {
+			cout << heart_s[m++];
+		}
+		GotoXY(x, y++);
+	}
+}
+
 void PrintRectangle(int top, int left, int width, int height) {
 	GotoXY(left, top);
 	for (int i = 1;i <= width;i++) {
@@ -465,7 +481,32 @@ void RemoveMatchFile(string matchName) {
 
 //Hiện trang chuyển
 void ShowLoadingPage() {
-	system("color 79");
+	system("cls");
+	system("color E1");
+	//Vẽ khung
+	PrintRectangle(0, 1, 116, 28);
+	//Vẽ chữ LOADING
+	int logo_x = 22, logo_y = 15;
+	DrawLetter(L, logo_x, logo_y);
+	DrawLetter(O, logo_x + 9, logo_y);
+	DrawLetter(A, logo_x + 9 * 2, logo_y);
+	DrawLetter(D, logo_x + 9 * 3, logo_y);
+	DrawLetter(I, logo_x + 9 * 4, logo_y);
+	DrawLetter(N, logo_x + 9 * 5, logo_y);
+	DrawLetter(G, logo_x + 9 * 6, logo_y);
+	for (int i = 0;i <= 2;i++) {
+		GotoXY(logo_x + 9 * 7 + 4 * i, logo_y + 4);
+		cout << char(219) << char(219);
+	}
+	//Vẽ 3 trái tim nhỏ
+	for (int i = 0;i < 3;i++) {
+		//PrintSmallHeart(logo_x + 5*i, logo_y - 4);
+		GotoXY(logo_x + 20 + 12*i, logo_y - 3);
+		cout << char(003) << "  ";
+	}
+
+	Sleep(500);
+	system("cls");
 }
 
 //Chuyển trang

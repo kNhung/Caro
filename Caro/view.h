@@ -12,6 +12,7 @@ void DrawExistedData();
 void DrawMenu();
 void PrintMenuLogo();
 void PrintHeart(int top, int left);
+void PrintSmallHeart(int top, int left);
 void PrintRectangle(int top, int left, int width, int height);
 void DrawMatchList();
 void DrawLetter(unsigned char letter[], int X, int Y);

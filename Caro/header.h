@@ -54,6 +54,6 @@ extern ofstream _MATCH_LIST_FILE;
 extern int MATCH_LIST_SIZE;
 extern vector<_LIST> _MATCH_LIST;
 
-extern unsigned char L[], O[], A[], D[], G[], M[], E[];
+extern unsigned char L[], O[], A[], D[], G[], M[], E[], I[], N[];
 extern unsigned char* LETTER_LIST[];
 extern int LETTER_LIST_SIZE;
