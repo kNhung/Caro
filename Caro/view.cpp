@@ -489,9 +489,12 @@ int AskContinue() {
 }
 
 int AskSaveGame() {
-	//Khung hỏi lưu game...
-	GotoXY(0, _A[BOARD_SIZE - 1][BOARD_SIZE - 1].y + 4);
-	cout << "Ban co muon luu tran dau nay lai khong? Y/N";
+	system("cls");
+	PrintRectangle(CENTER_Y - 3, CENTER_X - 10, 30, 3);
+	GotoXY(CENTER_X - 5, CENTER_Y - 2);
+	cout << "Want to save the match?";
+	GotoXY(CENTER_X - 5, CENTER_Y - 1);
+	cout << "  Yes(Y)    No(N)";
 	return toupper(_getch());
 }
 
@@ -662,7 +665,7 @@ void ShowGame() {
 					switch (ProcessFinish(TestBoard())) {
 					case -1:case 1:case 0:
 						if (AskSaveGame() == 'Y') {
-							SaveGame();
+							DrawPopUp('L');
 						}
 						else {
 							ShowLoadingPage();
