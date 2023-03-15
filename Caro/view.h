@@ -11,6 +11,9 @@ void Drawboard_game();
 void Highlightwin(const vector <_POINT>& a);
 void DrawExistedData();
 void DrawMenu();
+void DrawMatchList();
+void DrawLetter(unsigned char letter[], int X, int Y);
+void DrawPopUp(char quest);
 
 void PrintMenuLogo();
 void PrintHeart(int top, int left);
@@ -19,8 +22,7 @@ void PrintRectangle(int top, int left, int width, int height);
 void PrintTree(int x, int y);
 void PrintCloud(int left, int top, int type);
 
-void DrawMatchList();
-void DrawLetter(unsigned char letter[], int X, int Y);
+void GetWinLine(vector <_POINT>& winLine, int i,int j, char type);
 void SetColor(int backgoundColor, int textColor);
 void HighlightWin(vector <_POINT>& winLine);
 
@@ -37,6 +39,8 @@ void ShowMenu();
 void ShowGame();
 void ShowAbout(); 
 void ShowFileGame(); 
+void ShowAsk(char key);
+
 void GetMatchListSize();
 void LoadGame(string matchName);
 
