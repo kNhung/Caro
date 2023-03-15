@@ -1,11 +1,11 @@
 ﻿#pragma once
+#ifndef _MY_VIEW
+#define _MY_VIEW
 #include "header.h"
 
 void FixConsoleWindow();
 void SetFontSize(int fontSize);
 void GotoXY(int x, int y);
-void ResetData();
-void LoadGame(string matchName);
 
 void Drawboard_game();
 void Highlightwin(const vector <_POINT>& a);
@@ -21,7 +21,6 @@ void PrintCloud(int left, int top, int type);
 
 void DrawMatchList();
 void DrawLetter(unsigned char letter[], int X, int Y);
-void GetWinLine(vector <_POINT>& winLine, int i,int j, char type);
 void SetColor(int backgoundColor, int textColor);
 void HighlightWin(vector <_POINT>& winLine);
 
@@ -40,3 +39,5 @@ void ShowAbout();
 void ShowFileGame(); 
 void GetMatchListSize();
 void LoadGame(string matchName);
+
+#endif
