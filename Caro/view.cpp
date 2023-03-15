@@ -442,15 +442,25 @@ void DrawLetter(unsigned char letter[], int X, int Y) {
 	
 }
 
-void HighlightWin(vector <_POINT>& winLine) {
-	for (int i = 0;i < winLine.size();i++) {
-		GotoXY(winLine[i].x, winLine[i].y);
-		SetColor(7, 13);
-		if (_TURN == 1) cout << "X";
-		else cout << "O";
+void DrawPopUp(char quest) {
+	//Vẽ khung
+	system("cls");
+	PrintRectangle(CENTER_Y - 3, CENTER_X - 10, 30, 3);
+	GotoXY(CENTER_X - 5, CENTER_Y - 2);
+	switch (quest) {
+	case 'L':
+		cout << " Enter match name";
+		GotoXY(CENTER_X, CENTER_Y - 1);
+		SaveGame();
+		ShowLoadingPage();
+		ShowMenu();
+		break;
+	case 27:
+		cout << "Are you sure to quit?";
+		GotoXY(CENTER_X - 5, CENTER_Y - 1);
+		cout << "  Yes(Y)   No(N)";
 	}
 }
-
 
 int ProcessFinish(int pWhoWin) {
 	GotoXY(0, _A[BOARD_SIZE - 1][BOARD_SIZE - 1].y + 2);
@@ -488,7 +498,6 @@ int AskSaveGame() {
 void SaveGame() {
 	string matchName;
 	GotoXY(0, _A[BOARD_SIZE - 1][BOARD_SIZE - 1].y + 4);
-	cout << "File name: ";
 	getline(cin, matchName);
 	_MATCH_LIST_FILE.open("game_files.txt",ios::app);
 	if (!_MATCH_LIST_FILE) {
@@ -540,7 +549,6 @@ void RemoveMatchFile(string matchName) {
 }
 
 
-//Hiện trang chuyển
 void ShowLoadingPage() {
 	system("cls");
 	system("color E1");
@@ -572,7 +580,6 @@ void ShowLoadingPage() {
 	system("cls");
 }
 
-//Chuyển trang
 void ShowPage(int page) {
 	switch (page) {
 	case 1: ShowGame(); break;
@@ -630,9 +637,10 @@ void ShowGame() {
 	bool validEnter = true;
 	while (1) {
 		_COMMAND = toupper(_getch()); //_getch() chu khong phai getch()
-		if (_COMMAND == 27) {
-			ShowLoadingPage();
-			ShowMenu();
+		if (_COMMAND == 27 || _COMMAND == 'L') {
+			/*ShowLoadingPage();
+			ShowMenu();*/
+			ShowAsk(_COMMAND);
 			return;
 		}
 		else {
@@ -734,6 +742,26 @@ void ShowFileGame() {
 				}
 			}
 		}
+	}
+}
+
+void ShowAsk(char key) {
+	NEW_GAME = 0;
+	//Vẽ giao diện trang ShowAsk...
+	//Vẽ khung rồi cout hỏi thoát trận hoặc nhập tên file lưu
+	DrawPopUp(key);
+	switch (key) {
+	case 'L':
+		SaveGame();
+		break;
+	case 27:
+		_COMMAND = toupper(_getch());
+		if (_COMMAND == 'Y') {
+			ShowLoadingPage();
+			ShowMenu();
+		}
+		else if (_COMMAND == 'N')
+			ShowGame();
 	}
 }
 
