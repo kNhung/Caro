@@ -7,7 +7,8 @@ void GotoXY(int x, int y);
 void ResetData();
 void LoadGame(string matchName);
 
-void DrawBoard(int pSize);
+void Drawboard_game();
+void Highlightwin(const vector <_POINT>& a);
 void DrawExistedData();
 void DrawMenu();
 
