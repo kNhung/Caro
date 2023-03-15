@@ -341,7 +341,7 @@ void ShowGame() {
 
 void ShowAbout() {
 	//Vẽ About ở đây...
-
+        TT(ten, chuc);
 	_COMMAND = toupper(_getch()); //_getch() chu khong phai getch()
 	if (_COMMAND == 27) {
 		ShowLoadingPage();
@@ -454,4 +454,52 @@ void LoadGame(string matchName) {
 		}
 	_TURN = true; _COMMAND = -1;
 	_X = _A[0][0].x; _Y = _A[0][0].y;
+}
+void Ox(int x1, int x2, int y) {
+    for (int j = x1; j <= x2; j++) {
+        gotoXY(j, y);
+        cout << char(196);
+    }
+}
+void TextColor(int color) {
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
+void TT(vector<string> ten, vector<string> chuc) {
+    TextColor(14);
+    ToaDo goc_trai = { 2, 2 };
+    gotoXY(goc_trai.x, goc_trai.y); cout << char(174) << " Home";
+    ToaDo about = { 55, 3 };
+    gotoXY(about.x, about.y); cout << char(16) << "   ABOUT   " << char(17);
+    ten.push_back("Nguyen Phat Kim Nhung");
+    ten.push_back("Ma Thanh Nhi");
+    ten.push_back("Giang Duc Nhat");
+    ten.push_back("Dinh Le Gia Nhu");
+    ten.push_back("Truong Toan Thinh");
+    chuc.push_back("Leader - Moderator");
+    chuc.push_back("Producer");
+    chuc.push_back("Pusblisher");
+    chuc.push_back("Designer");
+    chuc.push_back("Teacher - Instructor");
+    for (int i = 0; i < ten.size(); i += 2) {
+        ToaDo vitri = { 20, 7 + 3 * i };
+        if (i + 1 < ten.size()) {
+            gotoXY(vitri.x, vitri.y); cout << ten[i];
+            gotoXY(vitri.x + ten[i].size() / 2 - chuc[i].size() / 2, vitri.y + 1); cout << chuc[i];
+
+            gotoXY(vitri.x + 60, vitri.y); cout << ten[i + 1];
+            gotoXY(vitri.x + 60 + ten[i + 1].size() / 2 - chuc[+1].size() / 2, vitri.y + 1); cout << chuc[i + 1];
+            Ox(vitri.x - 5, vitri.x + 100, vitri.y + 2);
+        }
+        else {
+            gotoXY(vitri.x + 30, vitri.y); cout << ten[i];
+            gotoXY(vitri.x + 30 + ten[i].size() / 2 - chuc[i].size() / 2, vitri.y + 1); cout << chuc[i];
+        }
+    }
+    while (true) {
+        if (_kbhit()) {
+            char c = _getch();
+            if (c == 27)
+                return;
+        }
+    }
 }
