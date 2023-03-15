@@ -45,6 +45,11 @@ void SetFontSize(int fontSize) {
 	wcscpy_s(info.FaceName, L"Lucida Console");
 	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), NULL, &info);
 }
+void SetColor(int backgoundColor, int textColor) {
+	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+	int colorCode = backgoundColor * 16 + textColor;
+	SetConsoleTextAttribute(hStdout, colorCode);
+}
 
 void GotoXY(int x, int y) {
 	COORD coord;
@@ -54,14 +59,14 @@ void GotoXY(int x, int y) {
 }
 
 void Drawboard_game() {
-	system("color E1");
+	system("color F1");
 	unsigned char logo[] = { 177,219,223,223,223,219,' ',177,219,220,176,177,219,' ',' ',' ',177,219,223,220,223,219,' '
 		,176,219,223,223,219,' ',223,223,219,223,223,' ',177,219,223,223,219,' ',177,219,176,177,219,'\n',177,219,176,176,
 	   177,219,' ',177,219,177,219,177,219,' ',' ',' ',177,219,177,219,177,219,' ',177,219,220,220,219,' ',176,177,219,176,176,
 	  ' ',177,219,176,176,176,' ',177,219,223,223,219,'\n',177,219,220,220,220,219,' ',177,219,176,176,223,219,' ',' ',' ',177,219,
 	   176,176,177,219,' ',177,219,176,177,219,' ',176,177,219,176,176,' ',177,219,220,220,219,' ',177,219,176,177,219 };
 	int top = 5;
-	int left = 40;
+	int left = 45;
 	for (int i = 0, j = left; i < sizeof(logo) / sizeof(logo[0]); i++, j++) {
 		GotoXY(j, top);
 		cout << logo[i];
@@ -70,22 +75,13 @@ void Drawboard_game() {
 			j = left - 1;
 		}
 	}
-	//Vẽ các cột
-	for (int i = 1; i < BOARD_SIZE; i++)
-		for (int j = 1; j < BOARD_SIZE * 2; j++) {
-			GotoXY(LEFT + i * 4, j + TOP);
-			cout << char(179);
-		}
-	//Vẽ các dòng
-	for (int i = 1; i < BOARD_SIZE; i++)
-		for (int j = 1; j < BOARD_SIZE * 4; j++) {
-			GotoXY(LEFT + j, 2 * i + TOP);
-			if (j % 4 == 0)cout << char(197);
-			else cout << char(196);
-		}
 	//Vẽ khung ngoài
 	//Vẽ đường viền trên dưới
+	Sleep(500);
+	GotoXY(LEFT, TOP); cout << char(201);
+	GotoXY(LEFT, TOP + BOARD_SIZE * 2); cout << char(200);
 	for (int j = 1; j < BOARD_SIZE * 4 + 30; j++) {
+		Sleep(30);
 		GotoXY(LEFT + j, TOP);
 		if (j % 4 == 0 && j < BOARD_SIZE * 4)cout << char(209);
 		else cout << char(205);
@@ -93,12 +89,19 @@ void Drawboard_game() {
 		if (j % 4 == 0 && j < BOARD_SIZE * 4)cout << char(207);
 		else cout << char(205);
 		if (j > BOARD_SIZE * 4) {
-			GotoXY(LEFT + j, TOP + BOARD_SIZE);
+			GotoXY(LEFT + j, TOP + (BOARD_SIZE * 2 - (4 * 2)) / 2);
+			cout << char(205);
+			GotoXY(LEFT + j, TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2);
 			cout << char(205);
 		}
 	}
+	GotoXY(LEFT + BOARD_SIZE * 4 + 30, TOP); cout << char(187);
+	GotoXY(LEFT + BOARD_SIZE * 4 + 30, TOP + BOARD_SIZE * 2); cout << char(188);
+	GotoXY(LEFT + BOARD_SIZE * 4, TOP); cout << char(203);
+	GotoXY(LEFT + BOARD_SIZE * 4, TOP + BOARD_SIZE * 2); cout << char(202);
 	//Vẽ đường viền trái phải
 	for (int j = 1; j < BOARD_SIZE * 2; j++) {
+		Sleep(30);
 		GotoXY(LEFT, j + TOP);
 		if (j % 2 == 0)cout << char(199);
 		else cout << char(186);
@@ -108,19 +111,33 @@ void Drawboard_game() {
 		GotoXY(LEFT + BOARD_SIZE * 4 + 30, j + TOP);
 		cout << char(186);
 	}
-	GotoXY(LEFT, TOP); cout << char(201);
-	GotoXY(LEFT, TOP + BOARD_SIZE * 2); cout << char(200);
-	GotoXY(LEFT + BOARD_SIZE * 4, TOP); cout << char(203);
-	GotoXY(LEFT + BOARD_SIZE * 4, TOP + BOARD_SIZE * 2); cout << char(202);
-	GotoXY(LEFT + BOARD_SIZE * 4 + 30, TOP); cout << char(187);
-	GotoXY(LEFT + BOARD_SIZE * 4 + 30, TOP + BOARD_SIZE * 2); cout << char(188);
-	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + 2); cout << "PLAYER X";
+	//Vẽ các cột
+	for (int i = 1; i < BOARD_SIZE; i++)
+		for (int j = 1; j < BOARD_SIZE * 4; j++) {
+			if (j < BOARD_SIZE * 2 && j % 2 == 1) {
+
+				GotoXY(LEFT + i * 4, j + TOP);
+				cout << char(179);
+			}
+			if (j % 4 !=0) {
+				GotoXY(LEFT + j, 2 * i + TOP);
+				cout << char(196);
+			}
+		}
+	//Vẽ các dòng
+	Sleep(6);
+	for (int i = 1; i < BOARD_SIZE; i++)
+		for (int j = 1; j < BOARD_SIZE * 4; j++) {
+			GotoXY(LEFT + j, 2 * i + TOP);
+			if (j % 4 == 0)cout << char(197);
+		}
+	GotoXY(LEFT + BOARD_SIZE * 4 + 11, TOP + 2); SetColor(AQUA, RED); cout << "  PLAYER X  "; SetColor(BRIGHT_WHITE, BLUE);
 	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + 4); cout << "WINNING SCORE : ";
 	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + 6); cout << "MOVES : ";
-	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + BOARD_SIZE + 2); cout << "PLAYER O";
-	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + BOARD_SIZE + 4); cout << "WINNING SCORE : ";
-	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + BOARD_SIZE + 6); cout << "MOVES : ";
-
+	GotoXY(LEFT + BOARD_SIZE * 4 + 11, TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 2); SetColor(AQUA, RED); cout << "  PLAYER O  "; SetColor(BRIGHT_WHITE, BLUE);
+	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4); cout << "WINNING SCORE : ";
+	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 6); cout << "MOVES : ";
+	
 }
 
 void Highlightwin(const vector <_POINT>& a) {
@@ -425,44 +442,6 @@ void DrawLetter(unsigned char letter[], int X, int Y) {
 		}
 	}
 	
-}
-
-void GetWinLine(vector <_POINT>& winLine, int i, int j, char type) {
-	if (type == 'r') { //Ngang
-		while (_A[i][j - 1].c == _A[i][j].c) {
-			winLine.push_back(_A[i][j]);
-			--j;
-		}
-	}
-
-	else if (type == 'c') { //Dọc
-		while (_A[i - 1][j].c == _A[i][j].c) {
-			winLine.push_back(_A[i][j]);
-			--i;
-		}
-	}
-
-	else if (type == 'd') { //Chéo chính
-		while (_A[i - 1][j - 1].c == _A[i][j].c) {
-			winLine.push_back(_A[i][j]);
-			--i;
-			--j;
-		}
-	}
-
-	else if (type == 's') { //Chéo phụ
-		while (_A[i - 1][j + 1].c == _A[i][j].c) {
-			winLine.push_back(_A[i][j]);
-			--i;
-			++j;
-		}
-	}
-}
-
-void SetColor(int backgoundColor, int textColor) {
-	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
-	int colorCode = backgoundColor * 16 + textColor;
-	SetConsoleTextAttribute(hStdout, colorCode);
 }
 
 void HighlightWin(vector <_POINT>& winLine) {
