@@ -1,13 +1,14 @@
 ﻿#pragma once
+#ifndef _MY_VIEW
+#define _MY_VIEW
 #include "header.h"
 
 void FixConsoleWindow();
 void SetFontSize(int fontSize);
 void GotoXY(int x, int y);
-void ResetData();
-void LoadGame(string matchName);
 
-void DrawBoard(int pSize);
+void Drawboard_game();
+void Highlightwin(const vector <_POINT>& a);
 void DrawExistedData();
 void DrawMenu();
 void DrawMatchList();
@@ -42,3 +43,5 @@ void ShowAsk(char key);
 
 void GetMatchListSize();
 void LoadGame(string matchName);
+
+#endif

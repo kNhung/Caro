@@ -1,4 +1,6 @@
 ﻿#pragma once
+#ifndef _MY_HEADER
+#define _MY_HEADER
 #include <iostream>
 #include <Windows.h>
 #include <WinUser.h>
@@ -11,9 +13,9 @@
 #include <vector>
 using namespace std;
 
-#define BOARD_SIZE 10
-#define LEFT 3
-#define TOP 1
+#define BOARD_SIZE 16
+#define LEFT 25
+#define TOP 10
 #define CENTER_X 55
 #define CENTER_Y 15
 #define GOAL 5
@@ -57,3 +59,5 @@ extern vector<_LIST> _MATCH_LIST;
 extern unsigned char L[], O[], A[], D[], G[], M[], E[], I[], N[];
 extern unsigned char* LETTER_LIST[];
 extern int LETTER_LIST_SIZE;
+
+#endif
