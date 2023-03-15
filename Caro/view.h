@@ -6,9 +6,11 @@
 void FixConsoleWindow();
 void SetFontSize(int fontSize);
 void GotoXY(int x, int y);
+void SetColor(int backgoundColor, int textColor);
 
 void Drawboard_game();
 void Highlightwin(const vector <_POINT>& a);
+void Button(int top, int left, int width, int height, string label);
 void DrawExistedData();
 void DrawMenu();
 void DrawMatchList();
@@ -22,9 +24,6 @@ void PrintRectangle(int top, int left, int width, int height);
 void PrintTree(int x, int y);
 void PrintCloud(int left, int top, int type);
 
-void GetWinLine(vector <_POINT>& winLine, int i,int j, char type);
-void SetColor(int backgoundColor, int textColor);
-void HighlightWin(vector <_POINT>& winLine);
 
 int ProcessFinish(int pWhoWin);
 int AskContinue();
