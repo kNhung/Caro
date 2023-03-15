@@ -8,7 +8,7 @@ void StartGame() {
 		ResetData();
 	else
 		DrawExistedData();
-	DrawBoard(BOARD_SIZE);
+	Drawboard_game();
 }
 
 void GabageCollect() {
