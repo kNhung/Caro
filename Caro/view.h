@@ -29,3 +29,6 @@ void ShowAbout();
 void ShowFileGame(); 
 void GetMatchListSize();
 void LoadGame(string matchName);
+void TextColor(int color);
+void Ox(int x1, int x2, int y);
+void TT(vector<string> ten, vector<string> chuc);
