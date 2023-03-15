@@ -135,7 +135,11 @@ void Drawboard_game() {
 	GotoXY(LEFT + BOARD_SIZE * 4 + 11, TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 2); SetColor(AQUA, RED); cout << "  PLAYER O  "; SetColor(BRIGHT_WHITE, BLUE);
 	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4); cout << "WINNING SCORE : ";
 	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 6); cout << "MOVES : ";
-
+	Button(TOP + BOARD_SIZE * 2 + 2, LEFT, 15, 2, "U:Undo");
+	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 + 5, 15, 2, "R:Redo");
+	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 2 + 5 * 2, 15, 2, "H:Help");
+	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 3 + 5 * 3, 15, 2, "L:Save");
+	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 4 + 5 * 4, 15, 2, "esc:Exit");
 }
 
 void Highlightwin(const vector <_POINT>& a) {
@@ -147,6 +151,41 @@ void Highlightwin(const vector <_POINT>& a) {
 		else cout << "O";
 	}
 }
+void PrintRectangle(int top, int left, int width, int height) {
+	GotoXY(left, top);
+	for (int i = 1; i <= width; i++) {
+		cout << char(196);
+	}
+	GotoXY(left, top);
+	cout << char(218);
+	for (int i = 1; i <= height; i++) {
+		GotoXY(left, top + i);
+		cout << char(179) << endl;
+	}
+	GotoXY(left, top + height);
+	for (int i = 1; i <= width; i++) {
+		cout << char(196);
+	}
+	GotoXY(left, top + height);
+	cout << char(192);
+	GotoXY(left + width, top);
+	cout << char(191);
+	for (int i = 1; i < height; i++) {
+		GotoXY(left + width, top + i);
+		cout << char(179) << endl;
+	}
+	GotoXY(left + width, top + height);
+	cout << char(217);
+}
+
+void Button(int top, int left, int width, int height,string label) {
+	PrintRectangle(top, left, width, height);
+	int n = ceil((width - label.size() - 2) / 2 + 0.5);
+	GotoXY(left + n + 1, top + (height / 2));
+	cout << label;
+}
+
+
 
 
 void DrawExistedData() {
@@ -276,32 +315,6 @@ void PrintSmallHeart(int x, int y) {
 	}
 }
 
-void PrintRectangle(int top, int left, int width, int height) {
-	GotoXY(left, top);
-	for (int i = 1;i <= width;i++) {
-		cout << char(196);
-	}
-	GotoXY(left, top);
-	cout << char(218);
-	for (int i = 1;i <= height;i++) {
-		GotoXY(left, top + i);
-		cout << char(179) << endl;
-	}
-	GotoXY(left, top + height);
-	for (int i = 1;i <= width;i++) {
-		cout << char(196);
-	}
-	GotoXY(left, top + height);
-	cout << char(192);
-	GotoXY(left + width, top);
-	cout << char(191);
-	for (int i = 1;i < height; i++) {
-		GotoXY(left + width, top+i);
-		cout << char(179) << endl;
-	}
-	GotoXY(left + width, top + height);
-	cout << char(217);
-}
 
 void PrintTree(int x, int y) {
 	GotoXY(x, y);cout << "               ,@@@@@@@,";
@@ -445,8 +458,8 @@ void DrawLetter(unsigned char letter[], int X, int Y) {
 void DrawPopUp(char quest) {
 	//Vẽ khung
 	system("cls");
-	PrintRectangle(CENTER_Y - 3, CENTER_X - 10, 30, 3);
-	GotoXY(CENTER_X - 5, CENTER_Y - 2);
+	PrintRectangle(CENTER_Y+3 , CENTER_X +8, 30, 3);
+	GotoXY(CENTER_X+11, CENTER_Y +4);
 	switch (quest) {
 	case 'L':
 		cout << " Enter match name";
@@ -457,7 +470,7 @@ void DrawPopUp(char quest) {
 		break;
 	case 27:
 		cout << "Are you sure to quit?";
-		GotoXY(CENTER_X - 5, CENTER_Y - 1);
+		GotoXY(CENTER_X +13, CENTER_Y +5);
 		cout << "  Yes(Y)   No(N)";
 	}
 }
