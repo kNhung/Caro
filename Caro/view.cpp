@@ -111,11 +111,10 @@ void Drawboard_game() {
 		GotoXY(LEFT + BOARD_SIZE * 4 + 30, j + TOP);
 		cout << char(186);
 	}
-	//Vẽ các cột
+	//Vẽ các cột,dòng
 	for (int i = 1; i < BOARD_SIZE; i++)
 		for (int j = 1; j < BOARD_SIZE * 4; j++) {
 			if (j < BOARD_SIZE * 2 && j % 2 == 1) {
-
 				GotoXY(LEFT + i * 4, j + TOP);
 				cout << char(179);
 			}
@@ -124,8 +123,7 @@ void Drawboard_game() {
 				cout << char(196);
 			}
 		}
-	//Vẽ các dòng
-	Sleep(6);
+	Sleep(10);
 	for (int i = 1; i < BOARD_SIZE; i++)
 		for (int j = 1; j < BOARD_SIZE * 4; j++) {
 			GotoXY(LEFT + j, 2 * i + TOP);
@@ -137,7 +135,7 @@ void Drawboard_game() {
 	GotoXY(LEFT + BOARD_SIZE * 4 + 11, TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 2); SetColor(AQUA, RED); cout << "  PLAYER O  "; SetColor(BRIGHT_WHITE, BLUE);
 	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4); cout << "WINNING SCORE : ";
 	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 6); cout << "MOVES : ";
-	
+
 }
 
 void Highlightwin(const vector <_POINT>& a) {
@@ -223,101 +221,6 @@ void DrawMenu() {
 	}
 	putchar(188);
 }
-
-void DrawMatchList() {
-	system("color E1");
-	//Vẽ nút Trở về
-	GotoXY(90, 25);
-	cout << "Press ESC to back to menu";
-
-	//Vẽ chữ LOAD GAME
-	int logo_x = 22, logo_y = 3;
-	DrawLetter(L, logo_x, logo_y);
-	DrawLetter(O, logo_x + 9, logo_y);
-	DrawLetter(A, logo_x + 9 * 2, logo_y);
-	DrawLetter(D, logo_x + 9 * 3, logo_y);
-	DrawLetter(G, logo_x + 9 * 4 + 3, logo_y);
-	DrawLetter(A, logo_x + 9 * 5 + 3, logo_y);
-	DrawLetter(M, logo_x + 9 * 6 + 3, logo_y);
-	DrawLetter(E, logo_x + 9 * 7 + 3, logo_y);
-
-	//Vẽ các phần tử của danh sách
-	for (int i = 0; i < MATCH_LIST_SIZE; i++) {
-		GotoXY(CENTER_X - 3, CENTER_Y + i * 3 - 1);
-		cout << char(218); //Góc trên trái
-
-		GotoXY(CENTER_X - 2, CENTER_Y + i * 3 - 1);
-		for (int i = 0;i < 15;i++)
-			cout << char(2500); //Đường ngang trên
-
-		GotoXY(CENTER_X + 13, CENTER_Y + i * 3 - 1);
-		cout << char(191); //Góc trên phải
-
-		GotoXY(CENTER_X - 3, CENTER_Y + i * 3);
-		cout << char(179); //Đường thẳng trái
-
-		GotoXY(CENTER_X, CENTER_Y + i * 3);
-		cout << _MATCH_LIST[i].item; 
-
-		GotoXY(CENTER_X + 13, CENTER_Y + i * 3);
-		cout << char(179); //Đường thẳng phải
-
-		GotoXY(CENTER_X - 3, CENTER_Y + i * 3 + 1);
-		cout << char(192); //Góc dưới trái
-
-		GotoXY(CENTER_X - 2, CENTER_Y + i * 3 + 1);
-		for (int i = 0;i < 15;i++)
-			cout << char(2500); //Đường ngang dưới
-
-		GotoXY(CENTER_X + 13, CENTER_Y + i * 3 + 1);
-		cout << char(217); //Góc dưới phải
-	}
-
-	//Vẽ mây
-	SetColor(LIGHT_YELLOW, BRIGHT_WHITE);
-	PrintCloud(0, 20, 1);
-	PrintCloud(103, 10, 2);
-	GotoXY(CENTER_X, CENTER_Y);
-}
-
-void DrawLetter(unsigned char letter[], int X, int Y) {
-	int m = 0;
-	for (int k = 0;k < LETTER_LIST_SIZE;k++) {
-		if (LETTER_LIST[k]==letter) {
-			m = 0;
-			GotoXY(X, Y);
-			for (int i = 1;i <= 5;i++) {
-				for (int j = 1;j <= 7;j++) {
-					cout << LETTER_LIST[k][m];
-					++m;
-				}
-				GotoXY(X, ++Y);
-			}
-		}
-	}
-	
-}
-
-void DrawPopUp(char quest) {
-	//Vẽ khung
-	system("cls");
-	PrintRectangle(CENTER_Y - 3, CENTER_X - 10, 30, 3);
-	GotoXY(CENTER_X - 5, CENTER_Y - 2);
-	switch (quest) {
-	case 'L':
-		cout << " Enter match name";
-		GotoXY(CENTER_X , CENTER_Y - 1);
-		SaveGame();
-		ShowLoadingPage();
-		ShowMenu();
-		break;
-	case 27:
-		cout << "Are you sure to quit?";
-		GotoXY(CENTER_X - 5, CENTER_Y - 1);
-		cout << "  Yes(Y)   No(N)";
-	}
-}
-
 
 void PrintMenuLogo() {
 	unsigned char logo[] = {
@@ -465,6 +368,79 @@ void PrintCloud(int left, int top, int type) {
 	}
 }
 
+void DrawMatchList() {
+	system("color E1");
+	//Vẽ nút Trở về
+	GotoXY(90, 25);
+	cout << "Press ESC to back to menu";
+
+	//Vẽ chữ LOAD GAME
+	int logo_x = 22, logo_y = 3;
+	DrawLetter(L, logo_x, logo_y);
+	DrawLetter(O, logo_x + 9, logo_y);
+	DrawLetter(A, logo_x + 9 * 2, logo_y);
+	DrawLetter(D, logo_x + 9 * 3, logo_y);
+	DrawLetter(G, logo_x + 9 * 4 + 3, logo_y);
+	DrawLetter(A, logo_x + 9 * 5 + 3, logo_y);
+	DrawLetter(M, logo_x + 9 * 6 + 3, logo_y);
+	DrawLetter(E, logo_x + 9 * 7 + 3, logo_y);
+
+	//Vẽ các phần tử của danh sách
+	for (int i = 0; i < MATCH_LIST_SIZE; i++) {
+		GotoXY(CENTER_X - 3, CENTER_Y + i * 3 - 1);
+		cout << char(218); //Góc trên trái
+
+		GotoXY(CENTER_X - 2, CENTER_Y + i * 3 - 1);
+		for (int i = 0;i < 15;i++)
+			cout << char(2500); //Đường ngang trên
+
+		GotoXY(CENTER_X + 13, CENTER_Y + i * 3 - 1);
+		cout << char(191); //Góc trên phải
+
+		GotoXY(CENTER_X - 3, CENTER_Y + i * 3);
+		cout << char(179); //Đường thẳng trái
+
+		GotoXY(CENTER_X, CENTER_Y + i * 3);
+		cout << _MATCH_LIST[i].item; 
+
+		GotoXY(CENTER_X + 13, CENTER_Y + i * 3);
+		cout << char(179); //Đường thẳng phải
+
+		GotoXY(CENTER_X - 3, CENTER_Y + i * 3 + 1);
+		cout << char(192); //Góc dưới trái
+
+		GotoXY(CENTER_X - 2, CENTER_Y + i * 3 + 1);
+		for (int i = 0;i < 15;i++)
+			cout << char(2500); //Đường ngang dưới
+
+		GotoXY(CENTER_X + 13, CENTER_Y + i * 3 + 1);
+		cout << char(217); //Góc dưới phải
+	}
+
+	//Vẽ mây
+	SetColor(LIGHT_YELLOW, BRIGHT_WHITE);
+	PrintCloud(0, 20, 1);
+	PrintCloud(103, 10, 2);
+	GotoXY(CENTER_X, CENTER_Y);
+}
+
+void DrawLetter(unsigned char letter[], int X, int Y) {
+	int m = 0;
+	for (int k = 0;k < LETTER_LIST_SIZE;k++) {
+		if (LETTER_LIST[k]==letter) {
+			m = 0;
+			GotoXY(X, Y);
+			for (int i = 1;i <= 5;i++) {
+				for (int j = 1;j <= 7;j++) {
+					cout << LETTER_LIST[k][m];
+					++m;
+				}
+				GotoXY(X, ++Y);
+			}
+		}
+	}
+	
+}
 
 void HighlightWin(vector <_POINT>& winLine) {
 	for (int i = 0;i < winLine.size();i++) {
@@ -474,6 +450,7 @@ void HighlightWin(vector <_POINT>& winLine) {
 		else cout << "O";
 	}
 }
+
 
 int ProcessFinish(int pWhoWin) {
 	GotoXY(0, _A[BOARD_SIZE - 1][BOARD_SIZE - 1].y + 2);
@@ -510,8 +487,8 @@ int AskSaveGame() {
 
 void SaveGame() {
 	string matchName;
-	/*GotoXY(0, _A[BOARD_SIZE - 1][BOARD_SIZE - 1].y + 4);
-	cout << "Enter match name: ";*/
+	GotoXY(0, _A[BOARD_SIZE - 1][BOARD_SIZE - 1].y + 4);
+	cout << "File name: ";
 	getline(cin, matchName);
 	_MATCH_LIST_FILE.open("game_files.txt",ios::app);
 	if (!_MATCH_LIST_FILE) {
@@ -563,6 +540,7 @@ void RemoveMatchFile(string matchName) {
 }
 
 
+//Hiện trang chuyển
 void ShowLoadingPage() {
 	system("cls");
 	system("color E1");
@@ -594,6 +572,7 @@ void ShowLoadingPage() {
 	system("cls");
 }
 
+//Chuyển trang
 void ShowPage(int page) {
 	switch (page) {
 	case 1: ShowGame(); break;
@@ -651,10 +630,9 @@ void ShowGame() {
 	bool validEnter = true;
 	while (1) {
 		_COMMAND = toupper(_getch()); //_getch() chu khong phai getch()
-		if (_COMMAND == 27 || _COMMAND == 'L') {
-			/*ShowLoadingPage();
-			ShowMenu();*/
-			ShowAsk(_COMMAND);
+		if (_COMMAND == 27) {
+			ShowLoadingPage();
+			ShowMenu();
 			return;
 		}
 		else {
@@ -758,27 +736,6 @@ void ShowFileGame() {
 		}
 	}
 }
-
-void ShowAsk(char key) {
-	NEW_GAME = 0;
-	//Vẽ giao diện trang ShowAsk...
-    //Vẽ khung rồi cout hỏi thoát trận hoặc nhập tên file lưu
-	DrawPopUp(key);
-	switch (key) {
-	case 'L':
-		SaveGame();
-		break;
-	case 27:
-		_COMMAND = toupper(_getch());
-		if (_COMMAND == 'Y') {
-			ShowLoadingPage();
-			ShowMenu();
-		}
-		else if (_COMMAND == 'N')
-			ShowGame();
-	}
-}
-
 
 void GetMatchListSize() {
 	string line;

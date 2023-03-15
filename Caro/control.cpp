@@ -2,6 +2,7 @@
 #include "model.h"
 #include "view.h"
 
+
 void StartGame() {
 	system("cls");
 	if (NEW_GAME == 1)
