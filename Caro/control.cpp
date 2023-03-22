@@ -5,11 +5,11 @@
 
 void StartGame() {
 	system("cls");
+	Drawboard_game();
 	if (NEW_GAME == 1)
 		ResetData();
 	else
 		DrawExistedData();
-	Drawboard_game();
 }
 
 void GabageCollect() {

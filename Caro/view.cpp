@@ -186,8 +186,6 @@ void Button(int top, int left, int width, int height,string label) {
 }
 
 
-
-
 void DrawExistedData() {
 	for(int i=0;i<BOARD_SIZE;i++)
 		for (int j = 0;j < BOARD_SIZE;j++) {
