@@ -270,6 +270,7 @@ int CheckBoard(int pX, int pY) {
 			if (_A[i][j].x == pX && _A[i][j].y == pY && _A[i][j].c == 0) {
 				if (_TURN == true) _A[i][j].c = -1;
 				else _A[i][j].c = 1;
+				_LAST_POINT = { pX,pY,_A[i][j].c };
 				return _A[i][j].c;
 			}
 		}

@@ -46,6 +46,7 @@ struct _LIST {
 
 extern _POINT _A[BOARD_SIZE][BOARD_SIZE];
 extern _POINT _MENU[MENU_SIZE];
+extern _POINT _LAST_POINT; //Nằm trong CheckBoard(int pX, int pY) để lưu điểm cuối mà người chơi đánh
 
 extern bool _TURN; //Lượt đánh 1:X  0:O
 extern int _COMMAND; //Phím mà người chơi nhấn
