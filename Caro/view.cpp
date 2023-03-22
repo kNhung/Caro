@@ -59,7 +59,7 @@ void GotoXY(int x, int y) {
 }
 
 void Drawboard_game() {
-	system("color F1");
+	system("color E1");
 	unsigned char logo[] = { 177,219,223,223,223,219,' ',177,219,220,176,177,219,' ',' ',' ',177,219,223,220,223,219,' '
 		,176,219,223,223,219,' ',223,223,219,223,223,' ',177,219,223,223,219,' ',177,219,176,177,219,'\n',177,219,176,176,
 	   177,219,' ',177,219,177,219,177,219,' ',' ',' ',177,219,177,219,177,219,' ',177,219,220,220,219,' ',176,177,219,176,176,
@@ -197,6 +197,7 @@ void DrawExistedData() {
 				}
 			}
 		}
+	_X = _LAST_POINT.x;_Y = _LAST_POINT.y;
 }
 
 void DrawMenu() {
@@ -549,6 +550,7 @@ void SaveMatchInfo(string matchName) {
 			 matchFile << _A[i][j].c<<endl;
 		 }
 	 }
+	 matchFile << _LAST_POINT.x << endl << _LAST_POINT.y << endl << _LAST_POINT.c;
 	 matchFile.close();
 }
 
@@ -646,7 +648,6 @@ void ShowMenu() {
 void ShowGame() {
 	MODE = 2;
 	StartGame();
-	_X = _A[0][0].x; _Y = _A[0][0].y ;
 	GotoXY(_X, _Y);
 	bool validEnter = true;
 	while (1) {
@@ -815,7 +816,7 @@ void GetMatchListSize() {
 
 void LoadGame(string matchName) {
 	int i = 0, j = 0, m = 0,value=0;
-	int numbers[BOARD_SIZE * BOARD_SIZE];
+	int numbers[BOARD_SIZE * BOARD_SIZE + 3];
 	ifstream matchFile(matchName);
 	if (!matchFile) {
 		cout << "Cannot open match file";
@@ -833,6 +834,8 @@ void LoadGame(string matchName) {
 			_A[i][j].c = numbers[m];
 			++m;
 		}
+	_LAST_POINT.x = numbers[m];++m;
+	_LAST_POINT.y = numbers[m];++m;
+	_LAST_POINT.c = numbers[m];
 	_TURN = true; _COMMAND = -1;
-	_X = _A[0][0].x; _Y = _A[0][0].y;
 }

@@ -104,7 +104,6 @@ void ResetData() {
 	}
 	_TURN = true; _COMMAND = -1;
 	_X = _A[0][0].x; _Y = _A[0][0].y;
-	GotoXY(_X, _Y);
 }
 
 void Resetdata(vector<_POINT>& a, int& led1, int& led2) {
