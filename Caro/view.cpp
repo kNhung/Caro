@@ -45,6 +45,7 @@ void SetFontSize(int fontSize) {
 	wcscpy_s(info.FaceName, L"Lucida Console");
 	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), NULL, &info);
 }
+
 void SetColor(int backgoundColor, int textColor) {
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	int colorCode = backgoundColor * 16 + textColor;
@@ -151,6 +152,7 @@ void Highlightwin(const vector <_POINT>& a) {
 		else cout << "O";
 	}
 }
+
 void PrintRectangle(int top, int left, int width, int height) {
 	GotoXY(left, top);
 	for (int i = 1; i <= width; i++) {
@@ -674,18 +676,7 @@ void ShowGame() {
 				}
 
 				if (validEnter == true) {
-					switch (ProcessFinish(TestBoard())) {
-					case -1:case 1:case 0:
-						if (AskSaveGame() == 'Y') {
-							DrawPopUp('L');
-						}
-						else {
-							ShowLoadingPage();
-							ShowMenu();
-							return;
-						}
-						
-					}
+					ProcessFinish(TestBoard());
 				}
 				validEnter = true;
 			}
