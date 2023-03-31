@@ -42,5 +42,7 @@ void ShowAsk(char key);
 
 void GetMatchListSize();
 void LoadGame(string matchName);
-
+void TextColor(int color);
+void TT();
+void Ox(int x1, int x2, int y);
 #endif
