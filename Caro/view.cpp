@@ -688,7 +688,7 @@ void ShowGame() {
 
 void ShowAbout() {
 	//Vẽ About ở đây...
-	
+	TT();
 	_COMMAND = toupper(_getch()); //_getch() chu khong phai getch()
 	if (_COMMAND == 27) {
 		ShowLoadingPage();
@@ -831,4 +831,69 @@ void LoadGame(string matchName) {
 	_LAST_POINT.y = numbers[m];++m;
 	_LAST_POINT.c = numbers[m];
 	_TURN = true; _COMMAND = -1;
+}
+void TT()
+{
+    TextColor(14);
+    ToaDo goc_trai = {2, 2};
+    GotoXY(goc_trai.x, goc_trai.y);
+    cout << char(174) << " Home";
+    ToaDo about = {55, 3};
+    GotoXY(about.x, about.y);
+    cout << char(16) << "   ABOUT   " << char(17);
+
+    ToaDo vitri;
+    vitri.x = 20;
+    vitri.y = 7;
+    GotoXY(vitri.x, vitri.y);
+    cout << "Nguyen Phat Kim Nhung";
+    GotoXY(vitri.x + strlen("Nguyen Phat Kim Nhung") / 2 - strlen("Leader - Moderator") / 2, vitri.y + 1);
+    cout << "Leader - Moderator";
+
+    GotoXY(vitri.x + 60, vitri.y);
+    cout << "Ma Thanh Nhi";
+    GotoXY(vitri.x + 60 + strlen("Ma Thanh Nhi") / 2 - strlen("Producer") / 2, vitri.y + 1);
+    cout << "Producer";
+    Ox(vitri.x - 5, vitri.x + 100, vitri.y + 2);
+
+    vitri.x = 20;
+    vitri.y = 7 + 3;
+    GotoXY(vitri.x, vitri.y);
+    cout << "Giang Duc Nhat";
+    GotoXY(vitri.x + strlen("Giang Duc Nhat") / 2 - strlen("Pusblisher") / 2, vitri.y + 1);
+    cout << "Pusblisher";
+
+    GotoXY(vitri.x + 60, vitri.y);
+    cout << "Dinh Le Gia Nhu";
+    GotoXY(vitri.x + 60 + strlen("Dinh Le Gia Nhu") / 2 - strlen("Designer") / 2, vitri.y + 1);
+    cout << "Designer";
+    Ox(vitri.x - 5, vitri.x + 100, vitri.y + 2);
+
+    vitri.x = 20;
+    vitri.y = 7 + 6;
+    GotoXY(vitri.x + 30, vitri.y);
+    cout << "Teacher - Instructor";
+    GotoXY(vitri.x + 30 + strlen("Teacher - Instructor") / 2 - strlen("Teacher - Instructor") / 2, vitri.y + 1);
+    cout << "Teacher - Instructor";
+    while (true)
+    {
+        if (kbhit())
+        {
+            char c = getch();
+            if (c == 27)
+                return;
+        }
+    }
+}
+void Ox(int x1, int x2, int y)
+{
+    for (int j = x1; j <= x2; j++)
+    {
+        GotoXY(j, y);
+        cout << char(196);
+    }
+}
+void TextColor(int color)
+{
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
