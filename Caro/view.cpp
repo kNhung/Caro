@@ -60,7 +60,7 @@ void GotoXY(int x, int y) {
 }
 
 void Drawboard_game() {
-	system("color E1");
+	system("color F1");
 	unsigned char logo[] = { 177,219,223,223,223,219,' ',177,219,220,176,177,219,' ',' ',' ',177,219,223,220,223,219,' '
 		,176,219,223,223,219,' ',223,223,219,223,223,' ',177,219,223,223,219,' ',177,219,176,177,219,'\n',177,219,176,176,
 	   177,219,' ',177,219,177,219,177,219,' ',' ',' ',177,219,177,219,177,219,' ',177,219,220,220,219,' ',176,177,219,176,176,
@@ -78,11 +78,11 @@ void Drawboard_game() {
 	}
 	//Vẽ khung ngoài
 	//Vẽ đường viền trên dưới
-	Sleep(500);
+	//Sleep(500);
 	GotoXY(LEFT, TOP); cout << char(201);
 	GotoXY(LEFT, TOP + BOARD_SIZE * 2); cout << char(200);
 	for (int j = 1; j < BOARD_SIZE * 4 + 30; j++) {
-		Sleep(30);
+		//Sleep(20);
 		GotoXY(LEFT + j, TOP);
 		if (j % 4 == 0 && j < BOARD_SIZE * 4)cout << char(209);
 		else cout << char(205);
@@ -102,7 +102,7 @@ void Drawboard_game() {
 	GotoXY(LEFT + BOARD_SIZE * 4, TOP + BOARD_SIZE * 2); cout << char(202);
 	//Vẽ đường viền trái phải
 	for (int j = 1; j < BOARD_SIZE * 2; j++) {
-		Sleep(30);
+		//Sleep(20);
 		GotoXY(LEFT, j + TOP);
 		if (j % 2 == 0)cout << char(199);
 		else cout << char(186);
@@ -119,12 +119,12 @@ void Drawboard_game() {
 				GotoXY(LEFT + i * 4, j + TOP);
 				cout << char(179);
 			}
-			if (j % 4 !=0) {
+			if (j % 4 != 0) {
 				GotoXY(LEFT + j, 2 * i + TOP);
 				cout << char(196);
 			}
 		}
-	Sleep(10);
+	//Sleep(10);
 	for (int i = 1; i < BOARD_SIZE; i++)
 		for (int j = 1; j < BOARD_SIZE * 4; j++) {
 			GotoXY(LEFT + j, 2 * i + TOP);
@@ -137,22 +137,23 @@ void Drawboard_game() {
 	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4); cout << "WINNING SCORE : ";
 	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 6); cout << "MOVES : ";
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT, 15, 2, "U:Undo");
-	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 + 5, 15, 2, "R:Redo");
-	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 2 + 5 * 2, 15, 2, "H:Help");
-	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 3 + 5 * 3, 15, 2, "L:Save");
-	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 4 + 5 * 4, 15, 2, "esc:Exit");
+	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 + 2, 15, 2, "H:Help");
+	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 2 + 32, 15, 2, "L:Save");
+	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 3 + 32 + 2, 15, 2, "esc:Exit");
 }
 
-void Highlightwin(const vector <_POINT>& a) {
-	int color = 1;
-	for (int i = 0; i < a.size(); i++) {
-		GotoXY(a[i].x, a[i].y);
-		SetColor(7, color++);
-		if (_TURN == true)cout << "X";
-		else cout << "O";
+void Highlightwin(POINT* a) {
+	for (int i = 1; i < 10; i++) {
+		int color = i; Sleep(600);
+		for (int j = 0; j < arrSize((POINT*)a); j++) {
+			GotoXY(a[j].x, a[j].y);
+			//if (color == 7)color++;
+			SetColor(3, color++);
+			if (_TURN == true)cout << "X";
+			else cout << "O";
+		}
 	}
 }
-
 void PrintRectangle(int top, int left, int width, int height) {
 	GotoXY(left, top);
 	for (int i = 1; i <= width; i++) {
