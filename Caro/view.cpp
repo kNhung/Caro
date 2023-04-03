@@ -877,9 +877,9 @@ void TT()
     cout << "Teacher - Instructor";
     while (true)
     {
-        if (kbhit())
+        if (_kbhit())
         {
-            char c = getch();
+            char c = _getch();
             if (c == 27)
                 return;
         }

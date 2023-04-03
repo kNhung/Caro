@@ -43,6 +43,7 @@ struct _LIST {
 	int x, y;
 	string item;
 };
+struct ToaDo { int x, y; };
 
 extern _POINT _A[BOARD_SIZE][BOARD_SIZE];
 extern _POINT _MENU[MENU_SIZE];
