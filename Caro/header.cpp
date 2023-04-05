@@ -9,6 +9,8 @@ _POINT _MENU[MENU_SIZE] = {
 };
 _POINT _LAST_POINT;
 
+
+
 bool _TURN;
 int _COMMAND;
 int _X, _Y;

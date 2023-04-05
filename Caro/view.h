@@ -9,7 +9,7 @@ void GotoXY(int x, int y);
 void SetColor(int backgoundColor, int textColor);
 
 void Drawboard_game();
-void Highlightwin(const vector <_POINT>& a);
+void Highlightwin(POINT* a);
 void Button(int top, int left, int width, int height, string label);
 void DrawExistedData();
 void DrawMenu();
