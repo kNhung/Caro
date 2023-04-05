@@ -11,6 +11,8 @@
 #include <fstream>
 #include <cstdlib>
 #include <vector>
+#include <fcntl.h>
+#include <io.h>
 using namespace std;
 
 #define BOARD_SIZE 16

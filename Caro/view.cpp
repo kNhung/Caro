@@ -60,7 +60,7 @@ void GotoXY(int x, int y) {
 }
 
 void Drawboard_game() {
-	system("color E1");
+	system("color F1");
 	unsigned char logo[] = { 177,219,223,223,223,219,' ',177,219,220,176,177,219,' ',' ',' ',177,219,223,220,223,219,' '
 		,176,219,223,223,219,' ',223,223,219,223,223,' ',177,219,223,223,219,' ',177,219,176,177,219,'\n',177,219,176,176,
 	   177,219,' ',177,219,177,219,177,219,' ',' ',' ',177,219,177,219,177,219,' ',177,219,220,220,219,' ',176,177,219,176,176,
@@ -203,7 +203,7 @@ void DrawExistedData() {
 }
 
 void DrawMenu() {
-	system("color E1");
+	system("color F1");
 	int left = CENTER_X - 3, top = CENTER_Y - 1;
 
 	//Vẽ tiêu đề trang menu
@@ -334,29 +334,32 @@ void PrintTree(int x, int y) {
 void PrintCloud(int left, int top, int type) {
 	//Type 1: nửa trái ; 2: nửa phải ; 3: nguyên đám
 	int m = 0;
-	unsigned char cloud_left[] = {	   219 ,219 ,219 ,219 ,219 ,219 ,219 ,219,32 ,32 ,32 ,32 ,32 , 32,
-									   219 ,219 ,219 ,219 ,219 ,219 ,219 ,219 ,219,219,32,32,32,32,
-									   219 ,219 ,219 ,219 ,219 ,219 ,219 ,219,219,219,219,219,32,32,
-									   219 ,219 ,219 ,219 ,219 ,219 ,219 ,219,219,219,219,219,219,219,
-									   219 ,219 ,219 ,219 ,219 ,219 ,219 ,219,219,219,219,219,219,219,
-									   219 ,219 ,219 ,219 ,219 ,219 ,219 ,219,219,219,219,219,32,32 };
+	unsigned char cloud_left[] = {	219, 219, 219, 219, 219 ,219 ,219 ,219 ,219 ,219 ,219 ,219,32 ,32 ,32 ,32 ,32 , 32,
+									219, 219, 219, 219, 219 ,219 ,219 ,219 ,219 ,219 ,219 ,219,219,219,32,32,32,32,
+									219, 219, 219, 219, 219 ,219 ,219 ,219 ,219 ,219 ,219 ,219,219,219,219,219,32,32,
+									219, 219, 219, 219, 219 ,219 ,219 ,219 ,219 ,219 ,219 ,219,219,219,219,219,219,219,
+									219, 219, 219, 219, 219 ,219 ,219 ,219 ,219 ,219 ,219 ,219,219,219,219,219,219,219,
+									219, 219, 219, 219, 219 ,219 ,219 ,219 ,219 ,219 ,219 ,219,219,219,219,219,32,32,
+									219, 219, 219, 219, 219 ,219 ,219 ,219 ,219 ,219 ,219 ,219,219,219,219,219,32,32,
+									219, 219, 219, 219, 219 ,219 ,219 ,219 ,219 ,219 ,219 ,32,32,32,32,32,32,32
+	};
 	unsigned char cloud_right[]={32,32,32,32,32,32,32,32,219,219,219,219,219,219,219,219,219,
 								32,32,32,32,32,219,219,219,219,219,219,219,219,219,219,219,219,
 								32,32,32,32,219,219,219,219,219,219,219,219,219,219,219,219,219,
 								219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,
 								219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,
 								32,32,32,219,219,219,219,219,219,219,219,219,219,219,219,219,219 };
-	unsigned char cloud_full[]= { 32,32,32,32,32,32,32,32,219,219,219,219,219,219,32,32,32,32,
-								32,32,32,32,32,219,219,219,219,219,219,219,219,219,219,219,32,32,
-								32,32,32,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,
-								219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,
-								219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,32,
-								32,32,32,219,219,219,219,219,219,219,219,219,219,219,219,32,32,32 };
+	unsigned char cloud_full[]= { 32,32,32,32,32,32,32,32,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,32,32,32,32,
+								32,32,32,32,32,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,32,32,
+								32,32,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,
+								219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,
+								219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,32,
+								32,32,32,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,219,32,32,32 };
 	switch (type) {
 	case 1:
-		for (int i = 0;i < 6;i++) {
+		for (int i = 0;i < 8;i++) {
 			GotoXY(left, top + i);
-			for (int j = 0;j < 14;j++) {
+			for (int j = 0;j < 18;j++) {
 				cout << cloud_left[m];
 				++m;
 			}
@@ -374,7 +377,7 @@ void PrintCloud(int left, int top, int type) {
 	case 3:
 		for (int i = 0;i < 6;i++) {
 			GotoXY(left, top + i);
-			for (int j = 0;j < 18;j++) {
+			for (int j = 0;j < 27;j++) {
 				cout << cloud_full[m];
 				++m;
 			}
@@ -384,7 +387,7 @@ void PrintCloud(int left, int top, int type) {
 }
 
 void DrawMatchList() {
-	system("color E1");
+	system("color F1");
 	//Vẽ nút Trở về
 	GotoXY(90, 25);
 	cout << "Press ESC to back to menu";
@@ -399,6 +402,14 @@ void DrawMatchList() {
 	DrawLetter(A, logo_x + 9 * 5 + 3, logo_y);
 	DrawLetter(M, logo_x + 9 * 6 + 3, logo_y);
 	DrawLetter(E, logo_x + 9 * 7 + 3, logo_y);
+	/*_setmode(_fileno(stdout), _o_u16text);
+	wstring loadgame[3] = { l"▒█░░░ ▒█▀▀▀█ ░█▀▀█ ▒█▀▀▄ 　 ▒█▀▀█ ░█▀▀█ ▒█▀▄▀█ ▒█▀▀▀",
+							l"▒█░░░ ▒█░░▒█ ▒█▄▄█ ▒█░▒█ 　 ▒█░▄▄ ▒█▄▄█ ▒█▒█▒█ ▒█▀▀▀",
+							l"▒█▄▄█ ▒█▄▄▄█ ▒█░▒█ ▒█▄▄▀ 　 ▒█▄▄█ ▒█░▒█ ▒█░░▒█ ▒█▄▄▄" };
+	for (int i = 0;i < 3;i++) {
+		gotoxy(logo_x, logo_y+i);
+		wcout << loadgame[i];
+	}*/
 
 	//Vẽ các phần tử của danh sách
 	for (int i = 0; i < MATCH_LIST_SIZE; i++) {
@@ -433,8 +444,8 @@ void DrawMatchList() {
 	}
 
 	//Vẽ mây
-	SetColor(LIGHT_YELLOW, BRIGHT_WHITE);
-	PrintCloud(0, 20, 1);
+	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	PrintCloud(0, 20, 3);
 	PrintCloud(103, 10, 2);
 	GotoXY(CENTER_X, CENTER_Y);
 }
@@ -460,7 +471,7 @@ void DrawLetter(unsigned char letter[], int X, int Y) {
 void DrawPopUp(char quest) {
 	//Vẽ khung
 	system("cls");
-	system("color E1");
+	system("color F1");
 	PrintRectangle(CENTER_Y+3 , CENTER_X +8, 30, 3);
 	GotoXY(CENTER_X+11, CENTER_Y +4);
 	switch (quest) {
@@ -571,7 +582,7 @@ void RemoveMatchFile(string matchName) {
 
 void ShowLoadingPage() {
 	system("cls");
-	system("color E1");
+	system("color F1");
 	//Vẽ khung
 	PrintRectangle(0, 1, 116, 28);
 	//Vẽ chữ LOADING
@@ -614,20 +625,18 @@ void ShowMenu() {
 	MODE = 1;
 	NEW_GAME = 1;
 	_X = CENTER_X;_Y = CENTER_Y;
-	int backgroundColor = LIGHT_YELLOW, textColor = BLUE;
+	int backgroundColor = BRIGHT_WHITE, textColor = BLUE;
 	DrawMenu();
 	SetColor(backgroundColor, textColor);
 	GotoXY(CENTER_X - 5, CENTER_Y);
 	cout << ">";
 	while (1) {
-		word = GetStdHandle(STD_OUTPUT_HANDLE);
-		SetConsoleTextAttribute(word, textColor * 16 + backgroundColor);
 		GotoXY(_X, _Y);
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 'W') {
 			MoveUp();
 			SetColor(backgroundColor, backgroundColor);
-			GotoXY(CENTER_X - 5, _Y + 2); cout << ">";
+			GotoXY(CENTER_X - 5, _Y + 2); cout << " ";
 			SetColor(backgroundColor, textColor);
 			GotoXY(CENTER_X - 5, _Y);
 			cout << ">";
@@ -639,6 +648,11 @@ void ShowMenu() {
 			SetColor(backgroundColor, textColor);
 			GotoXY(CENTER_X - 5, _Y);
 			cout << ">";
+		}
+		else if (_COMMAND == 13 && _Y == _MENU[3].y) {
+			system("cls");
+			GabageCollect();
+			return;
 		}
 		else if (_COMMAND == 13) {
 			ShowLoadingPage();
@@ -699,7 +713,7 @@ void ShowAbout() {
 
 void ShowFileGame() {
 	HANDLE word;
-	int backgroundColor = LIGHT_YELLOW, textColor = BLUE;
+	int backgroundColor = BRIGHT_WHITE, textColor = BLUE;
 	MODE = 3;
 	_X = CENTER_X; _Y = CENTER_Y;
 	GetMatchListSize();
@@ -708,8 +722,6 @@ void ShowFileGame() {
 	GotoXY(CENTER_X - 5, CENTER_Y);
 	cout << ">";
 	while (1) {
-		word = GetStdHandle(STD_OUTPUT_HANDLE);
-		SetConsoleTextAttribute(word, backgroundColor * 16 + textColor);
 		GotoXY(_X, _Y);
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 'W') {
@@ -830,7 +842,7 @@ void LoadGame(string matchName) {
 	_LAST_POINT.x = numbers[m];++m;
 	_LAST_POINT.y = numbers[m];++m;
 	_LAST_POINT.c = numbers[m];
-	_TURN = true; _COMMAND = -1;
+	_TURN = !_LAST_POINT.c; _COMMAND = -1;
 }
 void TT()
 {

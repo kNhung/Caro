@@ -13,7 +13,6 @@ void StartGame() {
 }
 
 void GabageCollect() {
-
 }
 
 void Exit() {

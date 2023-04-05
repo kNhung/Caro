@@ -7,5 +7,4 @@ int main() {
 	FixConsoleWindow(); //View
 	GetMatchListSize();
 	ShowMenu(); //View
-	delete LETTER_LIST;
 };
