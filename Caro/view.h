@@ -39,6 +39,7 @@ void ShowGame();
 void ShowAbout(); 
 void ShowFileGame(); 
 void ShowAsk(char key);
+void ShowHelp();
 
 void GetMatchListSize();
 void LoadGame(string matchName);

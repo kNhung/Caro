@@ -154,6 +154,7 @@ void Highlightwin(POINT* a) {
 		}
 	}
 }
+
 void PrintRectangle(int top, int left, int width, int height) {
 	GotoXY(left, top);
 	for (int i = 1; i <= width; i++) {
@@ -490,6 +491,7 @@ void DrawPopUp(char quest) {
 	}
 }
 
+
 int ProcessFinish(int pWhoWin) {
 	GotoXY(0, _A[BOARD_SIZE - 1][BOARD_SIZE - 1].y + 2);
 	switch (pWhoWin) {
@@ -677,6 +679,9 @@ void ShowGame() {
 			ShowAsk(_COMMAND);
 			return;
 		}
+		else if (_COMMAND == 'H') {
+			ShowHelp();
+		}
 		else {
 			if (_COMMAND == 'A') MoveLeft();
 			else if (_COMMAND == 'W') MoveUp();
@@ -785,6 +790,90 @@ void ShowAsk(char key) {
 			ShowGame();
 	}
 }
+
+void ShowHelp() {
+	system("cls");
+	SetColor(BRIGHT_WHITE, BLUE);
+	//Logo
+	int logo_x = CENTER_X - 11, logo_y = 3;
+	DrawLetter(H, logo_x, logo_y);
+	DrawLetter(E, logo_x + 9, logo_y);
+	DrawLetter(L, logo_x + 9 * 2, logo_y);
+	DrawLetter(P, logo_x + 9 * 3, logo_y);
+	//Phím di chuyển
+	SetColor(BRIGHT_WHITE, GREEN);
+	int move_x = 12, move_y = logo_y + 8;
+	GotoXY(move_x, move_y);
+	cout << "     ---    ";
+	GotoXY(move_x, move_y + 1);
+	cout << "    | W |   ";
+	GotoXY(move_x, move_y + 2);
+	cout << " --- --- ---      Use W, A, S, D to move";
+	GotoXY(move_x, move_y + 3);
+	cout << "| A | S | D |";
+	GotoXY(move_x, move_y + 4);
+	cout << " --- --- --- ";
+	//Phím Enter
+	GotoXY(move_x,  move_y + 8);
+	cout << " ";
+	for (int i = 0;i < move_x;i++)
+		cout << char(95);
+	GotoXY(move_x,  move_y + 8 + 1);
+	cout << "|          "<<char(191)<<" |     Press Enter to";
+	GotoXY(move_x,  move_y + 8 + 2);
+	cout << "| ENTER <"<<char(196)<<char(196)<<char(217)<<" |     place your mark";
+	GotoXY(move_x,  move_y + 8 + 3);
+	cout << " ------------ ";
+	//Luật
+	SetColor(BRIGHT_WHITE, GREEN);
+	int rules_x = CENTER_X + 12, rules_y = logo_y + 8;
+	GotoXY(rules_x, rules_y);
+	cout << "X starts first.";
+	GotoXY(rules_x, rules_y + 2);
+	cout << "Players take turns placing their Mark,";
+	GotoXY(rules_x, rules_y + 4);
+	cout << "X or O, on an open square in the grid.";
+	GotoXY(rules_x, rules_y + 6);
+	cout << "The first player to make 5 of their ";
+	GotoXY(rules_x, rules_y + 8);
+	cout << "own mark in a row vertically, horizontally,";
+	GotoXY(rules_x, rules_y + 10);
+	cout << "or diagonally wins the game. If all the squares";
+	GotoXY(rules_x, rules_y + 12);
+	cout << "are filled and neither player has 5 in a row,";
+	GotoXY(rules_x, rules_y + 14);
+	cout << "the game is considered a Tie.";
+	//Đường chia đôi
+	SetColor(BRIGHT_WHITE, BLUE);
+	for (int i = 0;i < 17;i++) {
+		GotoXY(CENTER_X + 5, logo_y + 7 + i);
+		cout << "|";
+	}
+	//Con chim
+	SetColor(BRIGHT_WHITE, YELLOW);
+	int bird_x = 9, bird_y = move_y + 8 + 5;
+	GotoXY(bird_x, bird_y);
+	cout << "        " << char(92) << char(92);
+	GotoXY(bird_x, bird_y + 1);
+	cout << " " << char(92) << char(92) << "      (o>";
+	GotoXY(bird_x, bird_y + 2);
+	cout << " (o>     //" << char(92);
+	GotoXY(bird_x, bird_y + 3);
+	cout << "_(()_____v_/_____";
+	GotoXY(bird_x, bird_y + 4);
+	cout << " ||      ||";
+	GotoXY(bird_x, bird_y + 5);
+	cout << "         ||";
+
+
+	_COMMAND = toupper(_getch());
+	if (_COMMAND == 27) {
+		ShowLoadingPage();
+		ShowMenu();
+		return;
+	}
+}
+
 
 void GetMatchListSize() {
 	string line;
