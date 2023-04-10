@@ -3,7 +3,20 @@
 #define _MY_VIEW
 #include "header.h"
 
-void FixConsoleWindow();
+//void FixConsoleWindow();
+void setFontInfo();
+void setAndCenterWindow();
+void SetWindowSize(SHORT width, SHORT height);
+void disableMaximize();
+void setConsoleTitle();
+void hideScrollBars();
+void showCursor(bool show);
+void disableMouseInput();
+void fixConsoleWindows();
+
+
+
+
 void SetFontSize(int fontSize);
 void GotoXY(int x, int y);
 void SetColor(int backgoundColor, int textColor);

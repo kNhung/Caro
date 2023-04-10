@@ -2,38 +2,109 @@
 #include "model.h"
 #include "view.h"
 
-void FixConsoleWindow() {
-	HWND myConsole = GetConsoleWindow();
-	HDC mdc = GetDC(myConsole);
-
+//void FixConsoleWindow() {
+//	HWND myConsole = GetConsoleWindow();
+//	HDC mdc = GetDC(myConsole);
+//
+//	RECT rectClient, rectWindow;
+//	GetClientRect(myConsole, &rectClient), GetWindowRect(myConsole, &rectWindow);
+//	int width = 1216;
+//	int height = 784;
+//	int posX = (GetSystemMetrics(SM_CXSCREEN) - width) / 2,
+//		posY = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
+//	MoveWindow(myConsole, posX, posY, width, height, TRUE);
+//
+//	SetWindowLong(myConsole, GWL_STYLE,
+//		GetWindowLong(myConsole, GWL_STYLE) & ~(WS_MAXIMIZEBOX) & ~(WS_THICKFRAME));
+//
+//	ShowScrollBar(myConsole, SB_BOTH, 0);
+//
+//	DWORD prev_mode;
+//	HANDLE hInput = GetStdHandle(STD_INPUT_HANDLE);
+//	GetConsoleMode(hInput, &prev_mode);
+//	SetConsoleMode(hInput, prev_mode & ~ENABLE_QUICK_EDIT_MODE);
+//
+//	// Lấy handle của menu system
+//	HMENU hMenu = GetSystemMenu(myConsole, FALSE);
+//	// Lấy ID của nút Maximum
+//	UINT uID = SC_MAXIMIZE;
+//	// Làm mờ nút Maximum bằng ID
+//	EnableMenuItem(hMenu, uID, MF_BYCOMMAND | MF_GRAYED);
+//	// Cập nhật lại menu
+//	DrawMenuBar(myConsole);
+//}
+void setFontInfo()
+{
+	HANDLE hdc = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_FONT_INFOEX info;
+	info.cbSize = sizeof(info);
+	GetCurrentConsoleFontEx(hdc, FALSE, &info);
+	info.dwFontSize.X = 12;
+	info.dwFontSize.Y = 24;
+	wcscpy_s(info.FaceName, L"Consolas");
+	SetCurrentConsoleFontEx(hdc, FALSE, &info);
+}
+void setAndCenterWindow()
+{	
+	HWND console = GetConsoleWindow();
 	RECT rectClient, rectWindow;
-	GetClientRect(myConsole, &rectClient), GetWindowRect(myConsole, &rectWindow);
+	GetClientRect(console, &rectClient), GetWindowRect(console, &rectWindow);
 	int width = 1216;
 	int height = 784;
 	int posX = (GetSystemMetrics(SM_CXSCREEN) - width) / 2,
 		posY = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
-	MoveWindow(myConsole, posX, posY, width, height, TRUE);
-
-	SetWindowLong(myConsole, GWL_STYLE,
-		GetWindowLong(myConsole, GWL_STYLE) & ~(WS_MAXIMIZEBOX) & ~(WS_THICKFRAME));
-
-	ShowScrollBar(myConsole, SB_BOTH, 0);
-
+	MoveWindow(console, posX, posY, width, height, TRUE);
+}
+void SetWindowSize(SHORT width, SHORT height)
+{
+	HANDLE hdc = GetStdHandle(STD_OUTPUT_HANDLE);
+	SMALL_RECT WindowSize; //SMALL_RECT cấu trúc chỉ định các góc trên bên trái và góc dưới bên phải cho cửa số mới
+	WindowSize.Top = 0;
+	WindowSize.Left = 0;
+	WindowSize.Right = width;
+	WindowSize.Bottom = height;
+	SetConsoleWindowInfo(hdc, 1, &WindowSize);// Đặt góc trên bên trái là góc tọa độ, thay đổi góc dưới theo width và height
+}
+void disableMaximize()
+{ // Hàm này để tắt cái nút maximize trên cửa sổ console
+	HWND console = GetConsoleWindow();
+	SetWindowLong(console, GWL_STYLE,
+		GetWindowLong(console, GWL_STYLE) & ~(WS_MAXIMIZEBOX) & ~(WS_THICKFRAME));
+}
+void setConsoleTitle()
+{ // Chỉnh title thành "Cờ Caro"
+	SetConsoleTitle(L"Caro");
+}
+void hideScrollBars()
+{ // Ẩn thanh cuộn của console
+	HWND console = GetConsoleWindow();
+	ShowScrollBar(console, SB_BOTH, 0);
+}
+void showCursor(bool show)
+{
+	HANDLE hdc = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_CURSOR_INFO info = { 1, show };
+	SetConsoleCursorInfo(hdc, &info);
+}
+void disableMouseInput()
+{ // Hàm này có công dụng là làm cho chuột hong bấm dô được màn hình
 	DWORD prev_mode;
 	HANDLE hInput = GetStdHandle(STD_INPUT_HANDLE);
 	GetConsoleMode(hInput, &prev_mode);
 	SetConsoleMode(hInput, prev_mode & ~ENABLE_QUICK_EDIT_MODE);
-
-	// Lấy handle của menu system
-	HMENU hMenu = GetSystemMenu(myConsole, FALSE);
-	// Lấy ID của nút Maximum
-	UINT uID = SC_MAXIMIZE;
-	// Làm mờ nút Maximum bằng ID
-	EnableMenuItem(hMenu, uID, MF_BYCOMMAND | MF_GRAYED);
-	// Cập nhật lại menu
-	DrawMenuBar(myConsole);
 }
-
+void fixConsoleWindows() {
+	HANDLE hdc = GetStdHandle(STD_OUTPUT_HANDLE);
+	setFontInfo();
+	setAndCenterWindow();
+	SetWindowSize(2000, 784);
+	disableMaximize();
+	setConsoleTitle();
+	hideScrollBars();
+	bool show = 0;
+	showCursor(show);
+	disableMouseInput();
+}
 void SetFontSize(int fontSize) {
 	CONSOLE_FONT_INFOEX info = { 0 };
 	info.cbSize = sizeof(info);
