@@ -394,7 +394,7 @@ void Save_1_move(int& y, int& x) {
 }
 
 void Playgame() {
-	Drawboard_game();
+	DrawBoard();
 	ResetData();
 	int row_matrix = 0, column_matrix = 0;
 	int row_console = 0, column_console = 0;

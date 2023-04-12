@@ -59,7 +59,7 @@ void GotoXY(int x, int y) {
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-void Drawboard_game() {
+void DrawBoard() {
 	system("color F1");
 	unsigned char logo[] = { 177,219,223,223,223,219,' ',177,219,220,176,177,219,' ',' ',' ',177,219,223,220,223,219,' '
 		,176,219,223,223,219,' ',223,223,219,223,223,' ',177,219,223,223,219,' ',177,219,176,177,219,'\n',177,219,176,176,
@@ -139,7 +139,7 @@ void Drawboard_game() {
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT, 15, 2, "U:Undo");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 + 2, 15, 2, "H:Help");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 2 + 32, 15, 2, "L:Save");
-	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 3 + 32 + 2, 15, 2, "esc:Exit");
+	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 3 + 32 + 2, 15, 2, "ESC:Exit");
 }
 
 void Highlightwin(POINT* a) {
@@ -404,14 +404,6 @@ void DrawMatchList() {
 	DrawLetter(A, logo_x + 9 * 5 + 3, logo_y);
 	DrawLetter(M, logo_x + 9 * 6 + 3, logo_y);
 	DrawLetter(E, logo_x + 9 * 7 + 3, logo_y);
-	/*_setmode(_fileno(stdout), _o_u16text);
-	wstring loadgame[3] = { l"▒█░░░ ▒█▀▀▀█ ░█▀▀█ ▒█▀▀▄ 　 ▒█▀▀█ ░█▀▀█ ▒█▀▄▀█ ▒█▀▀▀",
-							l"▒█░░░ ▒█░░▒█ ▒█▄▄█ ▒█░▒█ 　 ▒█░▄▄ ▒█▄▄█ ▒█▒█▒█ ▒█▀▀▀",
-							l"▒█▄▄█ ▒█▄▄▄█ ▒█░▒█ ▒█▄▄▀ 　 ▒█▄▄█ ▒█░▒█ ▒█░░▒█ ▒█▄▄▄" };
-	for (int i = 0;i < 3;i++) {
-		gotoxy(logo_x, logo_y+i);
-		wcout << loadgame[i];
-	}*/
 
 	//Vẽ các phần tử của danh sách
 	for (int i = 0; i < MATCH_LIST_SIZE; i++) {
@@ -496,14 +488,14 @@ int ProcessFinish(int pWhoWin) {
 	GotoXY(0, _A[BOARD_SIZE - 1][BOARD_SIZE - 1].y + 2);
 	switch (pWhoWin) {
 	case -1:
-		printf("Nguoi choi %d da thang va nguoi choi %d da thua\n", true, false);
+		printf("X Win, O Lose\n", true, false);
 		break;
 	case 1:
-		printf("Nguoi choi %d da thang va nguoi choi %d da thua\n", false, true);
+		printf("0 Win, X Lose\n", false, true);
 		break;
 
 	case 0:
-		printf("Hai nguoi choi hoa nhau");
+		printf("Draw");
 		break;
 	case 2:
 		_TURN = !_TURN;
@@ -619,7 +611,6 @@ void ShowPage(int page) {
 	case 1: ShowGame(); break;
 	case 2: ShowFileGame(); break;
 	case 3: ShowAbout(); break;
-	case 4: Exit();
 	}
 }
 

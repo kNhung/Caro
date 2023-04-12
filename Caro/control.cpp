@@ -5,7 +5,7 @@
 
 void StartGame() {
 	system("cls");
-	Drawboard_game();
+	DrawBoard();
 	if (NEW_GAME == 1)
 		ResetData();
 	else
