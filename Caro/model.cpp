@@ -210,4 +210,58 @@ bool CheckSameString(string s1, string s2) {
 void Save_1_move(int& y, int& x) {
 	y = _Y;
 	x = _X;
+<<<<<<< HEAD
+=======
+}
+
+void Playgame() {
+	DrawBoard();
+	ResetData();
+	int row_matrix = 0, column_matrix = 0;
+	int row_console = 0, column_console = 0;
+
+	KEY_EVENT_RECORD keyevent;
+	EDGE bien = { TOP + 1,LEFT + 2,LEFT + BOARD_SIZE * 4 - 2,TOP + BOARD_SIZE * 2 - 1 };
+	bool validEnter = true;
+	while (1) {
+		ReadInputKey(keyevent);
+		if (keyevent.bKeyDown) {
+			KeyMove(&_X, &_Y, 4, 2, bien, keyevent);
+			switch (keyevent.wVirtualKeyCode) {
+			case(VK_RETURN): {
+				switch (CheckBoard(_X, _Y)) {
+				case -1:
+				{cout << "X";
+				Save_1_move(row_console, column_console);
+				break; }
+				case 1:
+				{cout << "O";
+				Save_1_move(row_console, column_console);
+				break; }
+				case 0: validEnter = false;
+				}
+				if (validEnter == true) {
+					TestBoard();
+					_TURN = !_TURN;
+				}
+				break;
+			}
+			case(0x55): {
+				_X = column_console;
+				_Y = row_console;
+				GotoXY(_X, _Y);
+				cout << char(32);
+				GotoXY(_X, _Y);
+				XYinMatrix(row_matrix, column_matrix, column_console, row_console);
+				_A[row_matrix][column_matrix].c = 0;
+				_TURN = !_TURN;
+				break;
+			}
+			}
+
+		}
+		keyevent.bKeyDown = false;
+		validEnter = true;
+	}
+>>>>>>> ada0df25204ed81707bd9b3c6ea7a5209e0fe960
 }

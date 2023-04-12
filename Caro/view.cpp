@@ -119,7 +119,7 @@ void GotoXY(int x, int y) {
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-void Drawboard_game() {
+void DrawBoard() {
 	system("color F1");
 	int top = 1, left = 45;
 	int old_mode = _setmode(_fileno(stdout), _O_WTEXT);
@@ -199,7 +199,7 @@ void Drawboard_game() {
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 + 2, 15, 2, "H:Help");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 2 + 4, 15, 2, "F:Flip");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 2 + 32, 15, 2, "L:Save");
-	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 3 + 32 + 2, 15, 2, "esc:Exit");
+	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 3 + 32 + 2, 15, 2, "ESC:Exit");
 }
 
 void Highlightwin(_POINT a[], int& n) {
@@ -460,6 +460,7 @@ void DrawMatchList() {
 	GotoXY(90, 25);
 	cout << "Press ESC to back to menu";
 
+<<<<<<< HEAD
 	//V? ch? LOAD GAME
 	int logo_x = 22, logo_y = 1;
 	int old_mode= _setmode(_fileno(stdout), _O_WTEXT);
@@ -476,6 +477,20 @@ void DrawMatchList() {
 	}
 	int current_mode= _setmode(_fileno(stdout), old_mode);
 	//V? các ph?n t? c?a danh sách
+=======
+	//Vẽ chữ LOAD GAME
+	int logo_x = 22, logo_y = 3;
+	DrawLetter(L, logo_x, logo_y);
+	DrawLetter(O, logo_x + 9, logo_y);
+	DrawLetter(A, logo_x + 9 * 2, logo_y);
+	DrawLetter(D, logo_x + 9 * 3, logo_y);
+	DrawLetter(G, logo_x + 9 * 4 + 3, logo_y);
+	DrawLetter(A, logo_x + 9 * 5 + 3, logo_y);
+	DrawLetter(M, logo_x + 9 * 6 + 3, logo_y);
+	DrawLetter(E, logo_x + 9 * 7 + 3, logo_y);
+
+	//Vẽ các phần tử của danh sách
+>>>>>>> ada0df25204ed81707bd9b3c6ea7a5209e0fe960
 	for (int i = 0; i < MATCH_LIST_SIZE; i++) {
 		GotoXY(CENTER_X - 3, CENTER_Y + i * 3 - 1);
 		cout << char(218); //Góc trên trái
@@ -689,6 +704,7 @@ void DrawPopUp(WORD wVirtualKeyCode) {
 	}
 }
 
+<<<<<<< HEAD
 void ShowAsk(WORD wVirtualKeyCode) {
 	NEW_GAME = 0;
 	//V? giao di?n trang ShowAsk...
@@ -705,6 +721,24 @@ void ShowAsk(WORD wVirtualKeyCode) {
 		}
 		else if (_COMMAND == 'N')
 			ShowGame();
+=======
+
+int ProcessFinish(int pWhoWin) {
+	GotoXY(0, _A[BOARD_SIZE - 1][BOARD_SIZE - 1].y + 2);
+	switch (pWhoWin) {
+	case -1:
+		printf("X Win, O Lose\n", true, false);
+		break;
+	case 1:
+		printf("0 Win, X Lose\n", false, true);
+		break;
+
+	case 0:
+		printf("Draw");
+		break;
+	case 2:
+		_TURN = !_TURN;
+>>>>>>> ada0df25204ed81707bd9b3c6ea7a5209e0fe960
 	}
 }
 
@@ -960,7 +994,6 @@ void ShowPage(int page) {
 	case 1: ShowGame(); break;
 	case 2: ShowFileGame(); break;
 	case 3: ShowAbout(); break;
-	case 4: Exit();
 	}
 }
 

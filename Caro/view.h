@@ -9,8 +9,14 @@ void SetFontSize(int fontSize);
 void GotoXY(int x, int y);
 void SetColor(int backgoundColor, int textColor);
 
+<<<<<<< HEAD
 void Drawboard_game();
 void Highlightwin(_POINT a[], int& n);
+=======
+void DrawBoard();
+void Highlightwin(POINT* a);
+void Button(int top, int left, int width, int height, string label);
+>>>>>>> ada0df25204ed81707bd9b3c6ea7a5209e0fe960
 void DrawExistedData();
 void DrawMenu();
 void DrawMatchList();

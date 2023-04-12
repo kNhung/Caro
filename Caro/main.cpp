@@ -7,4 +7,5 @@ int main() {
 	fixConsoleWindows(); //View
 	GetMatchListSize();
 	ShowMenu(); //View
+	return 0;
 };

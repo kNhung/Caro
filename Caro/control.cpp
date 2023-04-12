@@ -5,8 +5,13 @@
 
 void StartGame() {
 	system("cls");
+<<<<<<< HEAD
 	Drawboard_game();
 	if (NEW_GAME == 1) {
+=======
+	DrawBoard();
+	if (NEW_GAME == 1)
+>>>>>>> ada0df25204ed81707bd9b3c6ea7a5209e0fe960
 		ResetData();
 		showCursor(1);
 	}
