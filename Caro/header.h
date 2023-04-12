@@ -2,6 +2,8 @@
 #ifndef _MY_HEADER
 #define _MY_HEADER
 #include <iostream>
+#include <io.h>
+#include <fcntl.h>
 #include <Windows.h>
 #include <WinUser.h>
 #include <string>
@@ -11,8 +13,6 @@
 #include <fstream>
 #include <cstdlib>
 #include <vector>
-#include <fcntl.h>
-#include <io.h>
 using namespace std;
 
 #define BOARD_SIZE 16
@@ -47,7 +47,7 @@ struct _LIST {
 };
 struct ToaDo { int x, y; };
 struct EDGE {
-	int top = 0, left = 0, right = 0, bottom = 0;
+	int top = 0, bottom = 0, left = 0, right = 0;
 };
 
 extern _POINT _A[BOARD_SIZE][BOARD_SIZE];

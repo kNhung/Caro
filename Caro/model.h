@@ -3,16 +3,18 @@
 #define _MY_MODEL
 #include "header.h"
 
-bool FullBoard(_POINT _A[BOARD_SIZE][BOARD_SIZE]);
-//bool WinCheck(_POINT _A[BOARD_SIZE][BOARD_SIZE], int pX, int pY);
+void Resetdata(_POINT a[], int& n, int& led1, int& led2);
+_POINT XYinMatrix(int& x, int& y, int& row, int& col);
+int test_inTestBoard(_POINT a[], int& n, int& led1, int& led2);
 void ResetData();
-void Resetdata(vector<_POINT>& a, int& led1, int& led2);
 int TestBoard();
+void Save_1_move(int& y, int& x);
+
 int CheckBoard(int pX, int pY);
 int CheckExistedFile(string fileName);
 bool CheckValidName(string name);
 bool CheckSameString(string s1, string s2);
-int arrSize(void* aData);
+
 
 #endif
 

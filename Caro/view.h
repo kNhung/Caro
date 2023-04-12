@@ -3,20 +3,21 @@
 #define _MY_VIEW
 #include "header.h"
 
-void FixConsoleWindow();
+void fixConsoleWindows();
+void showCursor(bool show);
 void SetFontSize(int fontSize);
 void GotoXY(int x, int y);
 void SetColor(int backgoundColor, int textColor);
 
 void Drawboard_game();
-void Highlightwin(POINT* a);
-void Button(int top, int left, int width, int height, string label);
+void Highlightwin(_POINT a[], int& n);
 void DrawExistedData();
 void DrawMenu();
 void DrawMatchList();
 void DrawLetter(unsigned char letter[], int X, int Y);
 void DrawPopUp(char quest);
 
+void Button(int top, int left, int width, int height, string label);
 void PrintMenuLogo();
 void PrintHeart(int top, int left);
 void PrintSmallHeart(int top, int left);
@@ -38,7 +39,7 @@ void ShowMenu();
 void ShowGame();
 void ShowAbout(); 
 void ShowFileGame(); 
-void ShowAsk(char key);
+void ShowAsk(WORD wVirtualKeyCode);
 void ShowHelp();
 
 void GetMatchListSize();

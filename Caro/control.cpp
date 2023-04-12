@@ -6,10 +6,14 @@
 void StartGame() {
 	system("cls");
 	Drawboard_game();
-	if (NEW_GAME == 1)
+	if (NEW_GAME == 1) {
 		ResetData();
-	else
+		showCursor(1);
+	}
+	else{
 		DrawExistedData();
+	    showCursor(1);
+    }
 }
 
 void GabageCollect() {
