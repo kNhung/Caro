@@ -3,27 +3,30 @@
 #define _MY_VIEW
 #include "header.h"
 
-void fixConsoleWindows();
-void showCursor(bool show);
-void SetFontSize(int fontSize);
+void SetFontInfo();
+void SetAndCenterWindow();
+void SetWindowSize(SHORT width, SHORT height);
+void SetScreenBufferSize(SHORT width, SHORT height);
+void DisableSelection();
+void DisableMaximize();
+void HideScrollBars();
+void ShowCursor(bool show);
+void DisableMouseInput();
+void FixConsoleWindows();
+void SetColor(int backgoundColor, int textColor);
+void TextColor(int color);
 void GotoXY(int x, int y);
 void SetColor(int backgoundColor, int textColor);
 
-<<<<<<< HEAD
-void Drawboard_game();
-void Highlightwin(_POINT a[], int& n);
-=======
 void DrawBoard();
-void HighlightWin(POINT* a);
+void Highlightwin(_POINT a[], int& n);
 void Button(int top, int left, int width, int height, string label);
->>>>>>> ada0df25204ed81707bd9b3c6ea7a5209e0fe960
 void DrawExistedData();
 void DrawMenu();
 void DrawMatchList();
 void DrawLetter(unsigned char letter[], int X, int Y);
 void DrawPopUp(char quest);
 
-void Button(int top, int left, int width, int height, string label);
 void PrintMenuLogo();
 void PrintHeart(int top, int left);
 void PrintRectangle(int top, int left, int width, int height);
@@ -31,8 +34,12 @@ void PrintTree(int x, int y);
 void PrintCloud(int left, int top, int type);
 
 int ProcessFinish(int pWhoWin);
+void ExitGame();
+void HLChoice(int& x, int& y, int width);
+void Draw_AskContinue();
 int AskContinue();
 int AskSaveGame();
+
 void SaveGame();
 void SaveMatchInfo(string match);
 void RemoveMatchFile(string matchName);
@@ -48,7 +55,5 @@ void ShowHelp();
 
 void GetMatchListSize();
 void LoadGame(string matchName);
-void TextColor(int color);
 void TT();
-void Ox(int x1, int x2, int y);
 #endif

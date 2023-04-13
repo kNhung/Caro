@@ -5,30 +5,20 @@
 
 void StartGame() {
 	system("cls");
-<<<<<<< HEAD
-	Drawboard_game();
-	if (NEW_GAME == 1) {
-=======
 	DrawBoard();
-	if (NEW_GAME == 1)
->>>>>>> ada0df25204ed81707bd9b3c6ea7a5209e0fe960
+	if (NEW_GAME == 1){
 		ResetData();
-		showCursor(1);
+		ShowCursor(1);
 	}
 	else{
 		DrawExistedData();
-	    showCursor(1);
+	    ShowCursor(1);
     }
 }
 
 void GabageCollect() {
 }
 
-void Exit() {
-	system("cls");
-	GabageCollect();
-	return;
-}
 
 void MoveRight() {
 	if (_X < _A[BOARD_SIZE - 1][BOARD_SIZE - 1].x) {

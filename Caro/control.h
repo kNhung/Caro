@@ -5,7 +5,6 @@
 
 void StartGame();
 void GabageCollect();
-void Exit();
 void MoveRight();
 void MoveLeft();
 void MoveDown();

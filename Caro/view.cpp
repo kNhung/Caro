@@ -5,14 +5,8 @@
 
 
 //Fix the size of the console window
-static void FixConsoleWindow() {
-	HWND consoleWindow = GetConsoleWindow();
-	LONG style = GetWindowLong(consoleWindow, GWL_STYLE);
-	style = style & ~(WS_MAXIMIZEBOX) & ~(WS_THICKFRAME);
-	SetWindowLong(consoleWindow, GWL_STYLE, style);
-}
 
-void setFontInfo()
+void SetFontInfo()
 {
 	HANDLE hdc = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_FONT_INFOEX info;
@@ -23,7 +17,8 @@ void setFontInfo()
 	wcscpy_s(info.FaceName, L"Consolas");
 	SetCurrentConsoleFontEx(hdc, FALSE, &info);
 }
-void setAndCenterWindow()
+
+void SetAndCenterWindow()
 {
 	HWND console = GetConsoleWindow();
 	RECT rectClient, rectWindow;
@@ -34,6 +29,7 @@ void setAndCenterWindow()
 		posY = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
 	MoveWindow(console, posX, posY, width, height, TRUE);
 }
+
 void SetWindowSize(SHORT width, SHORT height)
 {
 	HANDLE hdc = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -59,48 +55,54 @@ void DisableSelection()
 	HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
 	SetConsoleMode(hStdin, ~ENABLE_QUICK_EDIT_MODE);
 }
-void disableMaximize()
+
+void DisableMaximize()
 { // Hàm này để tắt cái nút maximize trên cửa sổ console
 	HWND console = GetConsoleWindow();
 	SetWindowLong(console, GWL_STYLE,
 		GetWindowLong(console, GWL_STYLE) & ~(WS_MAXIMIZEBOX) & ~(WS_THICKFRAME));
 }
-void setConsoleTitle()
-{ // Chỉnh title thành "Cờ Caro"
-	SetConsoleTitle(L"Caro");
-}
-void hideScrollBars()
+
+
+void HideScrollBars()
 { // Ẩn thanh cuộn của console
 	HWND console = GetConsoleWindow();
 	ShowScrollBar(console, SB_BOTH, 0);
 }
-void showCursor(bool show)
+
+void ShowCursor(bool show)
 {
 	HANDLE hdc = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_CURSOR_INFO info = { 1, show };
 	SetConsoleCursorInfo(hdc, &info);
 }
-void disableMouseInput()
+
+void DisableMouseInput()
 { // Hàm này có công dụng là làm cho chuột hong bấm dô được màn hình
 	DWORD prev_mode;
 	HANDLE hInput = GetStdHandle(STD_INPUT_HANDLE);
 	GetConsoleMode(hInput, &prev_mode);
 	SetConsoleMode(hInput, prev_mode & ~ENABLE_QUICK_EDIT_MODE);
 }
-void fixConsoleWindows() {
+
+void FixConsoleWindows() {
 	HANDLE hdc = GetStdHandle(STD_OUTPUT_HANDLE);
-	FixConsoleWindow();
-	setFontInfo();
-	setAndCenterWindow();
+	HWND consoleWindow = GetConsoleWindow();
+	LONG style = GetWindowLong(consoleWindow, GWL_STYLE);
+	style = style & ~(WS_MAXIMIZEBOX) & ~(WS_THICKFRAME);
+	SetWindowLong(consoleWindow, GWL_STYLE, style);
+	SetFontInfo();
+	SetAndCenterWindow();
 	SetWindowSize(200, 45);
 	SetScreenBufferSize(200, 45);
 	DisableSelection();
-	disableMaximize();
-	setConsoleTitle();
-	hideScrollBars();
-	showCursor(0);
-	disableMouseInput();
+	DisableMaximize();
+	SetConsoleTitle(L"Caro");
+	HideScrollBars();
+	ShowCursor(0);
+	DisableMouseInput();
 }
+
 void SetColor(int backgoundColor, int textColor) {
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	int colorCode = backgoundColor * 16 + textColor;
@@ -118,6 +120,7 @@ void GotoXY(int x, int y) {
 	coord.Y = y;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
+
 
 void DrawBoard() {
 	system("color F1");
@@ -216,40 +219,12 @@ void Highlightwin(_POINT a[], int& n) {
 }
 
 
-void PrintRectangle(int top, int left, int width, int height) {
-	GotoXY(left, top);
-	for (int i = 1; i <= width; i++) {
-		cout << char(196);
-	}
-	GotoXY(left, top);
-	cout << char(218);
-	for (int i = 1; i <= height; i++) {
-		GotoXY(left, top + i);
-		cout << char(179) << endl;
-	}
-	GotoXY(left, top + height);
-	for (int i = 1; i <= width; i++) {
-		cout << char(196);
-	}
-	GotoXY(left, top + height);
-	cout << char(192);
-	GotoXY(left + width, top);
-	cout << char(191);
-	for (int i = 1; i < height; i++) {
-		GotoXY(left + width, top + i);
-		cout << char(179) << endl;
-	}
-	GotoXY(left + width, top + height);
-	cout << char(217);
-}
-
 void Button(int top, int left, int width, int height,string label) {
 	PrintRectangle(top, left, width, height);
 	int n = ceil((width - label.size() - 2) / 2 + 0.5);
 	GotoXY(left + n + 1, top + (height / 2));
 	cout << label;
 }
-
 
 void DrawExistedData() {
 	for(int i=0;i<BOARD_SIZE;i++)
@@ -330,6 +305,118 @@ void DrawMenu() {
 	putchar(188);
 }
 
+void DrawMatchList() {
+	system("color F1");
+	//V? nút Tr? v?
+	GotoXY(90, 25);
+	cout << "Press ESC to back to menu";
+
+	//V? ch? LOAD GAME
+	int logo_x = 22, logo_y = 1;
+	int old_mode= _setmode(_fileno(stdout), _O_WTEXT);
+	wstring loadgame[6] = {
+		L"██╗░░░░░░█████╗░░█████╗░██████╗░  ░██████╗░░█████╗░███╗░░░███╗███████╗",
+		L"██║░░░░░██╔══██╗██╔══██╗██╔══██╗  ██╔════╝░██╔══██╗████╗░████║██╔════╝",
+		L"██║░░░░░██║░░██║███████║██║░░██║  ██║░░██╗░███████║██╔████╔██║█████╗░░",
+		L"██║░░░░░██║░░██║██╔══██║██║░░██║  ██║░░╚██╗██╔══██║██║╚██╔╝██║██╔══╝░░",
+		L"███████╗╚█████╔╝██║░░██║██████╔╝  ╚██████╔╝██║░░██║██║░╚═╝░██║███████╗",
+		L"╚══════╝░╚════╝░╚═╝░░╚═╝╚═════╝░  ░╚═════╝░╚═╝░░╚═╝╚═╝░░░░░╚═╝╚══════╝" };
+	for (int i = 0; i < 6; i++) {
+		GotoXY(logo_x, logo_y + i);
+		wcout << loadgame[i];
+	}
+	int current_mode= _setmode(_fileno(stdout), old_mode);
+	//V? các ph?n t? c?a danh sách
+	//Vẽ chữ LOAD GAME
+	logo_x = 22; logo_y = 3;
+	DrawLetter(L, logo_x, logo_y);
+	DrawLetter(O, logo_x + 9, logo_y);
+	DrawLetter(A, logo_x + 9 * 2, logo_y);
+	DrawLetter(D, logo_x + 9 * 3, logo_y);
+	DrawLetter(G, logo_x + 9 * 4 + 3, logo_y);
+	DrawLetter(A, logo_x + 9 * 5 + 3, logo_y);
+	DrawLetter(M, logo_x + 9 * 6 + 3, logo_y);
+	DrawLetter(E, logo_x + 9 * 7 + 3, logo_y);
+
+	//Vẽ các phần tử của danh sách
+	for (int i = 0; i < MATCH_LIST_SIZE; i++) {
+		GotoXY(CENTER_X - 3, CENTER_Y + i * 3 - 1);
+		cout << char(218); //Góc trên trái
+
+		GotoXY(CENTER_X - 2, CENTER_Y + i * 3 - 1);
+		for (int i = 0;i < 15;i++)
+			cout << char(2500); //Ðu?ng ngang trên
+
+		GotoXY(CENTER_X + 13, CENTER_Y + i * 3 - 1);
+		cout << char(191); //Góc trên ph?i
+
+		GotoXY(CENTER_X - 3, CENTER_Y + i * 3);
+		cout << char(179); //Ðu?ng th?ng trái
+
+		GotoXY(CENTER_X, CENTER_Y + i * 3);
+		cout << _MATCH_LIST[i].item; 
+
+		GotoXY(CENTER_X + 13, CENTER_Y + i * 3);
+		cout << char(179); //Ðu?ng th?ng ph?i
+
+		GotoXY(CENTER_X - 3, CENTER_Y + i * 3 + 1);
+		cout << char(192); //Góc du?i trái
+
+		GotoXY(CENTER_X - 2, CENTER_Y + i * 3 + 1);
+		for (int i = 0;i < 15;i++)
+			cout << char(2500); //Ðu?ng ngang du?i
+
+		GotoXY(CENTER_X + 13, CENTER_Y + i * 3 + 1);
+		cout << char(217); //Góc du?i ph?i
+	}
+
+	//V? mây
+	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	PrintCloud(0, 20, 3);
+	PrintCloud(103, 10, 2);
+	GotoXY(CENTER_X, CENTER_Y);
+}
+
+void DrawLetter(unsigned char letter[], int X, int Y){
+	int m = 0;
+	for (int k = 0;k < LETTER_LIST_SIZE;k++) {
+		if (LETTER_LIST[k]==letter) {
+			m = 0;
+			GotoXY(X, Y);
+			for (int i = 1;i <= 5;i++) {
+				for (int j = 1;j <= 7;j++) {
+					cout << LETTER_LIST[k][m];
+					++m;
+				}
+				GotoXY(X, ++Y);
+			}
+		}
+	}
+	
+}
+
+void DrawPopUp(WORD wVirtualKeyCode) {
+	//V? khung
+	system("cls");
+	system("color F1");
+	PrintRectangle(CENTER_Y + 3, CENTER_X + 8, 30, 3);
+	GotoXY(CENTER_X + 11, CENTER_Y + 4);
+	switch (wVirtualKeyCode) {
+	case 0x4C:
+		cout << " Enter match name";
+		GotoXY(CENTER_X, CENTER_Y - 1);
+		SaveGame();
+		ShowLoadingPage();
+		ShowMenu();
+		break;
+	case VK_ESCAPE:
+		cout << "Are you sure to quit?";
+		GotoXY(CENTER_X + 13, CENTER_Y + 5);
+		cout << "  Yes(Y)   No(N)";
+	}
+}
+
+
 void PrintMenuLogo() {
 	unsigned char logo[] = { 
 		32,219,219,219,219,219,219,187,  32,219,219,219,219,219,187,32,   219,219,219,219,219,219,187,32,  32,219,219,219,219,219,219,187,32,
@@ -369,6 +456,32 @@ void PrintHeart(int top, int left) {
 
 }
 
+void PrintRectangle(int top, int left, int width, int height) {
+	GotoXY(left, top);
+	for (int i = 1; i <= width; i++) {
+		cout << char(196);
+	}
+	GotoXY(left, top);
+	cout << char(218);
+	for (int i = 1; i <= height; i++) {
+		GotoXY(left, top + i);
+		cout << char(179) << endl;
+	}
+	GotoXY(left, top + height);
+	for (int i = 1; i <= width; i++) {
+		cout << char(196);
+	}
+	GotoXY(left, top + height);
+	cout << char(192);
+	GotoXY(left + width, top);
+	cout << char(191);
+	for (int i = 1; i < height; i++) {
+		GotoXY(left + width, top + i);
+		cout << char(179) << endl;
+	}
+	GotoXY(left + width, top + height);
+	cout << char(217);
+}
 
 void PrintTree(int x, int y) {
 	GotoXY(x, y);cout << "               ,@@@@@@@,";
@@ -438,98 +551,6 @@ void PrintCloud(int left, int top, int type) {
 	}
 }
 
-void DrawMatchList() {
-	system("color F1");
-	//V? nút Tr? v?
-	GotoXY(90, 25);
-	cout << "Press ESC to back to menu";
-
-<<<<<<< HEAD
-	//V? ch? LOAD GAME
-	int logo_x = 22, logo_y = 1;
-	int old_mode= _setmode(_fileno(stdout), _O_WTEXT);
-	wstring loadgame[6] = {
-		L"██╗░░░░░░█████╗░░█████╗░██████╗░  ░██████╗░░█████╗░███╗░░░███╗███████╗",
-		L"██║░░░░░██╔══██╗██╔══██╗██╔══██╗  ██╔════╝░██╔══██╗████╗░████║██╔════╝",
-		L"██║░░░░░██║░░██║███████║██║░░██║  ██║░░██╗░███████║██╔████╔██║█████╗░░",
-		L"██║░░░░░██║░░██║██╔══██║██║░░██║  ██║░░╚██╗██╔══██║██║╚██╔╝██║██╔══╝░░",
-		L"███████╗╚█████╔╝██║░░██║██████╔╝  ╚██████╔╝██║░░██║██║░╚═╝░██║███████╗",
-		L"╚══════╝░╚════╝░╚═╝░░╚═╝╚═════╝░  ░╚═════╝░╚═╝░░╚═╝╚═╝░░░░░╚═╝╚══════╝" };
-	for (int i = 0; i < 6; i++) {
-		GotoXY(logo_x, logo_y + i);
-		wcout << loadgame[i];
-	}
-	int current_mode= _setmode(_fileno(stdout), old_mode);
-	//V? các ph?n t? c?a danh sách
-=======
-	//Vẽ chữ LOAD GAME
-	int logo_x = 22, logo_y = 3;
-	DrawLetter(L, logo_x, logo_y);
-	DrawLetter(O, logo_x + 9, logo_y);
-	DrawLetter(A, logo_x + 9 * 2, logo_y);
-	DrawLetter(D, logo_x + 9 * 3, logo_y);
-	DrawLetter(G, logo_x + 9 * 4 + 3, logo_y);
-	DrawLetter(A, logo_x + 9 * 5 + 3, logo_y);
-	DrawLetter(M, logo_x + 9 * 6 + 3, logo_y);
-	DrawLetter(E, logo_x + 9 * 7 + 3, logo_y);
-
-	//Vẽ các phần tử của danh sách
->>>>>>> ada0df25204ed81707bd9b3c6ea7a5209e0fe960
-	for (int i = 0; i < MATCH_LIST_SIZE; i++) {
-		GotoXY(CENTER_X - 3, CENTER_Y + i * 3 - 1);
-		cout << char(218); //Góc trên trái
-
-		GotoXY(CENTER_X - 2, CENTER_Y + i * 3 - 1);
-		for (int i = 0;i < 15;i++)
-			cout << char(2500); //Ðu?ng ngang trên
-
-		GotoXY(CENTER_X + 13, CENTER_Y + i * 3 - 1);
-		cout << char(191); //Góc trên ph?i
-
-		GotoXY(CENTER_X - 3, CENTER_Y + i * 3);
-		cout << char(179); //Ðu?ng th?ng trái
-
-		GotoXY(CENTER_X, CENTER_Y + i * 3);
-		cout << _MATCH_LIST[i].item; 
-
-		GotoXY(CENTER_X + 13, CENTER_Y + i * 3);
-		cout << char(179); //Ðu?ng th?ng ph?i
-
-		GotoXY(CENTER_X - 3, CENTER_Y + i * 3 + 1);
-		cout << char(192); //Góc du?i trái
-
-		GotoXY(CENTER_X - 2, CENTER_Y + i * 3 + 1);
-		for (int i = 0;i < 15;i++)
-			cout << char(2500); //Ðu?ng ngang du?i
-
-		GotoXY(CENTER_X + 13, CENTER_Y + i * 3 + 1);
-		cout << char(217); //Góc du?i ph?i
-	}
-
-	//V? mây
-	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
-	PrintCloud(0, 20, 3);
-	PrintCloud(103, 10, 2);
-	GotoXY(CENTER_X, CENTER_Y);
-}
-
-void DrawLetter(unsigned char letter[], int X, int Y) {
-	int m = 0;
-	for (int k = 0;k < LETTER_LIST_SIZE;k++) {
-		if (LETTER_LIST[k]==letter) {
-			m = 0;
-			GotoXY(X, Y);
-			for (int i = 1;i <= 5;i++) {
-				for (int j = 1;j <= 7;j++) {
-					cout << LETTER_LIST[k][m];
-					++m;
-				}
-				GotoXY(X, ++Y);
-			}
-		}
-	}
-	
-}
 
 int ProcessFinish(int pWhoWin) {
 	int top = 15, left = 43;
@@ -623,7 +644,7 @@ void Draw_AskContinue() {
 	Button(top + 2, left + 50, width, height, "Exit");
 	_X = left + 10, _Y = top + 2;
 	GotoXY(_X, _Y);
-	showCursor(0);
+	ShowCursor(0);
 }
 
 int AskContinue() {
@@ -667,28 +688,287 @@ int AskContinue() {
 	}
 }
 
-void DrawPopUp(WORD wVirtualKeyCode) {
-	//V? khung
+int AskSaveGame() {
 	system("cls");
-	system("color F1");
-	PrintRectangle(CENTER_Y + 3, CENTER_X + 8, 30, 3);
-	GotoXY(CENTER_X + 11, CENTER_Y + 4);
-	switch (wVirtualKeyCode) {
-	case 0x4C:
-		cout << " Enter match name";
-		GotoXY(CENTER_X, CENTER_Y - 1);
-		SaveGame();
-		ShowLoadingPage();
-		ShowMenu();
-		break;
-	case VK_ESCAPE:
-		cout << "Are you sure to quit?";
-		GotoXY(CENTER_X + 13, CENTER_Y + 5);
-		cout << "  Yes(Y)   No(N)";
+	PrintRectangle(CENTER_Y - 3, CENTER_X - 10, 30, 3);
+	GotoXY(CENTER_X - 5, CENTER_Y - 2);
+	cout << "Want to save the match?";
+	GotoXY(CENTER_X - 5, CENTER_Y - 1);
+	cout << "  Yes(Y)    No(N)";
+	return toupper(_getch());
+}
+
+
+
+void SaveGame() {
+	string matchName;
+	GotoXY(0, _A[BOARD_SIZE - 1][BOARD_SIZE - 1].y + 4);
+	getline(cin, matchName);
+	_MATCH_LIST_FILE.open("game_files.txt",ios::app);
+	if (!_MATCH_LIST_FILE) {
+		cout << "Khong mo duoc tap tin" << endl;
+		return;
+	}
+	while (CheckExistedFile(matchName) == 1) {
+		cout <<endl<< "File da ton tai";
+		cin.ignore();
+		getline(cin, matchName);
+		//Khi code tran hoàn ch?nh thì thêm cls,GotoXY d? getline
+	}
+	while (CheckValidName(matchName) == 0) {
+		cout <<endl<< "Ten khong hop le";
+		cin.ignore();
+		getline(cin, matchName);
+		//Khi code tran hoàn ch?nh thì thêm cls,GotoXY d? getline
+
+	}
+	_MATCH_LIST_FILE << matchName + ".txt"<<endl;
+	SaveMatchInfo(matchName);
+	_MATCH_LIST_FILE.close();
+}
+
+void SaveMatchInfo(string matchName) {
+	matchName += ".txt";
+	ofstream matchFile(matchName);
+	if (!matchFile) {
+		cout << "Cannot open matchFile";
+		return;
+	}
+	 cout << "Opened matchFile";
+	 for (int i = 0;i < BOARD_SIZE;i++) {
+		 for (int j = 0;j < BOARD_SIZE;j++) {
+			 matchFile << _A[i][j].c<<endl;
+		 }
+	 }
+	 matchFile << _LAST_POINT.x << endl << _LAST_POINT.y << endl << _LAST_POINT.c;
+	 matchFile.close();
+}
+
+void RemoveMatchFile(string matchName) {
+	int n = matchName.length();
+	char* c = new char[n + 1];
+	for (int i = 0;i < n;i++) {
+		c[i] = matchName[i];
+	}
+	c[n] = '\0';
+	remove(c);
+}
+
+
+void ShowPage(int page) {
+	switch (page) {
+	case 1: ShowGame(); break;
+	case 2: ShowFileGame(); break;
+	case 3: ShowAbout(); break;
 	}
 }
 
-<<<<<<< HEAD
+void ShowLoadingPage() {
+	system("cls");
+	system("color F1");
+	//V? khung
+	PrintRectangle(0, 1, 116, 28);
+	//V? ch? LOADING
+	int logo_x = 25, logo_y = 5;
+	DrawLetter(L, logo_x, logo_y);
+	DrawLetter(O, logo_x + 9, logo_y);
+	DrawLetter(A, logo_x + 9 * 2, logo_y);
+	DrawLetter(D, logo_x + 9 * 3, logo_y);
+	DrawLetter(I, logo_x + 9 * 4, logo_y);
+	DrawLetter(N, logo_x + 9 * 5, logo_y);
+	DrawLetter(G, logo_x + 9 * 6, logo_y);
+	for (int i = 0;i <= 2;i++) {
+		GotoXY(logo_x + 9 * 7 + 4 * i, logo_y + 4);
+		cout << char(219) << char(219);
+	}
+	//V? 3 trái tim nh?
+	for (int i = 0;i < 3;i++) {
+		GotoXY(logo_x + 20 + 12*i, logo_y - 3);
+		cout << char(003) << "  ";
+	}
+	//V? cây
+	PrintTree(logo_x+15, logo_y + 10);
+
+	Sleep(500);
+	system("cls");
+}
+
+void ShowMenu() {
+	HANDLE word;
+	MODE = 1;
+	NEW_GAME = 1;
+	_X = CENTER_X;_Y = CENTER_Y;
+	int backgroundColor = BRIGHT_WHITE, textColor = BLUE;
+	DrawMenu();
+	SetColor(backgroundColor, textColor);
+	GotoXY(CENTER_X - 5, CENTER_Y);
+	cout << ">";
+	while (1) {
+		GotoXY(_X, _Y);
+		_COMMAND = toupper(_getch());
+		if (_COMMAND == 'W') {
+			MoveUp();
+			SetColor(backgroundColor, backgroundColor);
+			GotoXY(CENTER_X - 5, _Y + 2); cout << " ";
+			SetColor(backgroundColor, textColor);
+			GotoXY(CENTER_X - 5, _Y);
+			cout << ">";
+		}
+		else if (_COMMAND == 'S') {
+			MoveDown();
+			SetColor(backgroundColor, backgroundColor);
+			GotoXY(CENTER_X - 5, _Y - 2); cout << ">";
+			SetColor(backgroundColor, textColor);
+			GotoXY(CENTER_X - 5, _Y);
+			cout << ">";
+		}
+		else if (_COMMAND == 13 && _Y == _MENU[3].y) {
+			system("cls");
+			GabageCollect();
+			return;
+		}
+		else if (_COMMAND == 13) {
+			ShowLoadingPage();
+			for (int i = 0;i < MENU_SIZE;i++)
+				if (_Y == _MENU[i].y)
+					ShowPage(_MENU[i].c);
+		}
+	}
+}
+
+void ShowGame() {
+	MODE = 2;
+	StartGame();
+	ShowCursor(1);
+	int row_console = 0, column_console = 0, row = 0;
+	int flag = 0;
+	KEY_EVENT_RECORD keyevent;
+	EDGE bien = { TOP + 1,TOP + BOARD_SIZE * 2 - 1,LEFT + 2,LEFT + BOARD_SIZE * 4 - 2 };
+	bool validEnter = true;
+	while (1) {
+		ReadInputKey(keyevent);
+		if (keyevent.bKeyDown) {
+			KeyMove(&_X, &_Y, 4, 2, bien, keyevent);
+			switch (keyevent.wVirtualKeyCode) {
+			case (VK_ESCAPE): case (0x4C): {
+				ShowAsk(keyevent.wVirtualKeyCode);
+				break; 
+			} 
+			case (0x48): {
+				ShowHelp(); break; }
+			case (VK_RETURN): {
+				switch (CheckBoard(_X, _Y)) {
+				case -1: {
+					SetColor(BRIGHT_WHITE, RED);
+					cout << "X";
+					Save_1_move(row_console, column_console);
+					break;
+				}
+				case 1: {
+					SetColor(BRIGHT_WHITE, GOAL);
+					cout << "O";
+					Save_1_move(row_console, column_console);
+					break;
+				}
+				case 0: validEnter = false;
+				}
+				if (validEnter == true) {
+					switch (ProcessFinish(TestBoard())) {
+					case -1:case 1:case 0:{ 
+						flag = AskContinue();
+						break;
+					}
+					}
+				}
+				break;
+			}
+			case (0x55): {
+				_X = column_console;
+				_Y = row_console;
+				GotoXY(_X, _Y);
+				cout << char(32);
+				GotoXY(_X, _Y);
+				_POINT p = XYinMatrix(column_console, row_console,row,row);
+				p.c = 0;
+				_TURN = !_TURN;
+				break;
+			}
+			}
+		}
+		keyevent.bKeyDown = false;
+		validEnter = true;
+		if (flag == 2)break;
+	}
+	ShowMenu();
+}
+
+void ShowAbout() {
+	//V? About ? dây...
+	TT();
+	while (1) {
+		_COMMAND = toupper(_getch()); //_getch() chu khong phai getch()
+		if (_COMMAND == 27) {
+			ShowLoadingPage();
+			ShowMenu();
+			return;
+		}
+	}
+}
+
+void ShowFileGame() {
+	HANDLE word;
+	int backgroundColor = BRIGHT_WHITE, textColor = BLUE;
+	MODE = 3;
+	_X = CENTER_X; _Y = CENTER_Y;
+	GetMatchListSize();
+	DrawMatchList();
+	SetColor(backgroundColor, textColor);
+	GotoXY(CENTER_X - 5, CENTER_Y);
+	cout << ">";
+	while (1) {
+		GotoXY(_X, _Y);
+		_COMMAND = toupper(_getch());
+		if (_COMMAND == 'W') {
+			MoveUp();
+			SetColor(backgroundColor, backgroundColor);
+			GotoXY(CENTER_X - 5, _Y + 3);cout << ">";
+			SetColor(backgroundColor, textColor);
+			GotoXY(CENTER_X - 5, _Y);
+			cout << ">";
+		}
+		else if (_COMMAND == 'S') {
+			MoveDown();
+			SetColor(backgroundColor, backgroundColor);
+			GotoXY(CENTER_X - 5, _Y - 3);cout << ">";
+			SetColor(backgroundColor, textColor);
+			GotoXY(CENTER_X - 5, _Y);
+			cout << ">";
+		}
+		else if (_COMMAND == 27) {
+			ShowLoadingPage();
+			ShowMenu();
+		}
+		else if (_COMMAND == 13) {
+			ShowLoadingPage();
+			for (int i = 0;i < MATCH_LIST_SIZE;i++) {
+				if (_Y == _MATCH_LIST[i].y) {
+					NEW_GAME = 0;
+					LoadGame(_MATCH_LIST[i].item);
+					ShowGame();
+				}
+			}
+		}
+		else if (_COMMAND == 0x7F) {
+			ShowLoadingPage();
+			for (int i = 0;i < MATCH_LIST_SIZE;i++) {
+				if (_Y == _MATCH_LIST[i].y) {
+					RemoveMatchFile(_MATCH_LIST[i].item);
+				}
+			}
+		}
+	}
+}
+
 void ShowAsk(WORD wVirtualKeyCode) {
 	NEW_GAME = 0;
 	//V? giao di?n trang ShowAsk...
@@ -705,24 +985,6 @@ void ShowAsk(WORD wVirtualKeyCode) {
 		}
 		else if (_COMMAND == 'N')
 			ShowGame();
-=======
-
-int ProcessFinish(int pWhoWin) {
-	GotoXY(0, _A[BOARD_SIZE - 1][BOARD_SIZE - 1].y + 2);
-	switch (pWhoWin) {
-	case -1:
-		printf("X Win, O Lose\n", true, false);
-		break;
-	case 1:
-		printf("0 Win, X Lose\n", false, true);
-		break;
-
-	case 0:
-		printf("Draw");
-		break;
-	case 2:
-		_TURN = !_TURN;
->>>>>>> ada0df25204ed81707bd9b3c6ea7a5209e0fe960
 	}
 }
 
@@ -810,285 +1072,6 @@ void ShowHelp() {
 }
 
 
-
-void ShowGame() {
-	MODE = 2;
-	StartGame();
-	showCursor(1);
-	int row_console = 0, column_console = 0, row = 0;
-	int flag = 0;
-	KEY_EVENT_RECORD keyevent;
-	EDGE bien = { TOP + 1,TOP + BOARD_SIZE * 2 - 1,LEFT + 2,LEFT + BOARD_SIZE * 4 - 2 };
-	bool validEnter = true;
-	while (1) {
-		ReadInputKey(keyevent);
-		if (keyevent.bKeyDown) {
-			KeyMove(&_X, &_Y, 4, 2, bien, keyevent);
-			switch (keyevent.wVirtualKeyCode) {
-			case (VK_ESCAPE): case (0x4C): {
-				ShowAsk(keyevent.wVirtualKeyCode);
-				break; 
-			} 
-			case (0x48): {
-				ShowHelp(); break; }
-			case (VK_RETURN): {
-				switch (CheckBoard(_X, _Y)) {
-				case -1: {
-					SetColor(BRIGHT_WHITE, RED);
-					cout << "X";
-					Save_1_move(row_console, column_console);
-					break;
-				}
-				case 1: {
-					SetColor(BRIGHT_WHITE, GOAL);
-					cout << "O";
-					Save_1_move(row_console, column_console);
-					break;
-				}
-				case 0: validEnter = false;
-				}
-				if (validEnter == true) {
-					switch (ProcessFinish(TestBoard())) {
-					case -1:case 1:case 0:{ 
-						flag = AskContinue();
-						break;
-					}
-					}
-				}
-				break;
-			}
-			case (0x55): {
-				_X = column_console;
-				_Y = row_console;
-				GotoXY(_X, _Y);
-				cout << char(32);
-				GotoXY(_X, _Y);
-				_POINT p = XYinMatrix(column_console, row_console,row,row);
-				p.c = 0;
-				_TURN = !_TURN;
-				break;
-			}
-			}
-		}
-		keyevent.bKeyDown = false;
-		validEnter = true;
-		if (flag == 2)break;
-	}
-	ShowMenu();
-}
-
-int AskSaveGame() {
-	system("cls");
-	PrintRectangle(CENTER_Y - 3, CENTER_X - 10, 30, 3);
-	GotoXY(CENTER_X - 5, CENTER_Y - 2);
-	cout << "Want to save the match?";
-	GotoXY(CENTER_X - 5, CENTER_Y - 1);
-	cout << "  Yes(Y)    No(N)";
-	return toupper(_getch());
-}
-
-void SaveGame() {
-	string matchName;
-	GotoXY(0, _A[BOARD_SIZE - 1][BOARD_SIZE - 1].y + 4);
-	getline(cin, matchName);
-	_MATCH_LIST_FILE.open("game_files.txt",ios::app);
-	if (!_MATCH_LIST_FILE) {
-		cout << "Khong mo duoc tap tin" << endl;
-		return;
-	}
-	while (CheckExistedFile(matchName) == 1) {
-		cout <<endl<< "File da ton tai";
-		cin.ignore();
-		getline(cin, matchName);
-		//Khi code tran hoàn ch?nh thì thêm cls,GotoXY d? getline
-	}
-	while (CheckValidName(matchName) == 0) {
-		cout <<endl<< "Ten khong hop le";
-		cin.ignore();
-		getline(cin, matchName);
-		//Khi code tran hoàn ch?nh thì thêm cls,GotoXY d? getline
-
-	}
-	_MATCH_LIST_FILE << matchName + ".txt"<<endl;
-	SaveMatchInfo(matchName);
-	_MATCH_LIST_FILE.close();
-}
-
-void SaveMatchInfo(string matchName) {
-	matchName += ".txt";
-	ofstream matchFile(matchName);
-	if (!matchFile) {
-		cout << "Cannot open matchFile";
-		return;
-	}
-	 cout << "Opened matchFile";
-	 for (int i = 0;i < BOARD_SIZE;i++) {
-		 for (int j = 0;j < BOARD_SIZE;j++) {
-			 matchFile << _A[i][j].c<<endl;
-		 }
-	 }
-	 matchFile << _LAST_POINT.x << endl << _LAST_POINT.y << endl << _LAST_POINT.c;
-	 matchFile.close();
-}
-
-void RemoveMatchFile(string matchName) {
-	int n = matchName.length();
-	char* c = new char[n + 1];
-	for (int i = 0;i < n;i++) {
-		c[i] = matchName[i];
-	}
-	c[n] = '\0';
-	remove(c);
-}
-
-
-void ShowLoadingPage() {
-	system("cls");
-	system("color F1");
-	//V? khung
-	PrintRectangle(0, 1, 116, 28);
-	//V? ch? LOADING
-	int logo_x = 25, logo_y = 5;
-	DrawLetter(L, logo_x, logo_y);
-	DrawLetter(O, logo_x + 9, logo_y);
-	DrawLetter(A, logo_x + 9 * 2, logo_y);
-	DrawLetter(D, logo_x + 9 * 3, logo_y);
-	DrawLetter(I, logo_x + 9 * 4, logo_y);
-	DrawLetter(N, logo_x + 9 * 5, logo_y);
-	DrawLetter(G, logo_x + 9 * 6, logo_y);
-	for (int i = 0;i <= 2;i++) {
-		GotoXY(logo_x + 9 * 7 + 4 * i, logo_y + 4);
-		cout << char(219) << char(219);
-	}
-	//V? 3 trái tim nh?
-	for (int i = 0;i < 3;i++) {
-		GotoXY(logo_x + 20 + 12*i, logo_y - 3);
-		cout << char(003) << "  ";
-	}
-	//V? cây
-	PrintTree(logo_x+15, logo_y + 10);
-
-	Sleep(500);
-	system("cls");
-}
-
-void ShowPage(int page) {
-	switch (page) {
-	case 1: ShowGame(); break;
-	case 2: ShowFileGame(); break;
-	case 3: ShowAbout(); break;
-	}
-}
-
-void ShowMenu() {
-	HANDLE word;
-	MODE = 1;
-	NEW_GAME = 1;
-	_X = CENTER_X;_Y = CENTER_Y;
-	int backgroundColor = BRIGHT_WHITE, textColor = BLUE;
-	DrawMenu();
-	SetColor(backgroundColor, textColor);
-	GotoXY(CENTER_X - 5, CENTER_Y);
-	cout << ">";
-	while (1) {
-		GotoXY(_X, _Y);
-		_COMMAND = toupper(_getch());
-		if (_COMMAND == 'W') {
-			MoveUp();
-			SetColor(backgroundColor, backgroundColor);
-			GotoXY(CENTER_X - 5, _Y + 2); cout << " ";
-			SetColor(backgroundColor, textColor);
-			GotoXY(CENTER_X - 5, _Y);
-			cout << ">";
-		}
-		else if (_COMMAND == 'S') {
-			MoveDown();
-			SetColor(backgroundColor, backgroundColor);
-			GotoXY(CENTER_X - 5, _Y - 2); cout << ">";
-			SetColor(backgroundColor, textColor);
-			GotoXY(CENTER_X - 5, _Y);
-			cout << ">";
-		}
-		else if (_COMMAND == 13 && _Y == _MENU[3].y) {
-			system("cls");
-			GabageCollect();
-			return;
-		}
-		else if (_COMMAND == 13) {
-			ShowLoadingPage();
-			for (int i = 0;i < MENU_SIZE;i++)
-				if (_Y == _MENU[i].y)
-					ShowPage(_MENU[i].c);
-		}
-	}
-}
-
-void ShowAbout() {
-	//V? About ? dây...
-	TT();
-	_COMMAND = toupper(_getch()); //_getch() chu khong phai getch()
-	if (_COMMAND == 27) {
-		ShowLoadingPage();
-		ShowMenu();
-		return;
-	}
-}
-
-void ShowFileGame() {
-	HANDLE word;
-	int backgroundColor = BRIGHT_WHITE, textColor = BLUE;
-	MODE = 3;
-	_X = CENTER_X; _Y = CENTER_Y;
-	GetMatchListSize();
-	DrawMatchList();
-	SetColor(backgroundColor, textColor);
-	GotoXY(CENTER_X - 5, CENTER_Y);
-	cout << ">";
-	while (1) {
-		GotoXY(_X, _Y);
-		_COMMAND = toupper(_getch());
-		if (_COMMAND == 'W') {
-			MoveUp();
-			SetColor(backgroundColor, backgroundColor);
-			GotoXY(CENTER_X - 5, _Y + 3);cout << ">";
-			SetColor(backgroundColor, textColor);
-			GotoXY(CENTER_X - 5, _Y);
-			cout << ">";
-		}
-		else if (_COMMAND == 'S') {
-			MoveDown();
-			SetColor(backgroundColor, backgroundColor);
-			GotoXY(CENTER_X - 5, _Y - 3);cout << ">";
-			SetColor(backgroundColor, textColor);
-			GotoXY(CENTER_X - 5, _Y);
-			cout << ">";
-		}
-		else if (_COMMAND == 27) {
-			ShowLoadingPage();
-			ShowMenu();
-		}
-		else if (_COMMAND == 13) {
-			ShowLoadingPage();
-			for (int i = 0;i < MATCH_LIST_SIZE;i++) {
-				if (_Y == _MATCH_LIST[i].y) {
-					NEW_GAME = 0;
-					LoadGame(_MATCH_LIST[i].item);
-					ShowGame();
-				}
-			}
-		}
-		else if (_COMMAND == 0x7F) {
-			ShowLoadingPage();
-			for (int i = 0;i < MATCH_LIST_SIZE;i++) {
-				if (_Y == _MATCH_LIST[i].y) {
-					RemoveMatchFile(_MATCH_LIST[i].item);
-				}
-			}
-		}
-	}
-}
-
-
 void GetMatchListSize() {
 	string line;
 	ifstream file("game_files.txt");
@@ -1148,6 +1131,7 @@ void LoadGame(string matchName) {
 	_LAST_POINT.c = numbers[m];
 	_TURN = !_LAST_POINT.c; _COMMAND = -1;
 }
+
 void TT()
 {
 	int top = 3, left = 64;
@@ -1198,12 +1182,5 @@ void TT()
 	/* PrintCloud(top1, 3, 3);
 	 PrintCloud(top + 10, left1 + 5, 3);*/
 }
-void Ox(int x1, int x2, int y)
-{
-    for (int j = x1; j <= x2; j++)
-    {
-        GotoXY(j, y);
-        cout << char(196);
-    }
-}
+
 

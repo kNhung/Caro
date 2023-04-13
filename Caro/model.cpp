@@ -210,8 +210,6 @@ bool CheckSameString(string s1, string s2) {
 void Save_1_move(int& y, int& x) {
 	y = _Y;
 	x = _X;
-<<<<<<< HEAD
-=======
 }
 
 void Playgame() {
@@ -263,5 +261,4 @@ void Playgame() {
 		keyevent.bKeyDown = false;
 		validEnter = true;
 	}
->>>>>>> ada0df25204ed81707bd9b3c6ea7a5209e0fe960
 }

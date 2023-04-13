@@ -4,7 +4,7 @@
 #include "view.h"
 
 int main() {
-	fixConsoleWindows(); //View
+	FixConsoleWindows(); //View
 	GetMatchListSize();
 	ShowMenu(); //View
 	return 0;
