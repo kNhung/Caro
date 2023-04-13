@@ -94,7 +94,7 @@ bool FullBoard(_POINT _A[BOARD_SIZE][BOARD_SIZE]) {
 //
 //	return 0;
 //}
-//Dynamic Array for save highlightwin
+//Dynamic Array for save HighlightWin
 static int header = sizeof(int) + sizeof(int);
 void* origin_addr(void* aData) {
 	if (aData != nullptr)
@@ -118,7 +118,7 @@ int memSize(int nItem, int sizeItem) {
 	return header + nItem * sizeItem;
 }
 
-int arrSize(void* aData) {
+int ArrSize(void* aData) {
 	if (aData != nullptr)
 		return *(int*)((char*)aData - header);
 	return 0;
@@ -161,7 +161,7 @@ void* arrResize(void* aData, int nItem) {
 }
 
 int arrPushBack(void** aData, void* x) {
-	int nItem = arrSize(*aData);
+	int nItem = ArrSize(*aData);
 	int sizeItem = arrItemSize(*aData);
 	void* aNew = arrResize(*aData, nItem + 1);
 	if (aNew != nullptr) {
@@ -188,14 +188,14 @@ void XYinMatrix(int& row, int& column, int x, int y) {
 	}
 }
 
-int test_inTestBoard(POINT*& a, int& led1, int& led2) {
-	if (arrSize(a) == 5 && (led1 == 0 || led2 == 0)) {
-		Highlightwin(a);
+int TestInTestBoard(POINT*& a, int& led1, int& led2) {
+	if (ArrSize(a) == 5 && (led1 == 0 || led2 == 0)) {
+		HighlightWin(a);
 		arrFree(a);
 		return(_TURN = true ? -1 : 1);
 	}
-	if (arrSize(a) > 5) {
-		Highlightwin(a);
+	if (ArrSize(a) > 5) {
+		HighlightWin(a);
 		arrFree(a);
 		return(_TURN = true ? -1 : 1);
 	}
@@ -256,7 +256,7 @@ int TestBoard() {
 			break;
 		}
 	}
-	result = test_inTestBoard(a, led1, led2); if (result != 2)return result;
+	result = TestInTestBoard(a, led1, led2); if (result != 2)return result;
 
 	for (int i = row + 1; i >= 0 && i <= BOARD_SIZE; i++) {
 		if (_A[i][column].c == _A[row][column].c) {
@@ -281,7 +281,7 @@ int TestBoard() {
 			break;
 		}
 	}
-	result = test_inTestBoard(a, led1, led2); if (result != 2)return result;
+	result = TestInTestBoard(a, led1, led2); if (result != 2)return result;
 
 	for (int i = row - 1, j = column - 1; i >= 0 && i <= BOARD_SIZE, j >= 0 && j <= BOARD_SIZE; i--, j--) {
 		if (_A[i][j].c == _A[row][column].c) {
@@ -305,7 +305,7 @@ int TestBoard() {
 			break;
 		}
 	}
-	result = test_inTestBoard(a, led1, led2); if (result != 2)return result;
+	result = TestInTestBoard(a, led1, led2); if (result != 2)return result;
 
 	for (int i = row + 1, j = column - 1; i >= 0 && i <= BOARD_SIZE, j >= 0 && j <= BOARD_SIZE; i++, j--) {
 		if (_A[i][j].c == _A[row][column].c) {
@@ -330,7 +330,7 @@ int TestBoard() {
 			break;
 		}
 	}
-	result = test_inTestBoard(a, led1, led2); if (result != 2)return result;
+	result = TestInTestBoard(a, led1, led2); if (result != 2)return result;
 
 	int flag = 0;
 	for (int i = 0; i < BOARD_SIZE; i++)

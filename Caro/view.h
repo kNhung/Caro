@@ -9,7 +9,7 @@ void GotoXY(int x, int y);
 void SetColor(int backgoundColor, int textColor);
 
 void DrawBoard();
-void Highlightwin(POINT* a);
+void HighlightWin(POINT* a);
 void Button(int top, int left, int width, int height, string label);
 void DrawExistedData();
 void DrawMenu();
@@ -19,11 +19,9 @@ void DrawPopUp(char quest);
 
 void PrintMenuLogo();
 void PrintHeart(int top, int left);
-void PrintSmallHeart(int top, int left);
 void PrintRectangle(int top, int left, int width, int height);
 void PrintTree(int x, int y);
 void PrintCloud(int left, int top, int type);
-
 
 int ProcessFinish(int pWhoWin);
 int AskContinue();

@@ -142,10 +142,10 @@ void DrawBoard() {
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 3 + 32 + 2, 15, 2, "ESC:Exit");
 }
 
-void Highlightwin(POINT* a) {
+void HighlightWin(POINT* a) {
 	for (int i = 1; i < 10; i++) {
 		int color = i; Sleep(600);
-		for (int j = 0; j < arrSize((POINT*)a); j++) {
+		for (int j = 0; j < ArrSize((POINT*)a); j++) {
 			GotoXY(a[j].x, a[j].y);
 			//if (color == 7)color++;
 			SetColor(3, color++);
@@ -301,22 +301,6 @@ void PrintHeart(int top, int left) {
 			putchar(logo[i * num_chars + j]);
 	}
 
-}
-
-void PrintSmallHeart(int x, int y) {
-	int m = 0;
-	unsigned char heart_s[] = {32,254,32,32,32,254,32,
-							   219,254,254,32,254,254,254,
-							   32,254,254,254,254,254,32,
-							   32,32,254,254,254,32,32,
-							   32,32,32,254,32,32,32};
-	GotoXY(x, y);
-	for (int i = 0;i < 5;i++) {
-		for (int i = 0;i < 7;i++) {
-			cout << heart_s[m++];
-		}
-		GotoXY(x, y++);
-	}
 }
 
 
@@ -595,7 +579,6 @@ void ShowLoadingPage() {
 	}
 	//Vẽ 3 trái tim nhỏ
 	for (int i = 0;i < 3;i++) {
-		//PrintSmallHeart(logo_x + 5*i, logo_y - 4);
 		GotoXY(logo_x + 20 + 12*i, logo_y - 3);
 		cout << char(003) << "  ";
 	}

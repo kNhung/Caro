@@ -12,7 +12,7 @@ int CheckBoard(int pX, int pY);
 int CheckExistedFile(string fileName);
 bool CheckValidName(string name);
 bool CheckSameString(string s1, string s2);
-int arrSize(void* aData);
+int ArrSize(void* aData);
 
 #endif
 
