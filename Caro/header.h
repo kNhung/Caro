@@ -15,13 +15,15 @@
 #include <vector>
 using namespace std;
 
+#define WIDTH 232
+#define HEIGHT 50
 #define BOARD_SIZE 16
 #define LEFT 28
 #define TOP 8
-#define CENTER_X 55
-#define CENTER_Y 15
+#define CENTER_X 102
+#define CENTER_Y 26
 #define GOAL 5
-#define MENU_SIZE 4
+#define MENU_SIZE 5
 #define BLACK 0
 #define BLUE 1
 #define GREEN 2
@@ -66,5 +68,6 @@ extern vector<_LIST> _MATCH_LIST;
 extern unsigned char L[], O[], A[], D[], G[], M[], E[], I[], N[], H[], P[];
 extern unsigned char* LETTER_LIST[];
 extern int LETTER_LIST_SIZE;
+//extern wstring NEW[3];
 
 #endif

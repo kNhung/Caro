@@ -1,11 +1,12 @@
-#include "header.h"
+﻿#include "header.h"
 
 _POINT _A[BOARD_SIZE][BOARD_SIZE];
 _POINT _MENU[MENU_SIZE] = {
-	_POINT{CENTER_X,CENTER_Y,1},
-	_POINT{CENTER_X,CENTER_Y + 2,2},
-	_POINT{CENTER_X,CENTER_Y + 4,3},
-	_POINT{CENTER_X,CENTER_Y + 6,4}
+	_POINT{CENTER_X,CENTER_Y - 3,1},
+	_POINT{CENTER_X,CENTER_Y + 1,2},
+	_POINT{CENTER_X,CENTER_Y + 5,3},
+	_POINT{CENTER_X,CENTER_Y + 9,4},
+	_POINT{CENTER_X,CENTER_Y + 13,5},
 };
 _POINT _LAST_POINT;
 
@@ -77,3 +78,6 @@ unsigned char P[]{		  219,219,219,219,219,219,32,
 						  219,219,32,32,32,32,32 };
 unsigned char* LETTER_LIST[] = { L, O, A, D, G, M, E, I, N, H, P };
 int LETTER_LIST_SIZE = sizeof(LETTER_LIST) / sizeof(*LETTER_LIST);
+//wstring NEW[3] = { L"┼┼┼┼┼┼┼┼┼┼┼┼┼┼████┼┼██┼┼██▀▀┼┼██┼┼┼┼┼██┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼",
+//						L"┼┼┼┼┼┼┼┼┼┼┼┼┼┼██┼██┼██┼┼████┼┼██┼███┼██┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼",
+//						L"┼┼┼┼┼┼┼┼┼┼┼┼┼┼██┼┼████┼┼██▄▄┼┼┼███┼███┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼" };
