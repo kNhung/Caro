@@ -3,6 +3,7 @@
 #define _MY_VIEW
 #include "header.h"
 
+//Điều chỉnh thuộc tính của màn hình
 void SetFontInfo();
 void SetAndCenterWindow();
 void SetWindowSize(SHORT width, SHORT height);
@@ -55,5 +56,5 @@ void ShowHelp();
 
 void GetMatchListSize();
 void LoadGame(string matchName);
-void TT();
+void DrawAbout();
 #endif

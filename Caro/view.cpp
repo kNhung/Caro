@@ -63,7 +63,6 @@ void DisableMaximize()
 		GetWindowLong(console, GWL_STYLE) & ~(WS_MAXIMIZEBOX) & ~(WS_THICKFRAME));
 }
 
-
 void HideScrollBars()
 { // Ẩn thanh cuộn của console
 	HWND console = GetConsoleWindow();
@@ -904,7 +903,7 @@ void ShowGame() {
 
 void ShowAbout() {
 	//V? About ? dây...
-	TT();
+	DrawAbout();
 	while (1) {
 		_COMMAND = toupper(_getch()); //_getch() chu khong phai getch()
 		if (_COMMAND == 27) {
@@ -1132,7 +1131,7 @@ void LoadGame(string matchName) {
 	_TURN = !_LAST_POINT.c; _COMMAND = -1;
 }
 
-void TT()
+void DrawAbout()
 {
 	int top = 3, left = 64;
 	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
