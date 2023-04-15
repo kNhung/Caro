@@ -5,15 +5,14 @@
 
 
 //Fix the size of the console window
-
 void SetFontInfo()
 {
 	HANDLE hdc = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_FONT_INFOEX info;
 	info.cbSize = sizeof(info);
 	GetCurrentConsoleFontEx(hdc, FALSE, &info);
-	info.dwFontSize.X = 10;
-	info.dwFontSize.Y = 15;
+	info.dwFontSize.X = 6;
+	info.dwFontSize.Y = 12;
 	wcscpy_s(info.FaceName, L"Consolas");
 	SetCurrentConsoleFontEx(hdc, FALSE, &info);
 }
@@ -23,8 +22,8 @@ void SetAndCenterWindow()
 	HWND console = GetConsoleWindow();
 	RECT rectClient, rectWindow;
 	GetClientRect(console, &rectClient), GetWindowRect(console, &rectWindow);
-	int width = 1216;
-	int height = 784;
+	int width = 1920;
+	int height = 1080;
 	int posX = (GetSystemMetrics(SM_CXSCREEN) - width) / 2,
 		posY = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
 	MoveWindow(console, posX, posY, width, height, TRUE);
@@ -92,8 +91,8 @@ void FixConsoleWindows() {
 	SetWindowLong(consoleWindow, GWL_STYLE, style);
 	SetFontInfo();
 	SetAndCenterWindow();
-	SetWindowSize(200, 45);
-	SetScreenBufferSize(200, 45);
+	SetWindowSize(WIDTH, HEIGHT);
+	SetScreenBufferSize(WIDTH, HEIGHT);
 	DisableSelection();
 	DisableMaximize();
 	SetConsoleTitle(L"Caro");
@@ -243,65 +242,209 @@ void DrawExistedData() {
 	_X = _LAST_POINT.x;_Y = _LAST_POINT.y;
 	GotoXY(_X, _Y);
 }
+void PrintLeftCursor(int top, int left) 
+{
+	int old_mode = _setmode(_fileno(stdout), _O_U16TEXT);
+	wstring cursor[5] =     { L"█▄   ",
+							  L"███▄ ",
+							  L"█████",
+							  L"███▀ ",
+							  L"█▀   " };
+	for (int i = 0; i < 5; i++) {
+		GotoXY(left, top + i);
+		wcout << cursor[i] << endl;
+	}
+	int current_mode = _setmode(_fileno(stdout), old_mode);
+}
+void PrintRightCursor(int top, int left){
+	int old_mode = _setmode(_fileno(stdout), _O_U16TEXT);
+	wstring cursor[5] =	  { L"   ▄█",
+							L" ▄███",
+							L"█████",
+							L" ▀███",
+							L"   ▀█" };
+	for (int i = 0; i < 5; i++) {
+		GotoXY(left, top + i);
+		wcout << cursor[i] << endl;
+	}
+	int current_mode = _setmode(_fileno(stdout), old_mode);
+}
+void PrintLine(int top, int left, int length) 
+{
+	GotoXY(left, top);
+	cout << char(195);
+	for (int i = 0; i < length - 1; i++) {
+		cout << char(196);
+	}
+	cout << char(180);
+}
+void PrintNEW() 
+{
+	int old_mode = _setmode(_fileno(stdout), _O_U16TEXT);
+	wstring NEW[3] = {  L"                 ████  ██  ██▀▀  ██     ██                ",
+						L"                 ██ ██ ██  ████  ██ ███ ██                ",
+						L"                 ██  ████  ██▄▄   ███ ███                 " };
+	for (int i = 0; i < 3; i++) {
+		GotoXY(CENTER_X - 14, CENTER_Y - 2 + i);
+		wcout << NEW[i];
+	}
+	int current_mode = _setmode(_fileno(stdout), old_mode);
+
+}
+void PrintCONTINUE()
+{
+	int old_mode = _setmode(_fileno(stdout), _O_U16TEXT);
+	wstring NEW[3] = {  L"  ▄█▀██  ████   ██▄  ██  ██████  ██  ██▄  ██  ██  ██  ██▀▀",
+						L"  ██    ██  ██  ██▀█▄██    ██    ██  ██▀█▄██  ██  ██  ████",
+						L"  ▀█▄██  ████   ██  ▀██    ██    ██  ██  ▀██  ▀████▀  ██▄▄" };
+	for (int i = 0; i < 3; i++) {
+		GotoXY(CENTER_X - 14, CENTER_Y + 2 + i);
+		wcout << NEW[i];
+	}
+	int current_mode = _setmode(_fileno(stdout), old_mode);
+
+}
+void PrintABOUT()
+{
+	int old_mode = _setmode(_fileno(stdout), _O_U16TEXT);
+	wstring NEW[3] = {  L"             ▄███▄  ██▀█▄  ████   ██  ██  ██████          ",
+						L"             ██▄██  █████ ██  ██  ██  ██    ██            ",
+						L"             ██ ██  ██▄█▀  ████   ▀████▀    ██            " };
+	for (int i = 0; i < 3; i++) {
+		GotoXY(CENTER_X - 14, CENTER_Y + 10 + i);
+		wcout << NEW[i];
+	}
+	int current_mode = _setmode(_fileno(stdout), old_mode);
+
+}
+void PrintEXIT()
+{
+	int old_mode = _setmode(_fileno(stdout), _O_U16TEXT);
+	wstring NEW[3] = {   L"                   ██▀▀  ██ ██  ██  ██████               ",
+						 L"                   ████   ███   ██    ██                 ",
+						 L"                   ██▄▄  ██ ██  ██    ██                 " };
+	for (int i = 0; i < 3; i++) {
+		GotoXY(CENTER_X - 14, CENTER_Y + 14 + i);
+		wcout << NEW[i];
+	}
+	int current_mode = _setmode(_fileno(stdout), old_mode);
+
+}
+void PrintPVC()
+{
+	int old_mode = _setmode(_fileno(stdout), _O_U16TEXT);
+	wstring NEW[3] = {   L"                    ██▀▀█▌ ██   ██ ▄█▀██                 ",
+						 L"                    ██▄▄█▌  ██ ██  ██                    ",
+						 L"                    ██       ███   ▀█▄██                 " };
+	for (int i = 0; i < 3; i++) {
+		GotoXY(CENTER_X - 14, CENTER_Y + 6 + i);
+		wcout << NEW[i];
+	}
+	int current_mode = _setmode(_fileno(stdout), old_mode);
+
+}
+void ClearPreviousHightlight(int& a) {
+	if (a < 0) a = 0;
+	if (a > 4) a = 4;
+	switch (a) {
+	case 0: {
+		SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+		PrintNEW();
+		break;
+	}
+	case 1: {
+		SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+		PrintCONTINUE();
+		break;
+	}
+	case 2: {
+		SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+		PrintPVC();
+		break;
+	}
+	case 3: {
+		SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+		PrintABOUT();
+		break;
+	}
+	case 4: {
+		SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+		PrintEXIT();
+		break;
+	}
+	}
+}
+void PrintCurrentHighlight(int& a) {
+	if (a < 0) a = 0;
+	if (a > 4) a = 4;
+	switch (a) {
+	case 0: {
+		SetColor(LIGHT_AQUA, BLACK);
+		PrintNEW();
+		break;
+	}
+	case 1: {
+		SetColor(LIGHT_AQUA, BLACK);
+		PrintCONTINUE();
+		break;
+	}
+	case 2: {
+		SetColor(LIGHT_AQUA, BLACK);
+		PrintPVC();
+		break;
+	}
+	case 3: {
+		SetColor(LIGHT_AQUA, BLACK);
+		PrintABOUT();
+		break;
+	}
+	case 4: {
+		SetColor(LIGHT_AQUA, BLACK);
+		PrintEXIT();
+		break;
+	}
+	}
+}
 
 void DrawMenu() {
 	system("color F1");
+	ShowCursor(0);
 	int left = CENTER_X - 3, top = CENTER_Y - 1;
 
-	//V? tiêu d? trang menu
-	PrintMenuLogo();
-	PrintHeart(CENTER_Y - 10, CENTER_X - 28);
-	PrintHeart(CENTER_Y - 10, CENTER_X + 24);
+	//Vẽ tiêu đề trang menu
+	//PrintMenuLogo(CENTER_Y - 20, CENTER_X - 12);
+	//PrintHeart(CENTER_Y - 20, CENTER_X - 28);
+	//PrintHeart(CENTER_Y - 20, CENTER_X + 24);
 
 
-	//In góc trên bên trái thanh menu
-	GotoXY(left, top);
-	putchar(201);
-	//In ra b? r?ng c?a thanh menu
-	for (int i = 1; i < 12; i++)
-	{
-		putchar(205);
-	}
-	//In góc trên bên ph?i thanh menu
-	putchar(187);
-	//In ra b? dài c?a thanh menu
-	for (int i = 1; i < 8; i++) // S? 4 ? dây là s? option hi?n trong b?ng menu 
-	{
-		GotoXY(left ,top + i);
-		if (i % 2 != 0)
-		{
-			putchar(186);
-			GotoXY(left + 12, top + i);
-			putchar(186);
-		}
-		else
-		{
-			putchar(199);
-			for (int i = 1; i < 12; i++)
-			{
-				putchar(196);
-			}
-			putchar(182);
-		}
+	//Vẽ khung trang menu
+	SetColor(BRIGHT_WHITE, BLACK);
+	PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
+	//Vẽ khung bự in option
+	SetColor(BRIGHT_WHITE, BLACK);
+	PrintRectangle2lines(CENTER_Y - 5, CENTER_X - 25, 80, 25);
 
-		//V? khung trang menu
-		PrintRectangle(0, 1, 116, 28);
-		
-	}
-	//V? các l?a ch?n
-	GotoXY(CENTER_X, CENTER_Y); cout << "New";
-	GotoXY(CENTER_X, CENTER_Y + 2); cout << "Continue";
-	GotoXY(CENTER_X, CENTER_Y + 4); cout << "About";
-	GotoXY(CENTER_X, CENTER_Y + 6); cout << "Exit";
-	//In ra góc du?i trái
-	GotoXY(left, top + 8);///dn24
-	putchar(200);
-	//In ra b? r?ng ? phía du?i c?a b?ng menu
-	for (int i = 1; i < 12; i++)
-	{
-		putchar(205);
-	}
-	putchar(188);
+	//Vẽ khung nhỏ in option
+	PrintRectangle(CENTER_Y - 3, CENTER_X - 15, 60, 20);
+	PrintLine(CENTER_Y + 1, CENTER_X - 15, 60);
+	PrintLine(CENTER_Y + 5, CENTER_X - 15, 60);
+	PrintLine(CENTER_Y + 9, CENTER_X - 15, 60);
+	PrintLine(CENTER_Y + 13, CENTER_X - 15, 60);
+
+	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	//Vẽ các lựa chọn
+	//Chữ New 
+	SetColor(LIGHT_AQUA, BLACK );
+	PrintNEW();
+	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	//Chữ Continue
+	PrintCONTINUE();
+	//Chữ PVC
+	PrintPVC();
+	//Chữ About
+	PrintABOUT();
+	//Chữ Exit
+	PrintEXIT();
 }
 
 void DrawMatchList() {
@@ -416,7 +559,7 @@ void DrawPopUp(WORD wVirtualKeyCode) {
 }
 
 
-void PrintMenuLogo() {
+void PrintMenuLogo(int top, int left) {
 	unsigned char logo[] = { 
 		32,219,219,219,219,219,219,187,  32,219,219,219,219,219,187,32,   219,219,219,219,219,219,187,32,  32,219,219,219,219,219,219,187,32,
 		219,219,201,205,205,205,205,188, 219,219,201,205,205,219,219,187, 219,219,201,205,205,219,219,187, 219,219,201,205,205,205,219,219,187,
@@ -425,7 +568,6 @@ void PrintMenuLogo() {
 		200,219,219,219,219,219,219,187, 219,219,186,32,32,219,219,186,   219,219,186,32,32,219,219,186,   200,219,219,219,219,219,219,201,188,
 		32,200,205,205,205,205,205,188,  200,205,188,32,32,200,205,188,   200,205,188,32,32,200,205,188,   32,200,205,205,205,205,205,188,32
 		};
-	int top = CENTER_Y - 10, left = CENTER_X - 12;
 	int num_lines = 6, num_chars = 8*3 + 9;
 	for (int i = 0; i < num_lines; i++)
 	{
@@ -455,6 +597,33 @@ void PrintHeart(int top, int left) {
 
 }
 
+void PrintRectangle2lines(int top, int left, int width, int height) 
+{
+	GotoXY(left, top);
+	for (int i = 1; i <= width; i++) {
+		cout << char(205);
+	}
+	GotoXY(left, top);
+	cout << char(201);
+	for (int i = 1; i <= height; i++) {
+		GotoXY(left, top + i);
+		cout << char(186) << endl;
+	}
+	GotoXY(left, top + height);
+	for (int i = 1; i <= width; i++) {
+		cout << char(205);
+	}
+	GotoXY(left, top + height);
+	cout << char(200);
+	GotoXY(left + width, top);
+	cout << char(187);
+	for (int i = 1; i < height; i++) {
+		GotoXY(left + width, top + i);
+		cout << char(186) << endl;
+	}
+	GotoXY(left + width, top + height);
+	cout << char(188);
+}
 void PrintRectangle(int top, int left, int width, int height) {
 	GotoXY(left, top);
 	for (int i = 1; i <= width; i++) {
@@ -758,7 +927,8 @@ void ShowPage(int page) {
 	switch (page) {
 	case 1: ShowGame(); break;
 	case 2: ShowFileGame(); break;
-	case 3: ShowAbout(); break;
+	case 3: /*Danh voi may;*/ break;
+	case 4: ShowAbout(); break;
 	}
 }
 
@@ -793,35 +963,50 @@ void ShowLoadingPage() {
 }
 
 void ShowMenu() {
+	ShowCursor(0);
 	HANDLE word;
 	MODE = 1;
 	NEW_GAME = 1;
-	_X = CENTER_X;_Y = CENTER_Y;
+	_X = CENTER_X - 14;_Y = CENTER_Y - 3;
 	int backgroundColor = BRIGHT_WHITE, textColor = BLUE;
 	DrawMenu();
+	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	PrintLeftCursor(CENTER_Y -3, CENTER_X - 21);
+	PrintRightCursor(CENTER_Y - 3, CENTER_X +47);
 	SetColor(backgroundColor, textColor);
-	GotoXY(CENTER_X - 5, CENTER_Y);
-	cout << ">";
+	int previousOption = 0;
 	while (1) {
 		GotoXY(_X, _Y);
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 'W') {
 			MoveUp();
+			//Xóa con trỏ ở vị trí cũ + unhighlight option trước
 			SetColor(backgroundColor, backgroundColor);
-			GotoXY(CENTER_X - 5, _Y + 2); cout << " ";
-			SetColor(backgroundColor, textColor);
-			GotoXY(CENTER_X - 5, _Y);
-			cout << ">";
+			PrintLeftCursor(_Y + 5, CENTER_X - 21);
+			PrintRightCursor(_Y + 5, CENTER_X + 47);
+			ClearPreviousHightlight(previousOption);
+			//Di chuyển con trỏ và hightlight option hiện tại
+			SetColor(backgroundColor, LIGHT_AQUA);
+			PrintLeftCursor(_Y, CENTER_X - 21);
+			PrintRightCursor(_Y, CENTER_X + 47);
+			previousOption--;
+			PrintCurrentHighlight(previousOption);
 		}
 		else if (_COMMAND == 'S') {
 			MoveDown();
+			//Xóa con trỏ ở vị trí cũ + unhighlight  option trước
 			SetColor(backgroundColor, backgroundColor);
-			GotoXY(CENTER_X - 5, _Y - 2); cout << ">";
-			SetColor(backgroundColor, textColor);
-			GotoXY(CENTER_X - 5, _Y);
-			cout << ">";
+			PrintLeftCursor(_Y - 5, CENTER_X - 21);
+			PrintRightCursor(_Y - 5, CENTER_X + 47);
+			ClearPreviousHightlight(previousOption);
+			SetColor(backgroundColor, LIGHT_AQUA);
+			//Di chuyển con trỏ và hightlight option hiện tại
+			PrintLeftCursor(_Y , CENTER_X - 21);
+			PrintRightCursor(_Y , CENTER_X + 47);
+			previousOption++;
+			PrintCurrentHighlight(previousOption);
 		}
-		else if (_COMMAND == 13 && _Y == _MENU[3].y) {
+		else if (_COMMAND == 13 && _Y == _MENU[4].y) {
 			system("cls");
 			GabageCollect();
 			return;
@@ -838,7 +1023,7 @@ void ShowMenu() {
 void ShowGame() {
 	MODE = 2;
 	StartGame();
-	ShowCursor(1);
+	ShowCursor(0);
 	int row_console = 0, column_console = 0, row = 0;
 	int flag = 0;
 	KEY_EVENT_RECORD keyevent;

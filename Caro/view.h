@@ -5,7 +5,7 @@
 
 //Điều chỉnh thuộc tính của màn hình
 void SetFontInfo();
-void SetAndCenterWindow();
+void SetAndCenterWindow(int width, int height);
 void SetWindowSize(SHORT width, SHORT height);
 void SetScreenBufferSize(SHORT width, SHORT height);
 void DisableSelection();
@@ -28,11 +28,24 @@ void DrawMatchList();
 void DrawLetter(unsigned char letter[], int X, int Y);
 void DrawPopUp(char quest);
 
-void PrintMenuLogo();
+void PrintMenuLogo(int top, int left);
 void PrintHeart(int top, int left);
+void PrintRectangle2lines(int top, int left, int width, int height);
 void PrintRectangle(int top, int left, int width, int height);
 void PrintTree(int x, int y);
 void PrintCloud(int left, int top, int type);
+void PrintLine(int top, int left, int length);
+void PrintLeftCursor(int top, int left);
+void PrintRightCursor(int top, int left);
+void PrintNEW();
+void PrintCONTINUE();
+void PrintABOUT();
+void PrintEXIT();
+void PrintPVC();
+void ClearPreviousHightlight(int& a);
+void PrintCurrentHighlight(int& a);
+
+
 
 int ProcessFinish(int pWhoWin);
 void ExitGame();
