@@ -122,20 +122,10 @@ void GotoXY(int x, int y) {
 
 void DrawBoard() {
 	system("color F1");
-	int top = 1, left = 45;
-	int old_mode = _setmode(_fileno(stdout), _O_WTEXT);
-	wstring logo[6] = {
-		L"░█████╗░███╗░░██╗  ███╗░░░███╗░█████╗░██████╗░░█████╗░██╗░░██╗",
-		L"██╔══██╗████╗░██║  ████╗░████║██╔══██╗██╔══██╗██╔══██╗██║░░██║",
-		L"██║░░██║██╔██╗██║  ██╔████╔██║███████║██████╔╝██║░░╚═╝███████║",
-		L"██║░░██║██║╚████║  ██║╚██╔╝██║██╔══██║██╔══██╗██║░░██╗██╔══██║",
-		L"╚█████╔╝██║░╚███║  ██║░╚═╝░██║██║░░██║██║░░██║╚█████╔╝██║░░██║",
-		L"░╚════╝░╚═╝░░╚══╝  ╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░╚═╝░░╚═╝" };
-	for (int i = 0; i < 6; i++) {
-		GotoXY(left, top + i);
-		wcout << logo[i];
-	}
-	int current_mode = _setmode(_fileno(stdout), old_mode);
+	//In logo
+	SetColor(BRIGHT_WHITE, BLACK);
+	PrintOnMarch(1, 45);
+	//SetColor(BRIGHT_WHITE, BLUE);
 	//V? khung ngoài
 	//V? du?ng vi?n trên du?i
 	//Sleep(500);
@@ -190,10 +180,10 @@ void DrawBoard() {
 			GotoXY(LEFT + j, 2 * i + TOP);
 			if (j % 4 == 0)cout << char(197);
 		}
-	GotoXY(LEFT + BOARD_SIZE * 4 + 11, TOP + 2); SetColor(AQUA, RED); cout << "  PLAYER X  "; SetColor(BRIGHT_WHITE, BLUE);
+	GotoXY(LEFT + BOARD_SIZE * 4 + 11, TOP + 2); SetColor(LIGHT_AQUA, BLACK); cout << "  PLAYER X  "; SetColor(BRIGHT_WHITE, BLACK);
 	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + 4); cout << "WINNING SCORE : ";
 	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + 6); cout << "MOVES : ";
-	GotoXY(LEFT + BOARD_SIZE * 4 + 11, TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 2); SetColor(AQUA, RED); cout << "  PLAYER O  "; SetColor(BRIGHT_WHITE, BLUE);
+	GotoXY(LEFT + BOARD_SIZE * 4 + 11, TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 2); SetColor(LIGHT_AQUA, BLACK); cout << "  PLAYER O  "; SetColor(BRIGHT_WHITE, BLACK);
 	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4); cout << "WINNING SCORE : ";
 	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 6); cout << "MOVES : ";
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT, 15, 2, "U:Undo");
@@ -223,7 +213,9 @@ void Highlightwin(_POINT a[], int& n) {
 
 
 void Button(int top, int left, int width, int height,string label) {
+	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
 	PrintRectangle(top, left, width, height);
+	SetColor(BRIGHT_WHITE, BLACK);
 	int n = ceil((width - label.size() - 2) / 2 + 0.5);
 	GotoXY(left + n + 1, top + (height / 2));
 	cout << label;
@@ -437,6 +429,36 @@ void PrintContinueLogo(int top, int left) {
 	}
 	int current_mode = _setmode(_fileno(stdout), old_mode);
 }
+void PrintOnMarch(int top, int left) {
+	int old_mode = _setmode(_fileno(stdout), _O_WTEXT);
+	wstring logo[6] = {
+		L" █████╗ ███╗  ██╗  ███╗   ███╗ █████╗ ██████╗  █████╗ ██╗  ██╗",
+		L"██╔══██╗████╗ ██║  ████╗ ████║██╔══██╗██╔══██╗██╔══██╗██║  ██║",
+		L"██║  ██║██╔██╗██║  ██╔████╔██║███████║██████╔╝██║  ╚═╝███████║",
+		L"██║  ██║██║╚████║  ██║╚██╔╝██║██╔══██║██╔══██╗██║  ██╗██╔══██║",
+		L"╚█████╔╝██║ ╚███║  ██║ ╚═╝ ██║██║  ██║██║  ██║╚█████╔╝██║  ██║",
+		L" ╚════╝ ╚═╝  ╚══╝  ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚════╝ ╚═╝  ╚═╝" };
+	for (int i = 0; i < 6; i++) {
+		GotoXY(left, top + i);
+		wcout << logo[i];
+	}
+	int current_mode = _setmode(_fileno(stdout), old_mode);
+}
+void PrintAboutLogo(int top, int left) {
+	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
+	wstring logo[6] = {
+		L" █████╗ ██████╗  █████╗ ██╗   ██╗████████╗",
+		L"██╔══██╗██╔══██╗██╔══██╗██║   ██║╚══██╔══╝",
+		L"███████║██████╦╝██║  ██║██║   ██║   ██║   ",
+		L"██╔══██║██╔══██╗██║  ██║██║   ██║   ██║   ",
+		L"██║  ██║██████╦╝╚█████╔╝╚██████╔╝   ██║   ",
+		L"╚═╝  ╚═╝╚═════╝  ╚════╝  ╚═════╝    ╚═╝   " };
+	for (int i = 0; i < 6; i++) {
+		GotoXY(left, i + top);
+		wcout << logo[i];
+	}
+	int currentMode = _setmode(_fileno(stdout), OldMode);
+}
 
 
 void DrawMenu() {
@@ -444,7 +466,7 @@ void DrawMenu() {
 	ShowCursor(0);
 
 	//Vẽ tiêu đề trang menu
-	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	SetColor(BRIGHT_WHITE, BLACK);
 	PrintMenuLogo(CENTER_Y - 20, CENTER_X - 2);
 	//PrintHeart(CENTER_Y - 20, CENTER_X - 28);
 	//PrintHeart(CENTER_Y - 20, CENTER_X + 24);
@@ -490,49 +512,24 @@ void DrawMatchList() {
 	//V? nút Tr? v?
 	GotoXY(CENTER_X + 3, CENTER_Y + 20);
 	cout << "Press ESC to back to menu";
-
-
-
 	//Vẽ khung để hiện các file
+	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
 	for (int i = 0; i < MATCH_LIST_SIZE; i++) {
-		//GotoXY(CENTER_X - 3, CENTER_Y + i * 3 - 1);
-		//cout << char(218); //Góc trên trái
-
-		//GotoXY(CENTER_X - 2, CENTER_Y + i * 3 - 1);
-		//for (int i = 0;i < 15;i++)
-		//	cout << char(2500); //Ðu?ng ngang trên
-
-		//GotoXY(CENTER_X + 13, CENTER_Y + i * 3 - 1);
-		//cout << char(191); //Góc trên ph?i
-
-		//GotoXY(CENTER_X - 3, CENTER_Y + i * 3);
-		//cout << char(179); //Ðu?ng th?ng trái
-
-		//GotoXY(CENTER_X, CENTER_Y + i * 3);
-		//cout << _MATCH_LIST[i].item; 
-
-		//GotoXY(CENTER_X + 13, CENTER_Y + i * 3);
-		//cout << char(179); //Ðu?ng th?ng ph?i
-
-		//GotoXY(CENTER_X - 3, CENTER_Y + i * 3 + 1);
-		//cout << char(192); //Góc du?i trái
-
-		//GotoXY(CENTER_X - 2, CENTER_Y + i * 3 + 1);
-		//for (int i = 0;i < 15;i++)
-		//	cout << char(2500); //Ðu?ng ngang du?i
-
-		//GotoXY(CENTER_X + 13, CENTER_Y + i * 3 + 1);
-		//cout << char(217); //Góc du?i ph?i
-		PrintRectangle(CENTER_Y + i * 5, CENTER_X, 30, 5 );
-		GotoXY(CENTER_X + 12, CENTER_Y + i * 4 );
+		PrintRectangle(CENTER_Y - 1 + i * 4, CENTER_X, 30, 4 );
+		GotoXY(CENTER_X + 10, CENTER_Y - 1 + i * 4 + 2);
+		SetColor(BRIGHT_WHITE, BLACK);
 		cout << _MATCH_LIST[i].item; 
+		SetColor(BRIGHT_WHITE, LIGHT_AQUA);
 	}
-	PrintRectangle(CENTER_Y, CENTER_X, 30, 5 * MATCH_LIST_SIZE);
-
+	PrintRectangle(CENTER_Y - 1, CENTER_X, 30, 4 * MATCH_LIST_SIZE);
+	SetColor(BRIGHT_WHITE, BLACK);
+	PrintRectangle2lines(CENTER_Y - 3, CENTER_X - 10, 50, 4 + 4 * MATCH_LIST_SIZE);
 	//V? mây
 	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
-	//PrintCloud(0, 20, 3);
-	//PrintCloud(103, 10, 2);
+	PrintCloud(40, 4, 3); //ở bên trên chữ caro tí
+	PrintCloud(150, 12, 3); //ở ngay dưới chữ "O"
+	PrintCloud(WIDTH - 17, HEIGHT-7, 2); // Góc phải
+	PrintCloud(2, HEIGHT - 17, 1); // bên trái
 	GotoXY(CENTER_X, CENTER_Y);
 }
 
@@ -952,10 +949,11 @@ void ShowPage(int page) {
 void ShowLoadingPage() {
 	system("cls");
 	system("color F1");
-	//V? khung
-	PrintRectangle(0, 1, 116, 28);
-	//V? ch? LOADING
-	int logo_x = 25, logo_y = 5;
+	//Vẽ khung
+	SetColor(BRIGHT_WHITE, BLACK);
+	PrintRectangle(0, 1, WIDTH - 1, HEIGHT - 1);
+	//Vẽ chữ LOADING
+	int logo_x = 80, logo_y = 5;
 	DrawLetter(L, logo_x, logo_y);
 	DrawLetter(O, logo_x + 9, logo_y);
 	DrawLetter(A, logo_x + 9 * 2, logo_y);
@@ -974,8 +972,7 @@ void ShowLoadingPage() {
 	}
 	//V? cây
 	PrintTree(logo_x+15, logo_y + 10);
-
-	Sleep(500);
+	Sleep(700);
 	system("cls");
 }
 
@@ -987,7 +984,7 @@ void ShowMenu() {
 	_X = CENTER_X - 14;_Y = CENTER_Y - 3;
 	int backgroundColor = BRIGHT_WHITE, textColor = BLUE;
 	DrawMenu();
-	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	SetColor(BRIGHT_WHITE, BLACK);
 	PrintLeftCursor(CENTER_Y -3, CENTER_X - 21);
 	PrintRightCursor(CENTER_Y - 3, CENTER_X +47);
 	SetColor(backgroundColor, textColor);
@@ -1003,7 +1000,7 @@ void ShowMenu() {
 			PrintRightCursor(_Y + 5, CENTER_X + 47);
 			ClearPreviousHightlight(previousOption);
 			//Di chuyển con trỏ và hightlight option hiện tại
-			SetColor(backgroundColor, LIGHT_AQUA);
+			SetColor(backgroundColor, BLACK);
 			PrintLeftCursor(_Y, CENTER_X - 21);
 			PrintRightCursor(_Y, CENTER_X + 47);
 			previousOption--;
@@ -1016,7 +1013,7 @@ void ShowMenu() {
 			PrintLeftCursor(_Y - 5, CENTER_X - 21);
 			PrintRightCursor(_Y - 5, CENTER_X + 47);
 			ClearPreviousHightlight(previousOption);
-			SetColor(backgroundColor, LIGHT_AQUA);
+			SetColor(backgroundColor, BLACK);
 			//Di chuyển con trỏ và hightlight option hiện tại
 			PrintLeftCursor(_Y , CENTER_X - 21);
 			PrintRightCursor(_Y , CENTER_X + 47);
@@ -1024,6 +1021,7 @@ void ShowMenu() {
 			PrintCurrentHighlight(previousOption);
 		}
 		else if (_COMMAND == 13 && _Y == _MENU[4].y) {
+			SetColor(BRIGHT_WHITE, BLACK);
 			system("cls");
 			GabageCollect();
 			return;
@@ -1118,7 +1116,7 @@ void ShowGame() {
 
 void ShowAbout() {
 	//V? About ? dây...
-	TT();
+	AboutPage();
 	while (1) {
 		_COMMAND = toupper(_getch()); //_getch() chu khong phai getch()
 		if (_COMMAND == 27) {
@@ -1133,30 +1131,36 @@ void ShowFileGame() {
 	HANDLE word;
 	int backgroundColor = BRIGHT_WHITE, textColor = BLUE;
 	MODE = 3;
-	_X = CENTER_X; _Y = CENTER_Y;
 	GetMatchListSize();
 	DrawMatchList();
-	SetColor(backgroundColor, textColor);
-	GotoXY(CENTER_X - 5, CENTER_Y);
-	cout << ">";
+	_X = CENTER_X; _Y = CENTER_Y - 1;
+	SetColor(BRIGHT_WHITE, BLACK);
+	PrintLeftCursor(_Y, CENTER_X - 6);
+	PrintRightCursor(_Y, CENTER_X + 32);
+	//int currentOption = 0;
 	while (1) {
-		GotoXY(_X, _Y);
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 'W') {
 			MoveUp();
-			SetColor(backgroundColor, backgroundColor);
-			GotoXY(CENTER_X - 5, _Y + 3);cout << ">";
-			SetColor(backgroundColor, textColor);
-			GotoXY(CENTER_X - 5, _Y);
-			cout << ">";
+			//Xóa con trỏ ở vị trí cũ 
+			SetColor(BRIGHT_WHITE, BRIGHT_WHITE);
+			PrintLeftCursor(_Y + 5, CENTER_X - 6);
+			PrintRightCursor(_Y + 5, CENTER_X + 32);
+			//Di chuyển con trỏ 
+			SetColor(BRIGHT_WHITE, BLACK);
+			PrintLeftCursor(_Y, CENTER_X - 6);
+			PrintRightCursor(_Y, CENTER_X + 32);
 		}
 		else if (_COMMAND == 'S') {
 			MoveDown();
-			SetColor(backgroundColor, backgroundColor);
-			GotoXY(CENTER_X - 5, _Y - 3);cout << ">";
-			SetColor(backgroundColor, textColor);
-			GotoXY(CENTER_X - 5, _Y);
-			cout << ">";
+			//Xóa con trỏ ở vị trí cũ 
+			SetColor(BRIGHT_WHITE, BRIGHT_WHITE);
+			PrintLeftCursor(_Y - 5, CENTER_X - 6);
+			PrintRightCursor(_Y -5, CENTER_X + 32);
+			//Di chuyển con trỏ 
+			SetColor(BRIGHT_WHITE, BLACK);
+			PrintLeftCursor(_Y, CENTER_X - 6);
+			PrintRightCursor(_Y, CENTER_X + 32);
 		}
 		else if (_COMMAND == 27) {
 			ShowLoadingPage();
@@ -1292,29 +1296,29 @@ void GetMatchListSize() {
 		cout << "Cannot get match list size";
 		return;
 	}
-	_X = CENTER_X;_Y = CENTER_Y;
+	_X = CENTER_X;_Y = CENTER_Y - 1;
 	if (MATCH_LIST_SIZE == 0) {
 		while (getline(file, line)) {
 			++MATCH_LIST_SIZE;
 			_LIST list = { _X,_Y,line };
 			_MATCH_LIST.push_back(list);
-			_Y += 3;
+			_Y += 4;
 		}
-		_Y -= 3;
+		_Y -= 4;
 	}
 	else {
 		int i = -1;
 		while (getline(file, line)) {
 			++i;
-			_Y += 3;
+			_Y += 4;
 			if (i == MATCH_LIST_SIZE && CheckSameString(line,_MATCH_LIST[i-1].item)==0) {
-				_Y -= 3;
+				_Y -= 4;
 				_LIST list = { _X,_Y,line };
 				_MATCH_LIST.push_back(list);
 				++MATCH_LIST_SIZE;
 			}
 		}
-		_Y -= 3*MATCH_LIST_SIZE;
+		_Y -= 4*MATCH_LIST_SIZE;
 	}
 	file.close();
 }
@@ -1345,26 +1349,15 @@ void LoadGame(string matchName) {
 	_TURN = !_LAST_POINT.c; _COMMAND = -1;
 }
 
-void TT()
+void AboutPage()
 {
-	int top = 3, left = 64;
-	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
-	wstring logo[6] = {
-		L"░█████╗░██████╗░░█████╗░██╗░░░██╗████████╗",
-		L"██╔══██╗██╔══██╗██╔══██╗██║░░░██║╚══██╔══╝",
-		L"███████║██████╦╝██║░░██║██║░░░██║░░░██║░░░",
-		L"██╔══██║██╔══██╗██║░░██║██║░░░██║░░░██║░░░",
-		L"██║░░██║██████╦╝╚█████╔╝╚██████╔╝░░░██║░░░",
-		L"╚═╝░░╚═╝╚═════╝░░╚════╝░░╚═════╝░░░░╚═╝░░░" };
-	for (int i = 0; i < 6; i++){
-		GotoXY(left, i + top);
-		wcout << logo[i];
-	}
-	_setmode(_fileno(stdout), OldMode);
-
+	SetColor(BRIGHT_WHITE, BLACK);
 	int width = 40, height = 9, i = 0, n = 0;
+	int top = CENTER_Y - 20, left = CENTER_X - 6 ;
+	PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
+	PrintAboutLogo(top, left);
 	string name[4] = { "22120259 - Nguyen Phat Kim Nhung","22120256 - Ma Thanh Nhi","22120252 - Giang Duc Nhat","22120257 - Dinh Le Gia Nhu"};
-	string cd[4] = { "Lead-Developer 1","Developer 2","Developer 3","Developer 4" };
+	string cd[4] = { "Leader - Developer 1","Developer 2","Developer 3","Developer 4" };
 	int top1 = top + 7, left1 = left - 20;
      for(int j=0;j<4;j++){
 		PrintRectangle(top1, left1, width, height);
@@ -1392,8 +1385,11 @@ void TT()
 	 n = ceil((85 - teacher.size() - 2) / 2 + 0.5);
 	 GotoXY(left1 + n + 1, top1 + 3); cout << name1;
 
-	/* PrintCloud(top1, 3, 3);
-	 PrintCloud(top + 10, left1 + 5, 3);*/
+	 SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	 PrintCloud(WIDTH - 17, HEIGHT - 7, 2); // Góc phải
+	 PrintCloud(155, 10, 3); 
+	 PrintCloud(2, HEIGHT - 17, 1); // bên trái 
+	 SetColor(BRIGHT_WHITE, BLACK);
 }
 
 

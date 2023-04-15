@@ -41,7 +41,7 @@ void MoveDown() {
 		GotoXY(_X, _Y);
 	}
 	if (MODE == 3 && _Y < _MATCH_LIST[MATCH_LIST_SIZE - 1].y) {
-		_Y += 2;
+		_Y += 4;
 		GotoXY(_X, _Y);
 	}
 }
@@ -53,7 +53,7 @@ void MoveUp() {
 		GotoXY(_X, _Y);
 	}
 	if (MODE == 3 && _Y > _MATCH_LIST[0].y) {
-		_Y -= 3;
+		_Y -= 4;
 		GotoXY(_X, _Y);
 	}
 }
