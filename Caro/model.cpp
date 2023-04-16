@@ -22,19 +22,6 @@ _POINT XYinMatrix(int& x, int& y,int& row,int& col) {
 	}
 }
 
-int test_inTestBoard(_POINT a[], int& n, int& led1, int& led2) {
-	if (n == 5 && (led1 == 0 || led2 == 0)) {
-		Highlightwin(a, n);
-		return(_TURN = true ? -1 : 1);
-	}
-	if (n > 5) {
-		Highlightwin(a, n);
-		return(_TURN = true ? -1 : 1);
-	}
-	Resetdata(a, n, led1, led2);
-	return 2;
-}
-
 void ResetData() {
 	for (int i = 0; i < BOARD_SIZE; i++) {
 		for (int j = 0; j < BOARD_SIZE; j++) {
@@ -46,6 +33,20 @@ void ResetData() {
 	_TURN = true; _COMMAND = -1;
 	_X = _A[0][0].x; _Y = _A[0][0].y;
 	GotoXY(_X, _Y);
+}
+
+
+int test_inTestBoard(_POINT a[], int& n, int& led1, int& led2) {
+	if (n == 5 && (led1 == 0 || led2 == 0)) {
+		Highlightwin(a, n);
+		return(_TURN = true ? -1 : 1);
+	}
+	if (n > 5) {
+		Highlightwin(a, n);
+		return(_TURN = true ? -1 : 1);
+	}
+	Resetdata(a, n, led1, led2);
+	return 2;
 }
 
 //Kiểm tra thắng thua, người 1 hay _Turn=true thắng thì trả về -1 người còn lại thắng trả về 1,
@@ -192,7 +193,9 @@ int CheckExistedFile(string fileName) {
 
 bool CheckValidName(string name) {
 	for (int i = 0; i < name.size(); i++) {
-		if (name[i] == ' ' || name[i] == '/' || name[i] == ':' || name[i] == ' * ' || name[i] == ' ? ' || name[i] == '$')
+		if (name[i] == ' ' || name[i] == '/' || 
+			name[i] == ':' || name[i] == ' * ' || 
+			name[i] == ' ? ' || name[i] == '$')
 			return 0;
 	}
 	return 1;
@@ -206,6 +209,7 @@ bool CheckSameString(string s1, string s2) {
 			return 0;
 	return 1;
 }
+
 
 void Save_1_move(int& y, int& x) {
 	y = _Y;

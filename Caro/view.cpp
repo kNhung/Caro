@@ -242,6 +242,7 @@ void DrawExistedData() {
 	_X = _LAST_POINT.x;_Y = _LAST_POINT.y;
 	GotoXY(_X, _Y);
 }
+
 void PrintLeftCursor(int top, int left) 
 {
 	int old_mode = _setmode(_fileno(stdout), _O_U16TEXT);
@@ -449,11 +450,11 @@ void DrawMenu() {
 
 void DrawMatchList() {
 	system("color F1");
-	//V? nút Tr? v?
+	//Vẽ nút Tr? v?
 	GotoXY(90, 25);
 	cout << "Press ESC to back to menu";
 
-	//V? ch? LOAD GAME
+	//Vẽ chữ LOAD GAME
 	int logo_x = 22, logo_y = 1;
 	int old_mode= _setmode(_fileno(stdout), _O_WTEXT);
 	wstring loadgame[6] = {
@@ -468,17 +469,6 @@ void DrawMatchList() {
 		wcout << loadgame[i];
 	}
 	int current_mode= _setmode(_fileno(stdout), old_mode);
-	//V? các ph?n t? c?a danh sách
-	//Vẽ chữ LOAD GAME
-	logo_x = 22; logo_y = 3;
-	DrawLetter(L, logo_x, logo_y);
-	DrawLetter(O, logo_x + 9, logo_y);
-	DrawLetter(A, logo_x + 9 * 2, logo_y);
-	DrawLetter(D, logo_x + 9 * 3, logo_y);
-	DrawLetter(G, logo_x + 9 * 4 + 3, logo_y);
-	DrawLetter(A, logo_x + 9 * 5 + 3, logo_y);
-	DrawLetter(M, logo_x + 9 * 6 + 3, logo_y);
-	DrawLetter(E, logo_x + 9 * 7 + 3, logo_y);
 
 	//Vẽ các phần tử của danh sách
 	for (int i = 0; i < MATCH_LIST_SIZE; i++) {
@@ -512,29 +502,11 @@ void DrawMatchList() {
 		cout << char(217); //Góc du?i ph?i
 	}
 
-	//V? mây
+	//Vẽ mây
 	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
 	PrintCloud(0, 20, 3);
 	PrintCloud(103, 10, 2);
 	GotoXY(CENTER_X, CENTER_Y);
-}
-
-void DrawLetter(unsigned char letter[], int X, int Y){
-	int m = 0;
-	for (int k = 0;k < LETTER_LIST_SIZE;k++) {
-		if (LETTER_LIST[k]==letter) {
-			m = 0;
-			GotoXY(X, Y);
-			for (int i = 1;i <= 5;i++) {
-				for (int j = 1;j <= 7;j++) {
-					cout << LETTER_LIST[k][m];
-					++m;
-				}
-				GotoXY(X, ++Y);
-			}
-		}
-	}
-	
 }
 
 void DrawPopUp(WORD wVirtualKeyCode) {
@@ -937,15 +909,9 @@ void ShowLoadingPage() {
 	system("color F1");
 	//V? khung
 	PrintRectangle(0, 1, 116, 28);
-	//V? ch? LOADING
+	//Vẽ chữ LOADING
 	int logo_x = 25, logo_y = 5;
-	DrawLetter(L, logo_x, logo_y);
-	DrawLetter(O, logo_x + 9, logo_y);
-	DrawLetter(A, logo_x + 9 * 2, logo_y);
-	DrawLetter(D, logo_x + 9 * 3, logo_y);
-	DrawLetter(I, logo_x + 9 * 4, logo_y);
-	DrawLetter(N, logo_x + 9 * 5, logo_y);
-	DrawLetter(G, logo_x + 9 * 6, logo_y);
+	
 	for (int i = 0;i <= 2;i++) {
 		GotoXY(logo_x + 9 * 7 + 4 * i, logo_y + 4);
 		cout << char(219) << char(219);
@@ -1175,12 +1141,9 @@ void ShowAsk(WORD wVirtualKeyCode) {
 void ShowHelp() {
 	system("cls");
 	SetColor(BRIGHT_WHITE, BLUE);
-	//Logo
+	//Vẽ chữ Help
 	int logo_x = CENTER_X - 11, logo_y = 3;
-	DrawLetter(H, logo_x, logo_y);
-	DrawLetter(E, logo_x + 9, logo_y);
-	DrawLetter(L, logo_x + 9 * 2, logo_y);
-	DrawLetter(P, logo_x + 9 * 3, logo_y);
+	
 	//Phím di chuy?n
 	SetColor(BRIGHT_WHITE, GREEN);
 	int move_x = 12, move_y = logo_y + 8;

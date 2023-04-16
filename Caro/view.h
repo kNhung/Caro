@@ -25,7 +25,6 @@ void Button(int top, int left, int width, int height, string label);
 void DrawExistedData();
 void DrawMenu();
 void DrawMatchList();
-void DrawLetter(unsigned char letter[], int X, int Y);
 void DrawPopUp(char quest);
 
 void PrintMenuLogo(int top, int left);
