@@ -7,7 +7,7 @@
 //Lưu game
 void SaveGame() {
 	string matchName;
-	GotoXY(0, _A[BOARD_SIZE - 1][BOARD_SIZE - 1].y + 4);
+	//GotoXY(0, _A[BOARD_SIZE - 1][BOARD_SIZE - 1].y + 4);
 	getline(cin, matchName);
 	_MATCH_LIST_FILE.open("game_files.txt", ios::app);
 	if (!_MATCH_LIST_FILE) {
@@ -451,7 +451,7 @@ void HighlightWin(_POINT a[], int& n) {
 }
 int ProcessFinish(int pWhoWin) {
 	int top = 15, left = 43;
-	int bg_color = BRIGHT_WHITE, text_color = BLUE;
+	int bg_color = BRIGHT_WHITE, text_color = LIGHT_AQUA;
 	switch (pWhoWin) {
 	case -1: {
 		system("cls");
@@ -607,4 +607,5 @@ void RemoveMatchFile(string matchName) {
 	remove(c);
 }
 void GabageCollect() {
+	return;
 }

@@ -75,17 +75,19 @@ void PrintRectangle(int top, int left, int width, int height) {
 	GotoXY(left + width, top + height);
 	cout << char(217);
 }
-void PrintTree(int x, int y) {
-	GotoXY(x, y);cout << "               ,@@@@@@@,";
-	GotoXY(x, y + 1);cout << "      ,,,.   ,@@@@@@/@@,  .oo8888o.";
-	GotoXY(x, y + 2);cout << "    ,&%%&%&&%,@@@@@/@@@@@@,8888\88/8o";
-	GotoXY(x, y + 3);cout << "   ,%&\%&&%&&%,@@@\@@@/@@@88\88888/88'";
-	GotoXY(x, y + 4);cout << "   %&&%&%&/%&&%@@\@@/ /@@@88888\88888'";
-	GotoXY(x, y + 5);cout << "   %&&%/ %&%%&&@@\ V /@@' `88\8 `/88'";
-	GotoXY(x, y + 6);cout << "   `&%\ ` /%&'    |.|        \ '|8'";
-	GotoXY(x, y + 7);cout << "       |o|        | |         | |";
-	GotoXY(x, y + 8);cout << "       |.|        | |         | |";
-	GotoXY(x, y + 9);cout << "/_. \\/ ._\//_/__/  ,\_//__\\/.  \_//__/_";
+void PrintTree(int left, int top) {
+	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
+	wstring logo[5] = {
+		L"──▒▒▒▒▒▒▒▒───▒▒▒▒▒▒▒▒",
+		L"─▒▐▒▐▒▒▒▒▌▒─▒▒▌▒▒▐▒▒▌▒",
+		L"──▒▀▄█▒▄▀▒───▒▀▄▒▌▄▀▒",
+		L"─────██─────────██",
+		L"░░░▄▄██▄░░░░░░░▄██▄░░░"};
+	for (int i = 0; i < 5; i++) {
+		GotoXY(left, i + top);
+		wcout << logo[i];
+	}
+	int currentMode = _setmode(_fileno(stdout), OldMode);
 }
 void PrintCloud(int left, int top, int type) {
 	//Type 1: n?a trái ; 2: n?a ph?i ; 3: nguyên dám
@@ -257,12 +259,13 @@ void PrintContinueLogo(int top, int left) {
 void PrintInMatch(int top, int left) {
 	int old_mode = _setmode(_fileno(stdout), _O_WTEXT);
 	wstring logo[6] = {
-		L" █████╗ ███╗  ██╗  ███╗   ███╗ █████╗ ██████╗  █████╗ ██╗  ██╗",
-		L"██╔══██╗████╗ ██║  ████╗ ████║██╔══██╗██╔══██╗██╔══██╗██║  ██║",
-		L"██║  ██║██╔██╗██║  ██╔████╔██║███████║██████╔╝██║  ╚═╝███████║",
-		L"██║  ██║██║╚████║  ██║╚██╔╝██║██╔══██║██╔══██╗██║  ██╗██╔══██║",
-		L"╚█████╔╝██║ ╚███║  ██║ ╚═╝ ██║██║  ██║██║  ██║╚█████╔╝██║  ██║",
-		L" ╚════╝ ╚═╝  ╚══╝  ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚════╝ ╚═╝  ╚═╝" };
+		L"██╗███╗  ██╗  ███╗   ███╗ █████╗ ████████╗ █████╗ ██╗  ██╗",
+		L"██║████╗ ██║  ████╗ ████║██╔══██╗╚══██╔══╝██╔══██╗██║  ██║",
+		L"██║██╔██╗██║  ██╔████╔██║███████║   ██║   ██║  ╚═╝███████║",
+		L"██║██║╚████║  ██║╚██╔╝██║██╔══██║   ██║   ██║  ██╗██╔══██║",
+		L"██║██║ ╚███║  ██║ ╚═╝ ██║██║  ██║   ██║   ╚█████╔╝██║  ██║",
+		L"╚═╝╚═╝  ╚══╝  ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝    ╚════╝ ╚═╝  ╚═╝" };
+
 	for (int i = 0; i < 6; i++) {
 		GotoXY(left, top + i);
 		wcout << logo[i];
@@ -301,6 +304,36 @@ void PrintMenuLogo(int top, int left) {
 			putchar(logo[i * num_chars + j]);
 	}
 
+}
+void PrintLoadingLogo(int top, int left) {
+	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
+	wstring logo[6] = {
+		L"██╗       ████╗  █████╗ ██████╗ ██╗███╗  ██╗ ██████╗			",
+		L"██║	  ██╔══██╗██╔══██╗██╔══██╗██║████╗ ██║██╔════╝			",
+		L"██║	  ██║  ██║███████║██║  ██║██║██╔██╗██║██║  ██╗			",
+		L"██║	  ██║  ██║██╔══██║██║  ██║██║██║╚████║██║  ╚██╗			",
+		L"███████╗╚█████╔╝██║  ██║██████╔╝██║██║ ╚███║╚██████╔╝██╗██╗██╗",
+		L"╚══════╝ ╚════╝ ╚═╝  ╚═╝╚═════╝ ╚═╝╚═╝  ╚══╝ ╚═════╝ ╚═╝╚═╝╚═╝" };
+	for (int i = 0; i < 6; i++) {
+		GotoXY(left, i + top);
+		wcout << logo[i];
+	}
+	int currentMode = _setmode(_fileno(stdout), OldMode);
+}
+void PrintHelpLogo(int top, int left) {
+	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
+	wstring logo[6] = {
+		L"██╗  ██╗███████╗██╗     ██████╗",
+		L"██║  ██║██╔════╝██║     ██╔══██╗",
+		L"███████║█████╗  ██║     ██████╔╝",
+		L"██╔══██║██╔══╝  ██║     ██╔═══╝",
+		L"██║  ██║███████╗███████╗██║",
+		L"╚═╝  ╚═╝╚══════╝╚══════╝╚═╝" };
+	for (int i = 0; i < 6; i++) {
+		GotoXY(left, i + top);
+		wcout << logo[i];
+	}
+	int currentMode = _setmode(_fileno(stdout), OldMode);
 }
 
 //Hiệu ứng
@@ -541,12 +574,12 @@ void DrawMatchList() {
 	int logo_x = 22, logo_y = 1;
 	int old_mode= _setmode(_fileno(stdout), _O_WTEXT);
 	wstring loadgame[6] = {
-		L"██╗░░░░░░█████╗░░█████╗░██████╗░  ░██████╗░░█████╗░███╗░░░███╗███████╗",
-		L"██║░░░░░██╔══██╗██╔══██╗██╔══██╗  ██╔════╝░██╔══██╗████╗░████║██╔════╝",
-		L"██║░░░░░██║░░██║███████║██║░░██║  ██║░░██╗░███████║██╔████╔██║█████╗░░",
-		L"██║░░░░░██║░░██║██╔══██║██║░░██║  ██║░░╚██╗██╔══██║██║╚██╔╝██║██╔══╝░░",
-		L"███████╗╚█████╔╝██║░░██║██████╔╝  ╚██████╔╝██║░░██║██║░╚═╝░██║███████╗",
-		L"╚══════╝░╚════╝░╚═╝░░╚═╝╚═════╝░  ░╚═════╝░╚═╝░░╚═╝╚═╝░░░░░╚═╝╚══════╝" };
+		L"██╗      █████╗  █████╗ ██████╗    ██████╗  █████╗ ███╗   ███╗███████╗",
+		L"██║     ██╔══██╗██╔══██╗██╔══██╗  ██╔════╝ ██╔══██╗████╗ ████║██╔════╝",
+		L"██║     ██║  ██║███████║██║  ██║  ██║  ██╗ ███████║██╔████╔██║█████╗  ",
+		L"██║     ██║  ██║██╔══██║██║  ██║  ██║  ╚██╗██╔══██║██║╚██╔╝██║██╔══╝  ",
+		L"███████╗╚█████╔╝██║  ██║██████╔╝  ╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗",
+		L"╚══════╝ ╚════╝ ╚═╝  ╚═╝╚═════╝    ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝" };
 	for (int i = 0; i < 6; i++) {
 		GotoXY(logo_x, logo_y + i);
 		wcout << loadgame[i];
@@ -571,22 +604,21 @@ void DrawMatchList() {
 	GotoXY(CENTER_X, CENTER_Y);
 }
 void DrawPopUp(WORD wVirtualKeyCode) {
-	//V? khung
 	system("cls");
-	system("color F1");
-	PrintRectangle(CENTER_Y + 3, CENTER_X + 8, 30, 3);
-	GotoXY(CENTER_X + 11, CENTER_Y + 4);
+	SetColor(BRIGHT_WHITE, BLACK);
 	switch (wVirtualKeyCode) {
 	case 0x4C:
+		PrintRectangle(CENTER_Y, CENTER_X - 3, 24, 3);
+		GotoXY(CENTER_X, CENTER_Y + 1);
 		cout << " Enter match name";
-		GotoXY(CENTER_X, CENTER_Y - 1);
+		GotoXY(CENTER_X + 2, CENTER_Y + 2);
 		SaveGame();
-		ShowLoadingPage();
-		ShowMenu();
 		break;
 	case VK_ESCAPE:
+		PrintRectangle(CENTER_Y, CENTER_X - 3, 27, 3);
+		GotoXY(CENTER_X, CENTER_Y + 1);
 		cout << "Are you sure to quit?";
-		GotoXY(CENTER_X + 13, CENTER_Y + 5);
+		GotoXY(CENTER_X + 2, CENTER_Y + 2);
 		cout << "  Yes(Y)   No(N)";
 	}
 }
@@ -601,8 +633,7 @@ void Draw_AskContinue() {
 	GotoXY(_X, _Y);
 	ShowCursor(0);
 }
-void DrawAbout()
-{
+void DrawAbout(){
 	SetColor(BRIGHT_WHITE, BLACK);
 	int width = 40, height = 9, i = 0, n = 0;
 	int top = CENTER_Y - 20, left = CENTER_X - 6 ;
@@ -642,4 +673,117 @@ void DrawAbout()
 	 PrintCloud(155, 10, 3); 
 	 PrintCloud(2, HEIGHT - 17, 1); // bên trái 
 	 SetColor(BRIGHT_WHITE, BLACK);
+}
+void DrawLoadingPage() {
+	SetColor(BRIGHT_WHITE, BLACK);
+	int width = 40, height = 9, i = 0, n = 0;
+	int top = CENTER_Y - 6, left = CENTER_X - 12;
+	PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
+	PrintLoadingLogo(top, left);
+
+	//Vẽ 3 trái tim nhỏ
+	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	for (int i = 0;i < 3;i++) {
+		GotoXY(left + 20 + 6 * i, top - 3);
+		cout << char(003) << "  ";
+	}
+	//Vẽ cây
+	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	PrintTree(left + 15, top + 24);
+	//Vẽ mây
+	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	PrintCloud(WIDTH - 17, HEIGHT - 7, 2); // Góc phải
+	PrintCloud(155, 10, 3);
+	PrintCloud(2, HEIGHT - 17, 1);
+}
+void DrawHelp() {
+	SetColor(BRIGHT_WHITE, BLACK);
+	int width = 40, height = 9, i = 0, n = 0;
+	int top= CENTER_Y - 20, left= CENTER_X - 4;
+	PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
+	PrintHelpLogo(top,left);
+
+	//Phím di chuyển
+	SetColor(BRIGHT_WHITE, BLACK);
+	int move_x = CENTER_X - 50, move_y = top + 8;
+	GotoXY(move_x, move_y);
+	cout << "     ---    ";
+	GotoXY(move_x, move_y + 1);
+	cout << "    | W |   ";
+	GotoXY(move_x, move_y + 2);
+	cout << " --- --- ---      Use W, A, S, D to move";
+	GotoXY(move_x, move_y + 3);
+	cout << "| A | S | D |";
+	GotoXY(move_x, move_y + 4);
+	cout << " --- --- --- ";
+
+	//Phím Enter
+	GotoXY(move_x, move_y + 8);
+	cout << " ";
+	/*for (int i = 0; i < move_x; i++)
+		cout << char(95);*/
+	GotoXY(move_x, move_y + 8 );
+	cout << " ------------ ";
+	GotoXY(move_x, move_y + 8 + 1);
+	cout << "|          " << char(191) << " |     Press Enter to";
+	GotoXY(move_x, move_y + 8 + 2);
+	cout << "| ENTER <" << char(196) << char(196) << char(217) << " |     place your mark";
+	GotoXY(move_x, move_y + 8 + 3);
+	cout << " ------------ ";
+
+	//Luật
+	SetColor(BRIGHT_WHITE, BLACK);
+	int rules_x = CENTER_X + 20, rules_y = top + 8;
+	GotoXY(rules_x, rules_y);
+	cout << "X starts first.";
+	GotoXY(rules_x, rules_y + 2);
+	cout << "Players take turns placing their Mark,";
+	GotoXY(rules_x, rules_y + 4);
+	cout << "X or O, on an open square in the grid.";
+	GotoXY(rules_x, rules_y + 6);
+	cout << "The first player to make 5 of their ";
+	GotoXY(rules_x, rules_y + 8);
+	cout << "own mark in a row vertically, horizontally,";
+	GotoXY(rules_x, rules_y + 10);
+	cout << "or diagonally wins the game. If all the squares";
+	GotoXY(rules_x, rules_y + 12);
+	cout << "are filled and neither player has 5 in a row,";
+	GotoXY(rules_x, rules_y + 14);
+	cout << "the game is considered a Tie.";
+
+	//Ðuờng chia đôi
+	SetColor(BRIGHT_WHITE, BLACK);
+	for (int i = 0; i < 17; i++) {
+		GotoXY(CENTER_X + 8, top + 7 + i);
+		cout << "|";
+	}
+	
+	//Đám mây
+	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	PrintCloud(WIDTH - 17, HEIGHT - 7, 2); // Góc phải
+	PrintCloud(155, 10, 3);
+	PrintCloud(2, HEIGHT - 17, 1); // bên trái 
+
+	//Trực thăng
+	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
+	wstring logo1[5] = {
+		L"▀▀▀▀█▀▀▀▀",
+		L"─▄▀█▀▀█──────▄",
+		L"█▄▄█▄▄██████▀",
+		L"▀▀█▀▀▀█▀▀",
+		L"─▀▀▀▀▀▀▀" };
+	for (int i = 0; i < 5; i++) {
+		GotoXY(20, i + top);
+		wcout << logo1[i];
+	}
+	wstring logo2[5] = {
+		L"─────────█▄██▄█",
+		L"█▄█▄█▄█▄█▐█┼██▌█▄█▄█▄█▄█",
+		L"███┼█████▐████▌█████┼███",
+		L"█████████▐████▌█████████"};
+	for (int i = 0; i < 4; i++) {
+		GotoXY(CENTER_X, i + HEIGHT - 18);
+		wcout << logo2[i];
+	}
+	int currentMode = _setmode(_fileno(stdout), OldMode);
 }
