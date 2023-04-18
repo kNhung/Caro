@@ -1,27 +1,144 @@
 ﻿#include "control.h"
 #include "model.h"
 #include "view.h"
-#include"header.h"
+#include "page.h"
 
 
-void Resetdata(_POINT a[], int& n, int& led1, int& led2) {
-	a[n] = { 0 };
-	n = 1;
-	led1 = 0; led2 = 0;
-}
-
-//Dựa vào vị trí con trỏ tìm phần tử được gán lượt đánh trong ma trận
-_POINT XYinMatrix(int& x, int& y,int& row,int& col) {
-	for (int i = 0; i < BOARD_SIZE; i++) {
-		for (int j = 0; j < BOARD_SIZE; j++)
-			if (_A[i][j].x == x && _A[i][j].y == y) {
-				row = i;
-				col = j;
-				return _A[i][j];
-			}
+//Lưu game
+void SaveGame() {
+	string matchName;
+	GotoXY(0, _A[BOARD_SIZE - 1][BOARD_SIZE - 1].y + 4);
+	getline(cin, matchName);
+	_MATCH_LIST_FILE.open("game_files.txt", ios::app);
+	if (!_MATCH_LIST_FILE) {
+		cout << "Khong mo duoc tap tin" << endl;
+		return;
 	}
+	while (CheckExistedFile(matchName) == 1) {
+		cout << endl << "File da ton tai";
+		cin.ignore();
+		getline(cin, matchName);
+		//Khi code tran hoàn ch?nh thì thêm cls,GotoXY d? getline
+	}
+	while (CheckValidName(matchName) == 0) {
+		cout << endl << "Ten khong hop le";
+		cin.ignore();
+		getline(cin, matchName);
+		//Khi code tran hoàn ch?nh thì thêm cls,GotoXY d? getline
+
+	}
+	_MATCH_LIST_FILE << matchName + ".txt" << endl;
+	SaveMatchInfo(matchName);
+	_MATCH_LIST_FILE.close();
+}
+void SaveMatchInfo(string matchName) {
+	matchName += ".txt";
+	ofstream matchFile(matchName);
+	if (!matchFile) {
+		cout << "Cannot open matchFile";
+		return;
+	}
+	cout << "Opened matchFile";
+	for (int i = 0;i < BOARD_SIZE;i++) {
+		for (int j = 0;j < BOARD_SIZE;j++) {
+			matchFile << _A[i][j].c << endl;
+		}
+	}
+	matchFile << _LAST_POINT.x << endl << _LAST_POINT.y << endl << _LAST_POINT.c;
+	matchFile.close();
+}
+int CheckExistedFile(string fileName) {
+	//0:không mở được file  -1:file không tồn tại  1:file đã tồn tại
+	string line;
+	ifstream file("game_files.txt");
+	if (!file) {
+		cout << "Cannot open game file";
+		return 0;
+	}
+	while (!file.eof()) {
+		getline(file, line);
+		if (CheckSameString(line, fileName + ".txt"))
+			return 1;
+	}
+	return -1;
+}
+bool CheckValidName(string name) {
+	for (int i = 0; i < name.size(); i++) {
+		if (name[i] == ' ' || name[i] == '/' ||
+			name[i] == ':' || name[i] == ' * ' ||
+			name[i] == ' ? ' || name[i] == '$')
+			return 0;
+	}
+	return 1;
+}
+bool CheckSameString(string s1, string s2) {
+	if (s1.size() != s2.size())
+		return 0;
+	for (int i = 0; i < s1.size(); i++)
+		if (s1[i] != s2[i])
+			return 0;
+	return 1;
 }
 
+//Tải dữ liệu game
+void GetMatchListSize() {
+	string line;
+	ifstream file("game_files.txt");
+	if (!file) {
+		cout << "Cannot get match list size";
+		return;
+	}
+	_X = CENTER_X;_Y = CENTER_Y - 1;
+	if (MATCH_LIST_SIZE == 0) {
+		while (getline(file, line)) {
+			++MATCH_LIST_SIZE;
+			_LIST list = { _X,_Y,line };
+			_MATCH_LIST.push_back(list);
+			_Y += 4;
+		}
+		_Y -= 4;
+	}
+	else {
+		int i = -1;
+		while (getline(file, line)) {
+			++i;
+			_Y += 4;
+			if (i == MATCH_LIST_SIZE && CheckSameString(line, _MATCH_LIST[i - 1].item) == 0) {
+				_Y -= 4;
+				_LIST list = { _X,_Y,line };
+				_MATCH_LIST.push_back(list);
+				++MATCH_LIST_SIZE;
+			}
+		}
+		_Y -= 4 * MATCH_LIST_SIZE;
+	}
+	file.close();
+}
+void LoadGame(string matchName) {
+	int i = 0, j = 0, m = 0, value = 0;
+	int numbers[BOARD_SIZE * BOARD_SIZE + 3];
+	ifstream matchFile(matchName);
+	if (!matchFile) {
+		cout << "Cannot open match file";
+		return;
+	}
+	while (!matchFile.eof()) {
+		matchFile >> numbers[m];
+		++m;
+	}
+	m = 0;
+	for (int i = 0;i < BOARD_SIZE;i++)
+		for (int j = 0;j < BOARD_SIZE;j++) {
+			_A[i][j].x = 4 * j + LEFT + 2;
+			_A[i][j].y = 2 * i + TOP + 1;
+			_A[i][j].c = numbers[m];
+			++m;
+		}
+	_LAST_POINT.x = numbers[m];++m;
+	_LAST_POINT.y = numbers[m];++m;
+	_LAST_POINT.c = numbers[m];
+	_TURN = !_LAST_POINT.c; _COMMAND = -1;
+}
 void ResetData() {
 	for (int i = 0; i < BOARD_SIZE; i++) {
 		for (int j = 0; j < BOARD_SIZE; j++) {
@@ -35,28 +152,169 @@ void ResetData() {
 	GotoXY(_X, _Y);
 }
 
+//Chơi game
+void StartGame() {
+	system("cls");
+	DrawBoard();
+	if (NEW_GAME == 1) {
+		ResetData();
+		ShowCursor(1);
+	}
+	else {
+		DrawExistedData();
+		ShowCursor(1);
+	}
+}
+void Playgame() {
+	/*DrawBoard();
+	ResetData();
+	int row_matrix = 0, column_matrix = 0;
+	int row_console = 0, column_console = 0;
 
-int test_inTestBoard(_POINT a[], int& n, int& led1, int& led2) {
-	if (n == 5 && (led1 == 0 || led2 == 0)) {
-		Highlightwin(a, n);
-		return(_TURN = true ? -1 : 1);
+	KEY_EVENT_RECORD keyevent;
+	EDGE bien = { TOP + 1,LEFT + 2,LEFT + BOARD_SIZE * 4 - 2,TOP + BOARD_SIZE * 2 - 1 };
+	bool validEnter = true;
+	while (1) {
+		ReadInputKey(keyevent);
+		if (keyevent.bKeyDown) {
+			KeyMove(&_X, &_Y, 4, 2, bien, keyevent);
+			switch (keyevent.wVirtualKeyCode) {
+			case(VK_RETURN): {
+				switch (CheckBoard(_X, _Y)) {
+				case -1:
+				{cout << "X";
+				Save_1_move(row_console, column_console);
+				break; }
+				case 1:
+				{cout << "O";
+				Save_1_move(row_console, column_console);
+				break; }
+				case 0: validEnter = false;
+				}
+				if (validEnter == true) {
+					TestBoard();
+					_TURN = !_TURN;
+				}
+				break;
+			}
+			case(0x55): {
+				_X = column_console;
+				_Y = row_console;
+				GotoXY(_X, _Y);
+				cout << char(32);
+				GotoXY(_X, _Y);
+				XYinMatrix(row_matrix, column_matrix, column_console, row_console);
+				_A[row_matrix][column_matrix].c = 0;
+				_TURN = !_TURN;
+				break;
+			}
+			}
+
+		}
+		keyevent.bKeyDown = false;
+		validEnter = true;
+	}*/
+	bool _loop = true;
+	MODE = 2;
+	_LOADMARK = false;
+	StartGame();
+	ShowCursor(0);
+	int row_console = 0, column_console = 0, row = 0;
+	int flag = 0;
+	KEY_EVENT_RECORD keyevent;
+	EDGE bien = { TOP + 1,TOP + BOARD_SIZE * 2 - 1,LEFT + 2,LEFT + BOARD_SIZE * 4 - 2 };
+	bool validEnter = true;
+	while (_loop) {
+		bool pause = false;
+		DrawBoard();
+		GotoXY(_A[0][0].x, _A[0][0].y);
+		while (!pause) {
+			ReadInputKey(keyevent);
+			if (keyevent.bKeyDown) {
+				KeyMove(&_X, &_Y, 4, 2, bien, keyevent);
+				switch (keyevent.wVirtualKeyCode) {
+				case (VK_ESCAPE): case (0x4C): {
+					ShowAsk(keyevent.wVirtualKeyCode);
+					break;
+				}
+				case (0x48): {
+					pause = 1;
+					_LOADMARK = true;
+					ShowHelp();
+					break; }
+				case (VK_RETURN): {
+					switch (CheckBoard(_X, _Y)) {
+					case -1: {
+						SetColor(BRIGHT_WHITE, RED);
+						cout << "X";
+						Save_1_move(row_console, column_console);
+						break;
+					}
+					case 1: {
+						SetColor(BRIGHT_WHITE, GOAL);
+						cout << "O";
+						Save_1_move(row_console, column_console);
+						break;
+					}
+					case 0: validEnter = false;
+					}
+					if (validEnter == true) {
+						switch (ProcessFinish(TestBoard())) {
+						case -1:case 1:case 0: {
+							flag = AskContinue();
+							break;
+						}
+						}
+					}
+					break;
+				}
+				case (0x55): {
+					_X = column_console;
+					_Y = row_console;
+					GotoXY(_X, _Y);
+					cout << char(32);
+					GotoXY(_X, _Y);
+					_POINT p = XYinMatrix(column_console, row_console, row, row);
+					p.c = 0;
+					_TURN = !_TURN;
+					break;
+				}
+				}
+			}
+			keyevent.bKeyDown = false;
+			validEnter = true;
+			if (flag == 2)break;
+		}
+		if (pause)
+			continue;
 	}
-	if (n > 5) {
-		Highlightwin(a, n);
-		return(_TURN = true ? -1 : 1);
-	}
-	Resetdata(a, n, led1, led2);
-	return 2;
+	ShowMenu();
+
 }
 
-//Kiểm tra thắng thua, người 1 hay _Turn=true thắng thì trả về -1 người còn lại thắng trả về 1,
-//hòa nhau trả về 0 còn chưa phân định ai thắng trả về 2
+//Kiểm tra bàn cờ
+int CheckBoard(int pX, int pY) {
+	//Kiểm tra vị trí hiện tại có trống không
+	for (int i = 0; i < BOARD_SIZE; i++) {
+		for (int j = 0; j < BOARD_SIZE; j++) {
+			if (_A[i][j].x == pX && _A[i][j].y == pY && _A[i][j].c == 0) {
+				if (_TURN == true) _A[i][j].c = -1;
+				else _A[i][j].c = 1;
+				_LAST_POINT = { pX,pY,_A[i][j].c };
+				return _A[i][j].c;
+			}
+		}
+	}
+	return 0;
+}
 int TestBoard() {
+	//Kiểm tra thắng thua, người 1 hay _Turn=true thắng thì trả về -1 người còn lại thắng trả về 1,
+	//hòa nhau trả về 0 còn chưa phân định ai thắng trả về 2
 	int led1 = 0, led2 = 0, row = 0, col = 0;
 	int result = 2, n = 0;
 	//Mang luu toa do duong chien thang
 	_POINT a[9];
-	_POINT p=XYinMatrix(_X, _Y,row,col);
+	_POINT p = XYinMatrix(_X, _Y, row, col);
 	a[n++] = p;
 
 
@@ -117,7 +375,7 @@ int TestBoard() {
 			break;
 		}
 	}
-	for (int i =row + 1, j = col + 1; i >= 0 && i < BOARD_SIZE, j >= 0 && j < BOARD_SIZE; i++, j++) {
+	for (int i = row + 1, j = col + 1; i >= 0 && i < BOARD_SIZE, j >= 0 && j < BOARD_SIZE; i++, j++) {
 		if (_A[i][j].c == _A[row][col].c) {
 			a[n++] = _A[i][j];
 		}
@@ -160,109 +418,193 @@ int TestBoard() {
 		return 0;
 	return 2;
 }
+int test_inTestBoard(_POINT a[], int& n, int& led1, int& led2) {
+	if (n == 5 && (led1 == 0 || led2 == 0)) {
+		HighlightWin(a, n);
+		return(_TURN = true ? -1 : 1);
+	}
+	if (n > 5) {
+		HighlightWin(a, n);
+		return(_TURN = true ? -1 : 1);
+	}
+	ResetToCheck(a, n, led1, led2);
+	return 2;
+}
+void ResetToCheck(_POINT a[], int& n, int& led1, int& led2) {
+	a[n] = { 0 };
+	n = 1;
+	led1 = 0; led2 = 0;
+}
 
-int CheckBoard(int pX, int pY) {
-	for (int i = 0; i < BOARD_SIZE; i++) {
-		for (int j = 0; j < BOARD_SIZE; j++) {
-			if (_A[i][j].x == pX && _A[i][j].y == pY && _A[i][j].c == 0) {
-				if (_TURN == true) _A[i][j].c = -1;
-				else _A[i][j].c = 1;
-				_LAST_POINT = { pX,pY,_A[i][j].c };
-				return _A[i][j].c;
-			}
+//Xử lí hiệu ứng thắng/thua/hòa
+void HighlightWin(_POINT a[], int& n) {
+	for (int i = 1; i < 10; i++) {
+		int color = i; Sleep(600);
+		for (int j = 0; j < n; j++) {
+			GotoXY(a[j].x, a[j].y);
+			//if (color == 7)color++;
+			SetColor(BRIGHT_WHITE, color++);
+			if (_TURN == true)cout << "X";
+			else cout << "O";
 		}
 	}
-	return 0;
 }
+int ProcessFinish(int pWhoWin) {
+	int top = 15, left = 43;
+	int bg_color = BRIGHT_WHITE, text_color = BLUE;
+	switch (pWhoWin) {
+	case -1: {
+		system("cls");
+		int old_mode = _setmode(_fileno(stdout), _O_WTEXT);
+		SetColor(bg_color, text_color);
+		wstring logo[6] = {
+			 L" ██████╗░██╗░░░░░░█████╗░██╗░░░██╗███████╗██████╗░  ██╗░░██╗  ░██╗░░░░░░░██╗██╗███╗░░██╗	",
+			 L" ██╔══██╗██║░░░░░██╔══██╗╚██╗░██╔╝██╔════╝██╔══██╗  ╚██╗██╔╝  ░██║░░██╗░░██║██║████╗░██║	",
+			 L" ██████╔╝██║░░░░░███████║░╚████╔╝░█████╗░░██████╔╝  ░╚███╔╝░  ░╚██╗████╗██╔╝██║██╔██╗██║	",
+			 L" ██╔═══╝░██║░░░░░██╔══██║░░╚██╔╝░░██╔══╝░░██╔══██╗  ░██╔██╗░  ░░████╔═████║░██║██║╚████║	",
+			 L" ██║░░░░░███████╗██║░░██║░░░██║░░░███████╗██║░░██║  ██╔╝╚██╗  ░░╚██╔╝░╚██╔╝░██║██║░╚███║	",
+			 L" ╚═╝░░░░░╚══════╝╚═╝░░╚═╝░░░╚═╝░░░╚══════╝╚═╝░░╚═╝  ╚═╝░░╚═╝  ░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚══╝	" };
 
-//0:không mở được file  -1:file không tồn tại  1:file đã tồn tại
-int CheckExistedFile(string fileName) {
-	string line;
-	ifstream file("game_files.txt");
-	if (!file) {
-		cout << "Cannot open game file";
-		return 0;
+		for (int i = 0; i < 6; i++) {
+			GotoXY(left, i + top);
+			wcout << logo[i];
+		}
+		int current_mode = _setmode(_fileno(stdout), old_mode);
+		break;
 	}
-	while (!file.eof()) {
-		getline(file, line);
-		if (CheckSameString(line, fileName + ".txt"))
-			return 1;
+	case 1: {
+		system("cls");
+		int old_mode = _setmode(_fileno(stdout), _O_WTEXT);
+		SetColor(bg_color, text_color);
+		wstring logo[6] = {
+			L"██████╗░██╗░░░░░░█████╗░██╗░░░██╗███████╗██████╗░  ░█████╗░  ░██╗░░░░░░░██╗██╗███╗░░██╗",
+			L"██╔══██╗██║░░░░░██╔══██╗╚██╗░██╔╝██╔════╝██╔══██╗  ██╔══██╗  ░██║░░██╗░░██║██║████╗░██║",
+			L"██████╔╝██║░░░░░███████║░╚████╔╝░█████╗░░██████╔╝  ██║░░██║  ░╚██╗████╗██╔╝██║██╔██╗██║",
+			L"██╔═══╝░██║░░░░░██╔══██║░░╚██╔╝░░██╔══╝░░██╔══██╗  ██║░░██║  ░░████╔═████║░██║██║╚████║",
+			L"██║░░░░░███████╗██║░░██║░░░██║░░░███████╗██║░░██║  ╚█████╔╝  ░░╚██╔╝░╚██╔╝░██║██║░╚███║",
+			L"╚═╝░░░░░╚══════╝╚═╝░░╚═╝░░░╚═╝░░░╚══════╝╚═╝░░╚═╝  ░╚════╝░  ░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚══╝" };
+		for (int i = 0; i < 6; i++) {
+			GotoXY(left, i + top);
+			wcout << logo[i];
+		}
+		int current_mode = _setmode(_fileno(stdout), old_mode);
+		break;
 	}
-	return -1;
-}
+	case 0: {
+		system("cls");
+		int old_mode = _setmode(_fileno(stdout), _O_WTEXT);
+		SetColor(bg_color, text_color);
+		wstring logo[13] = {
+			L"               ██╗░░██╗░█████╗░  			 ",
+			L"               ╚██╗██╔╝██╔══██╗  			 ",
+			L"               ░╚███╔╝░██║░░██║  			 ",
+			L"               ░██╔██╗░██║░░██║  			 ",
+			L"               ██╔╝╚██╗╚█████╔╝  			 ",
+			L"               ╚═╝░░╚═╝░╚════╝░  		     ",
+			L"												 ",
+			L"██████╗░░█████╗░██████╗░░██╗░░░░░░░██╗██╗██╗██╗",
+			L"██╔══██╗██╔══██╗██╔══██╗░██║░░██╗░░██║██║██║██║",
+			L"██║░░██║███████║██████╔╝░╚██╗████╗██╔╝██║██║██║",
+			L"██║░░██║██╔══██║██╔══██╗░░████╔═████║░╚═╝╚═╝╚═╝",
+			L"██████╔╝██║░░██║██║░░██║░░╚██╔╝░╚██╔╝░██╗██╗██╗",
+			L"╚═════╝░╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚═╝╚═╝", };
 
-bool CheckValidName(string name) {
-	for (int i = 0; i < name.size(); i++) {
-		if (name[i] == ' ' || name[i] == '/' || 
-			name[i] == ':' || name[i] == ' * ' || 
-			name[i] == ' ? ' || name[i] == '$')
-			return 0;
+		for (int i = 0; i < 13; i++) {
+			GotoXY(left + 10, i + (top - 5));
+			wcout << logo[i];
+		}
+		int current_mode = _setmode(_fileno(stdout), old_mode);
+		break;
 	}
-	return 1;
+	case 2:
+		_TURN = !_TURN;
+	}
+	return pWhoWin;
 }
 
-bool CheckSameString(string s1, string s2) {
-	if (s1.size() != s2.size())
-		return 0;
-	for (int i = 0; i < s1.size(); i++)
-		if (s1[i] != s2[i])
-			return 0;
-	return 1;
+//Hỏi
+int AskContinue() {
+	int top = 25, left = 43, flag = 0;
+	int bg_color = BRIGHT_WHITE, text_color = BLUE;
+	KEY_EVENT_RECORD keyevent;
+	EDGE bien = { 0,0,left + 10, left + 50 };
+	int width = 15, height = 2;
+	Draw_AskContinue();
+	while (1) {
+		ReadInputKey(keyevent);
+		if (keyevent.bKeyDown) {
+			switch (keyevent.wVirtualKeyCode) {
+			case VK_LCONTROL:case 0x41:case VK_RCONTROL:case 0x44: {
+				SetColor(bg_color, bg_color);
+				HLChoice(_X, _Y, width + 1);
+				KeyMove(&_X, &_Y, 40, 0, bien, keyevent);
+				SetColor(bg_color, text_color);
+				HLChoice(_X, _Y, width + 1);
+				break;
+			}
+			case VK_RETURN: {
+				switch (_X) {
+				case 53: {
+					flag = 1;
+					NEW_GAME = 1;
+					StartGame();
+					break;
+				}
+				default: {
+					flag = 2;
+					ExitGame(); break;
+				}
+				}
+			}
+			}
+		}
+		keyevent.bKeyDown = false;
+		if (flag == 1 || flag == 2)
+			return flag;
+	}
+}
+int AskSaveGame() {
+	system("cls");
+	PrintRectangle(CENTER_Y - 3, CENTER_X - 10, 30, 3);
+	GotoXY(CENTER_X - 5, CENTER_Y - 2);
+	cout << "Want to save the match?";
+	GotoXY(CENTER_X - 5, CENTER_Y - 1);
+	cout << "  Yes(Y)    No(N)";
+	return toupper(_getch());
+}
+void HLChoice(int& x, int& y, int width) {
+	GotoXY(x - 1, y + 1); cout << char(16);
+	GotoXY(x + width, y + 1); cout << char(17);
 }
 
-
+//Các chức năng khác
+_POINT XYinMatrix(int& x, int& y,int& row,int& col) {
+//Dựa vào vị trí con trỏ tìm phần tử được gán lượt đánh trong ma trận
+	for (int i = 0; i < BOARD_SIZE; i++) {
+		for (int j = 0; j < BOARD_SIZE; j++)
+			if (_A[i][j].x == x && _A[i][j].y == y) {
+				row = i;
+				col = j;
+				return _A[i][j];
+			}
+	}
+}
 void Save_1_move(int& y, int& x) {
 	y = _Y;
 	x = _X;
 }
-
-void Playgame() {
-	DrawBoard();
-	ResetData();
-	int row_matrix = 0, column_matrix = 0;
-	int row_console = 0, column_console = 0;
-
-	KEY_EVENT_RECORD keyevent;
-	EDGE bien = { TOP + 1,LEFT + 2,LEFT + BOARD_SIZE * 4 - 2,TOP + BOARD_SIZE * 2 - 1 };
-	bool validEnter = true;
-	while (1) {
-		ReadInputKey(keyevent);
-		if (keyevent.bKeyDown) {
-			KeyMove(&_X, &_Y, 4, 2, bien, keyevent);
-			switch (keyevent.wVirtualKeyCode) {
-			case(VK_RETURN): {
-				switch (CheckBoard(_X, _Y)) {
-				case -1:
-				{cout << "X";
-				Save_1_move(row_console, column_console);
-				break; }
-				case 1:
-				{cout << "O";
-				Save_1_move(row_console, column_console);
-				break; }
-				case 0: validEnter = false;
-				}
-				if (validEnter == true) {
-					TestBoard();
-					_TURN = !_TURN;
-				}
-				break;
-			}
-			case(0x55): {
-				_X = column_console;
-				_Y = row_console;
-				GotoXY(_X, _Y);
-				cout << char(32);
-				GotoXY(_X, _Y);
-				XYinMatrix(row_matrix, column_matrix, column_console, row_console);
-				_A[row_matrix][column_matrix].c = 0;
-				_TURN = !_TURN;
-				break;
-			}
-			}
-
-		}
-		keyevent.bKeyDown = false;
-		validEnter = true;
+void ExitGame() {
+	ShowLoadingPage();
+	ShowMenu();
+}
+void RemoveMatchFile(string matchName) {
+	int n = matchName.length();
+	char* c = new char[n + 1];
+	for (int i = 0;i < n;i++) {
+		c[i] = matchName[i];
 	}
+	c[n] = '\0';
+	remove(c);
+}
+void GabageCollect() {
 }

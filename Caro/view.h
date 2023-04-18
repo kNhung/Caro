@@ -43,7 +43,10 @@ void PrintEXIT();
 void PrintPVC();
 void ClearPreviousHightlight(int& a);
 void PrintCurrentHighlight(int& a);
-
+void PrintPencil();
+void PrintContinueLogo(int top, int left);
+void PrintOnMarch(int top, int left);
+void PrintAboutLogo(int top, int left);
 
 
 int ProcessFinish(int pWhoWin);

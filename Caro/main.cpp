@@ -2,6 +2,7 @@
 #include "control.h"
 #include "model.h"
 #include "view.h"
+#include "page.h"
 
 int main() {
 	FixConsoleWindows(); //View

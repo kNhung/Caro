@@ -41,13 +41,11 @@ using namespace std;
 #define LIGHT_YELLOW 14
 #define BRIGHT_WHITE 15
 
-
-struct _POINT { int x, y, c; };
+struct _POINT { int x, y, c; }; //x: , y: , c: 
 struct _LIST {
 	int x, y;
 	string item;
 };
-struct ToaDo { int x, y; };
 struct EDGE {
 	int top = 0, bottom = 0, left = 0, right = 0;
 };
@@ -55,7 +53,7 @@ struct EDGE {
 extern _POINT _A[BOARD_SIZE][BOARD_SIZE];
 extern _POINT _MENU[MENU_SIZE];
 extern _POINT _LAST_POINT; //Nằm trong CheckBoard(int pX, int pY) để lưu điểm cuối mà người chơi đánh
-
+extern bool _LOADMARK;
 extern bool _TURN; //Lượt đánh 1:X  0:O
 extern int _COMMAND; //Phím mà người chơi nhấn
 extern int _X, _Y;
@@ -64,10 +62,4 @@ extern bool NEW_GAME; //1:reset data 2:mở game từ file
 extern ofstream _MATCH_LIST_FILE;
 extern int MATCH_LIST_SIZE;
 extern vector<_LIST> _MATCH_LIST;
-
-extern unsigned char L[], O[], A[], D[], G[], M[], E[], I[], N[], H[], P[];
-extern unsigned char* LETTER_LIST[];
-extern int LETTER_LIST_SIZE;
-//extern wstring NEW[3];
-
 #endif
