@@ -149,7 +149,7 @@ void ResetData() {
 	GotoXY(_X, _Y);
 }
 
-//Chơi game
+//Khởi động game
 void StartGame() {
 	system("cls");
 	DrawBoard();
@@ -161,132 +161,6 @@ void StartGame() {
 		DrawExistedData();
 		ShowCursor(1);
 	}
-}
-void Playgame() {
-	/*DrawBoard();
-	ResetData();
-	int row_matrix = 0, column_matrix = 0;
-	int row_console = 0, column_console = 0;
-
-	KEY_EVENT_RECORD keyevent;
-	EDGE bien = { TOP + 1,LEFT + 2,LEFT + BOARD_SIZE * 4 - 2,TOP + BOARD_SIZE * 2 - 1 };
-	bool validEnter = true;
-	while (1) {
-		ReadInputKey(keyevent);
-		if (keyevent.bKeyDown) {
-			KeyMove(&_X, &_Y, 4, 2, bien, keyevent);
-			switch (keyevent.wVirtualKeyCode) {
-			case(VK_RETURN): {
-				switch (CheckBoard(_X, _Y)) {
-				case -1:
-				{cout << "X";
-				Save_1_move(row_console, column_console);
-				break; }
-				case 1:
-				{cout << "O";
-				Save_1_move(row_console, column_console);
-				break; }
-				case 0: validEnter = false;
-				}
-				if (validEnter == true) {
-					TestBoard();
-					_TURN = !_TURN;
-				}
-				break;
-			}
-			case(0x55): {
-				_X = column_console;
-				_Y = row_console;
-				GotoXY(_X, _Y);
-				cout << char(32);
-				GotoXY(_X, _Y);
-				XYinMatrix(row_matrix, column_matrix, column_console, row_console);
-				_A[row_matrix][column_matrix].c = 0;
-				_TURN = !_TURN;
-				break;
-			}
-			}
-
-		}
-		keyevent.bKeyDown = false;
-		validEnter = true;
-	}*/
-	bool _loop = true;
-	MODE = 2;
-	_LOADMARK = false;
-	StartGame();
-	ShowCursor(0);
-	int row_console = 0, column_console = 0, row = 0;
-	int flag = 0;
-	KEY_EVENT_RECORD keyevent;
-	EDGE bien = { TOP + 1,TOP + BOARD_SIZE * 2 - 1,LEFT + 2,LEFT + BOARD_SIZE * 4 - 2 };
-	bool validEnter = true;
-	while (_loop) {
-		bool pause = false;
-		DrawBoard();
-		GotoXY(_A[0][0].x, _A[0][0].y);
-		while (!pause) {
-			ReadInputKey(keyevent);
-			if (keyevent.bKeyDown) {
-				KeyMove(&_X, &_Y, 4, 2, bien, keyevent);
-				switch (keyevent.wVirtualKeyCode) {
-				case (VK_ESCAPE): case (0x4C): {
-					ShowAsk(keyevent.wVirtualKeyCode);
-					break;
-				}
-				case (0x48): {
-					pause = 1;
-					_LOADMARK = true;
-					ShowHelp();
-					break; }
-				case (VK_RETURN): {
-					switch (CheckBoard(_X, _Y)) {
-					case -1: {
-						SetColor(BRIGHT_WHITE, RED);
-						cout << "X";
-						Save_1_move(row_console, column_console);
-						break;
-					}
-					case 1: {
-						SetColor(BRIGHT_WHITE, GOAL);
-						cout << "O";
-						Save_1_move(row_console, column_console);
-						break;
-					}
-					case 0: validEnter = false;
-					}
-					if (validEnter == true) {
-						switch (ProcessFinish(TestBoard())) {
-						case -1:case 1:case 0: {
-							flag = AskContinue();
-							break;
-						}
-						}
-					}
-					break;
-				}
-				case (0x55): {
-					_X = column_console;
-					_Y = row_console;
-					GotoXY(_X, _Y);
-					cout << char(32);
-					GotoXY(_X, _Y);
-					_POINT p = XYinMatrix(column_console, row_console, row, row);
-					p.c = 0;
-					_TURN = !_TURN;
-					break;
-				}
-				}
-			}
-			keyevent.bKeyDown = false;
-			validEnter = true;
-			if (flag == 2)break;
-		}
-		if (pause)
-			continue;
-	}
-	ShowMenu();
-
 }
 
 //Kiểm tra bàn cờ

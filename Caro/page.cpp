@@ -76,21 +76,15 @@ void ShowMenu() {
 	}
 }
 void ShowGame() {
-	bool _loop = true;
 	MODE = 2;
 	_LOADMARK = false;
 	StartGame();
 	ShowCursor(0);
-	int row_console = 0, column_console = 0, row = 0;
 	int flag = 0;
 	KEY_EVENT_RECORD keyevent;
 	EDGE bien = { TOP + 1,TOP + BOARD_SIZE * 2 - 1,LEFT + 2,LEFT + BOARD_SIZE * 4 - 2 };
 	bool validEnter = true;
-	while (_loop) {
-		bool pause = false;
-		DrawBoard();
-		GotoXY(_A[0][0].x, _A[0][0].y);
-		while (!pause) {
+	while (1) {
 			ReadInputKey(keyevent);
 			if (keyevent.bKeyDown) {
 				KeyMove(&_X, &_Y, 4, 2, bien, keyevent);
@@ -100,22 +94,31 @@ void ShowGame() {
 					break;
 				}
 				case (0x48): { //H
-					pause = 1;
 					_LOADMARK = true;
 					ShowHelp();
 					break; }
-				case (VK_RETURN): {
+				case (VK_RETURN): { //Enter
 					switch (CheckBoard(_X, _Y)) {
 					case -1: {
 						SetColor(BRIGHT_WHITE, RED);
 						cout << "X";
-						Save_1_move(row_console, column_console);
+						//Hiệu ứng đổi lượt
+						SetColor(BRIGHT_WHITE, GRAY);
+						PrintX(TOP + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
+						SetColor(BRIGHT_WHITE, GOAL);
+						PrintO(TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
+						GotoXY(_LAST_POINT.x, _LAST_POINT.y);
 						break;
 					}
 					case 1: {
 						SetColor(BRIGHT_WHITE, GOAL);
 						cout << "O";
-						Save_1_move(row_console, column_console);
+						//Hiệu ứng đổi lượt
+						SetColor(BRIGHT_WHITE, RED);
+						PrintX(TOP + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
+						SetColor(BRIGHT_WHITE, GRAY);
+						PrintO(TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
+						GotoXY(_LAST_POINT.x, _LAST_POINT.y);
 						break;
 					}
 					case 0: validEnter = false;
@@ -130,28 +133,49 @@ void ShowGame() {
 					}
 					break;
 				}
-				case (0x55): {
-					_X = column_console;
-					_Y = row_console;
-					GotoXY(_X, _Y);
-					cout << char(32);
-					GotoXY(_X, _Y);
-					_POINT p = XYinMatrix(column_console, row_console, row, row);
-					p.c = 0;
-					_TURN = !_TURN;
-					break;
+				case (0x55): { //U - Undo
+					if (_LAST_POINT.c != 0) { //Xét trường hợp Undo 2 lần trên 1 ô
+						//Hiệu ứng đổi lượt
+						if (_TURN == 1) {
+							SetColor(BRIGHT_WHITE, GRAY);
+							PrintX(TOP + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
+							SetColor(BRIGHT_WHITE, GOAL);
+							PrintO(TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
+							GotoXY(_LAST_POINT.x, _LAST_POINT.y);
+						}
+						else if (_TURN == -1) {
+							SetColor(BRIGHT_WHITE, RED);
+							PrintX(TOP + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
+							SetColor(BRIGHT_WHITE, GRAY);
+							PrintO(TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
+							GotoXY(_LAST_POINT.x, _LAST_POINT.y);
+						}
+
+						_X = _LAST_POINT.x, _Y = _LAST_POINT.y;
+						GotoXY(_X, _Y);
+						cout << " ";
+						for (int i = 0;i < BOARD_SIZE;++i)
+							if (_A[i][0].y == _Y) {
+								for (int j = 0;j < BOARD_SIZE;++j)
+									if (_A[i][j].x == _X) {
+										_A[i][j].c = 0;
+										_LAST_POINT.c = 0;
+										break;
+									}
+								break;
+							}
+						GotoXY(_X, _Y);
+						_TURN = !_TURN;
+						break;
+					}
 				}
 				}
 			}
 			keyevent.bKeyDown = false;
 			validEnter = true;
 			if (flag == 2)break;
-		}
-		if (pause)
-			continue;
 	}
 	ShowMenu();
-
 }
 void ShowAbout() {
 	//V? About ? dây...

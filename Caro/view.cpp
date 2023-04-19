@@ -246,63 +246,91 @@ void PrintPencil(int top,int left) {
 	}
 	int current_mode = _setmode(_fileno(stdout), old_mode);
 }
-void PrintX(int top, int left) {
+void PrintX(int top, int left, int size) {
 	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
-	wstring logo[21] = {
-		L"████████                              ████████	",
-		L"████████                              ████████	",
-		L"████████                              ████████	",
-		L"     ████████                    ████████			",
-		L"     ████████                    ████████			",
-		L"     ████████                    ████████			",
-		L"          ████████          ████████				",
-		L"          ████████          ████████				",
-		L"          ████████          ████████				",
-		L"               ████████████████					",
-		L"               ████████████████					",
-		L"               ████████████████					",
-		L"          ████████          ████████				",
-		L"          ████████          ████████				",
-		L"          ████████          ████████				",
-		L"     ████████                    ████████			",
-		L"     ████████                    ████████			",
-		L"     ████████                    ████████			",
-		L"████████                              ████████	",
-		L"████████                              ████████	",
-		L"████████                              ████████	" };
-	for (int i = 0; i < 21; i++) {
-		GotoXY(left, i + top);
-		wcout << logo[i];
+	if (size == 1) {
+		wstring logo[21] = {
+			L"████████                              ████████	",
+			L"████████                              ████████	",
+			L"████████                              ████████	",
+			L"     ████████                    ████████			",
+			L"     ████████                    ████████			",
+			L"     ████████                    ████████			",
+			L"          ████████          ████████				",
+			L"          ████████          ████████				",
+			L"          ████████          ████████				",
+			L"               ████████████████					",
+			L"               ████████████████					",
+			L"               ████████████████					",
+			L"          ████████          ████████				",
+			L"          ████████          ████████				",
+			L"          ████████          ████████				",
+			L"     ████████                    ████████			",
+			L"     ████████                    ████████			",
+			L"     ████████                    ████████			",
+			L"████████                              ████████	",
+			L"████████                              ████████	",
+			L"████████                              ████████	" };
+		for (int i = 0; i < 21; i++) {
+			GotoXY(left, i + top);
+			wcout << logo[i];
+		}
+	}
+	else if (size == 2) {
+		wstring logo[5] = {
+			L"██   ██",
+			L" ██ ██",
+			L"  ███",
+			L" ██ ██",
+			L"██   ██"};
+		for (int i = 0; i < 5; i++) {
+			GotoXY(left, i + top);
+			wcout << logo[i];
+		}
 	}
 	int currentMode = _setmode(_fileno(stdout), OldMode);
 }
-void PrintO(int top, int left) {
+void PrintO(int top, int left, int size) {
 	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
-	wstring logo[21] = {
-		L"    ████████████████████████████████████████		",
-		L"    ████████████████████████████████████████		",
-		L"    ████████████████████████████████████████		",
-		L"████████                                ████████	",
-		L"████████                                ████████	",
-		L"████████                                ████████	",
-		L"████████                                ████████	",
-		L"████████                                ████████	",
-		L"████████                                ████████	",
-		L"████████                                ████████	",
-		L"████████                                ████████	",
-		L"████████                                ████████	",
-		L"████████                                ████████	",
-		L"████████                                ████████	",
-		L"████████                                ████████	",
-		L"████████                                ████████	",
-		L"████████                                ████████	",
-		L"████████                                ████████	",
-		L"    ████████████████████████████████████████		",
-		L"    ████████████████████████████████████████		",
-		L"    ████████████████████████████████████████		"};
-	for (int i = 0; i < 21; i++) {
-		GotoXY(left, i + top);
-		wcout << logo[i];
+	if (size == 1) {
+		wstring logo[21] = {
+			L"    ████████████████████████████████████████		",
+			L"    ████████████████████████████████████████		",
+			L"    ████████████████████████████████████████		",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"    ████████████████████████████████████████		",
+			L"    ████████████████████████████████████████		",
+			L"    ████████████████████████████████████████		" };
+		for (int i = 0; i < 21; i++) {
+			GotoXY(left, i + top);
+			wcout << logo[i];
+		}
+	}
+	else if(size==2) {
+		wstring logo[5] = {
+			L" █████",
+			L"██   ██",
+			L"██   ██",
+			L"██   ██",
+			L" █████" };
+		for (int i = 0; i < 5; i++) {
+			GotoXY(left, i + top);
+			wcout << logo[i];
+		}
 	}
 	int currentMode = _setmode(_fileno(stdout), OldMode);
 }
@@ -503,9 +531,9 @@ void DrawMenu() {
 	SetColor(BRIGHT_WHITE, BLACK);
 	PrintMenuLogo(CENTER_Y - 20, CENTER_X - 2);
 	SetColor(BRIGHT_WHITE, RED);
-	PrintX(CENTER_Y, 5);
+	PrintX(CENTER_Y, 5,1);
 	SetColor(BRIGHT_WHITE, GOAL);
-	PrintO(CENTER_Y, WIDTH - 52);
+	PrintO(CENTER_Y, WIDTH - 52,1);
 
 	//Vẽ khung trang menu
 	SetColor(BRIGHT_WHITE, BLACK);
@@ -541,9 +569,6 @@ void DrawBoard() {
 	//In logo
 	SetColor(BRIGHT_WHITE, BLACK);
 	PrintInMatch(1, 45);
-	//SetColor(BRIGHT_WHITE, BLUE);
-	//V? khung ngoài
-	//V? du?ng vi?n trên du?i
 	//Sleep(500);
 	GotoXY(LEFT, TOP); cout << char(201);
 	GotoXY(LEFT, TOP + BOARD_SIZE * 2); cout << char(200);
@@ -566,7 +591,7 @@ void DrawBoard() {
 	GotoXY(LEFT + BOARD_SIZE * 4 + 30, TOP + BOARD_SIZE * 2); cout << char(188);
 	GotoXY(LEFT + BOARD_SIZE * 4, TOP); cout << char(203);
 	GotoXY(LEFT + BOARD_SIZE * 4, TOP + BOARD_SIZE * 2); cout << char(202);
-	//V? du?ng vi?n trái ph?i
+	//Vẽ đường viền trái phải
 	for (int j = 1; j < BOARD_SIZE * 2; j++) {
 		//Sleep(20);
 		GotoXY(LEFT, j + TOP);
@@ -578,7 +603,7 @@ void DrawBoard() {
 		GotoXY(LEFT + BOARD_SIZE * 4 + 30, j + TOP);
 		cout << char(186);
 	}
-	//V? các c?t,dòng
+	//Vẽ các cột, dòng
 	for (int i = 1; i < BOARD_SIZE; i++)
 		for (int j = 1; j < BOARD_SIZE * 4; j++) {
 			if (j < BOARD_SIZE * 2 && j % 2 == 1) {
@@ -596,12 +621,19 @@ void DrawBoard() {
 			GotoXY(LEFT + j, 2 * i + TOP);
 			if (j % 4 == 0)cout << char(197);
 		}
-	GotoXY(LEFT + BOARD_SIZE * 4 + 11, TOP + 2); SetColor(LIGHT_AQUA, BLACK); cout << "  PLAYER X  "; SetColor(BRIGHT_WHITE, BLACK);
-	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + 4); cout << "WINNING SCORE : ";
-	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + 6); cout << "MOVES : ";
-	GotoXY(LEFT + BOARD_SIZE * 4 + 11, TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 2); SetColor(LIGHT_AQUA, BLACK); cout << "  PLAYER O  "; SetColor(BRIGHT_WHITE, BLACK);
-	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4); cout << "WINNING SCORE : ";
-	GotoXY(LEFT + BOARD_SIZE * 4 + 2, TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 6); cout << "MOVES : ";
+	if (_TURN == -1 || NEW_GAME == 1) {
+		SetColor(BRIGHT_WHITE, RED);
+		PrintX(TOP + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
+		SetColor(BRIGHT_WHITE, GRAY);
+		PrintO(TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
+	}
+	else if (_TURN == 1) {
+		SetColor(BRIGHT_WHITE, GRAY);
+		PrintX(TOP + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
+		SetColor(BRIGHT_WHITE, GOAL);
+		PrintO(TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
+	}
+	SetColor(LIGHT_AQUA, BLACK);
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT, 15, 2, "U:Undo");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 + 2, 15, 2, "H:Help");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 2 + 4, 15, 2, "F:Flip");
@@ -612,6 +644,8 @@ void DrawBoard() {
 		DrawExistedData();
 		_LOADMARK = 0;
 	}
+	if (NEW_GAME)
+		GotoXY(_A[0][0].x, _A[0][0].y);
 }
 void DrawExistedData() {
 	for (int i = 0;i < BOARD_SIZE;i++)

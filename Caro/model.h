@@ -17,7 +17,6 @@ void ResetData();
 
 //Chơi game
 void StartGame();
-void Playgame();
 
 //Kiểm tra bàn cờ
 int CheckBoard(int pX, int pY);
