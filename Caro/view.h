@@ -20,7 +20,9 @@ void PrintEXIT();
 void PrintPVC();
 
 //In tiêu đề trang
-void PrintPencil();
+void PrintPencil(int top,int left);
+void PrintX(int top, int left);
+void PrintO(int top, int left);
 void PrintContinueLogo(int top, int left);
 void PrintInMatch(int top, int left);
 void PrintAboutLogo(int top, int left);

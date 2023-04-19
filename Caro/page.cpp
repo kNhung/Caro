@@ -95,11 +95,11 @@ void ShowGame() {
 			if (keyevent.bKeyDown) {
 				KeyMove(&_X, &_Y, 4, 2, bien, keyevent);
 				switch (keyevent.wVirtualKeyCode) {
-				case (VK_ESCAPE): case (0x4C): {
+				case (VK_ESCAPE): case (0x4C): { //ESC or L
 					ShowAsk(keyevent.wVirtualKeyCode);
 					break;
 				}
-				case (0x48): {
+				case (0x48): { //H
 					pause = 1;
 					_LOADMARK = true;
 					ShowHelp();
@@ -167,7 +167,7 @@ void ShowAbout() {
 }
 void ShowFileGame() {
 	HANDLE word;
-	int backgroundColor = BRIGHT_WHITE, textColor = BLUE;
+	int backgroundColor = BRIGHT_WHITE, textColor = BLACK;
 	MODE = 3;
 	GetMatchListSize();
 	DrawMatchList();
@@ -228,10 +228,10 @@ void ShowAsk(WORD wVirtualKeyCode) {
 	NEW_GAME = 0;
 	DrawPopUp(wVirtualKeyCode);
 	switch (wVirtualKeyCode) {
-	case 0x4C:
+	case 0x4C: //L
 		SaveGame();
 		break;
-	case VK_ESCAPE:
+	case VK_ESCAPE: //ESC
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 'Y') {
 			ExitGame();

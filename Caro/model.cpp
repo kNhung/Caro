@@ -6,26 +6,23 @@
 
 //Lưu game
 void SaveGame() {
+	SetColor(BRIGHT_WHITE, BLACK);
 	string matchName;
-	//GotoXY(0, _A[BOARD_SIZE - 1][BOARD_SIZE - 1].y + 4);
 	getline(cin, matchName);
 	_MATCH_LIST_FILE.open("game_files.txt", ios::app);
 	if (!_MATCH_LIST_FILE) {
-		cout << "Khong mo duoc tap tin" << endl;
+		cout << "Cannot open file" << endl;
 		return;
 	}
 	while (CheckExistedFile(matchName) == 1) {
-		cout << endl << "File da ton tai";
+		cout << endl << "File existed!";
 		cin.ignore();
 		getline(cin, matchName);
-		//Khi code tran hoàn ch?nh thì thêm cls,GotoXY d? getline
 	}
 	while (CheckValidName(matchName) == 0) {
-		cout << endl << "Ten khong hop le";
+		cout << endl << "Invalid name";
 		cin.ignore();
 		getline(cin, matchName);
-		//Khi code tran hoàn ch?nh thì thêm cls,GotoXY d? getline
-
 	}
 	_MATCH_LIST_FILE << matchName + ".txt" << endl;
 	SaveMatchInfo(matchName);

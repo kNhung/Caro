@@ -229,16 +229,82 @@ void PrintPVC()
 }
 
 //In tiêu đề trang
-void PrintPencil() {
+void PrintPencil(int top,int left) {
 	int old_mode = _setmode(_fileno(stdout), _O_U16TEXT);
-	wstring NEW[3] = {   L"                   ██▀▀  ██ ██  ██  ██████               ",
-						 L"                   ████   ███   ██    ██                 ",
-						 L"                   ██▄▄  ██ ██  ██    ██                 " };
-	for (int i = 0; i < 3; i++) {
-		GotoXY(CENTER_X - 14, CENTER_Y + 14 + i);
+	wstring NEW[9] = {   L"    ██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████			",						
+						 L"  ██                                                                                                                          ████			",
+						 L" ██                                                                                                                         ██    ████		",
+						 L"██                                                                                                                         ██    █    █████   ",
+						 L"██                                                                                                                        ██    █          ████   ",
+						 L"██                                                                                                                         ██    █    █████   ",
+						 L" ██                                                                                                                         ██    ████       ",
+						 L"  ██                                                                                                                          ████			",
+						 L"    ██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████			"};
+	for (int i = 0; i < 9; i++) {
+		GotoXY(left, top + i);
 		wcout << NEW[i];
 	}
 	int current_mode = _setmode(_fileno(stdout), old_mode);
+}
+void PrintX(int top, int left) {
+	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
+	wstring logo[21] = {
+		L"████████                              ████████	",
+		L"████████                              ████████	",
+		L"████████                              ████████	",
+		L"     ████████                    ████████			",
+		L"     ████████                    ████████			",
+		L"     ████████                    ████████			",
+		L"          ████████          ████████				",
+		L"          ████████          ████████				",
+		L"          ████████          ████████				",
+		L"               ████████████████					",
+		L"               ████████████████					",
+		L"               ████████████████					",
+		L"          ████████          ████████				",
+		L"          ████████          ████████				",
+		L"          ████████          ████████				",
+		L"     ████████                    ████████			",
+		L"     ████████                    ████████			",
+		L"     ████████                    ████████			",
+		L"████████                              ████████	",
+		L"████████                              ████████	",
+		L"████████                              ████████	" };
+	for (int i = 0; i < 21; i++) {
+		GotoXY(left, i + top);
+		wcout << logo[i];
+	}
+	int currentMode = _setmode(_fileno(stdout), OldMode);
+}
+void PrintO(int top, int left) {
+	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
+	wstring logo[21] = {
+		L"    ████████████████████████████████████████		",
+		L"    ████████████████████████████████████████		",
+		L"    ████████████████████████████████████████		",
+		L"████████                                ████████	",
+		L"████████                                ████████	",
+		L"████████                                ████████	",
+		L"████████                                ████████	",
+		L"████████                                ████████	",
+		L"████████                                ████████	",
+		L"████████                                ████████	",
+		L"████████                                ████████	",
+		L"████████                                ████████	",
+		L"████████                                ████████	",
+		L"████████                                ████████	",
+		L"████████                                ████████	",
+		L"████████                                ████████	",
+		L"████████                                ████████	",
+		L"████████                                ████████	",
+		L"    ████████████████████████████████████████		",
+		L"    ████████████████████████████████████████		",
+		L"    ████████████████████████████████████████		"};
+	for (int i = 0; i < 21; i++) {
+		GotoXY(left, i + top);
+		wcout << logo[i];
+	}
+	int currentMode = _setmode(_fileno(stdout), OldMode);
 }
 void PrintContinueLogo(int top, int left) {
 	SetColor(BRIGHT_WHITE, BLACK);
@@ -431,13 +497,15 @@ void PrintRightCursor(int top, int left) {
 void DrawMenu() {
 	system("color F1");
 	ShowCursor(0);
-
 	//Vẽ tiêu đề trang menu
+	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	PrintPencil(4, 52);
 	SetColor(BRIGHT_WHITE, BLACK);
 	PrintMenuLogo(CENTER_Y - 20, CENTER_X - 2);
-	//PrintHeart(CENTER_Y - 20, CENTER_X - 28);
-	//PrintHeart(CENTER_Y - 20, CENTER_X + 24);
-
+	SetColor(BRIGHT_WHITE, RED);
+	PrintX(CENTER_Y, 5);
+	SetColor(BRIGHT_WHITE, GOAL);
+	PrintO(CENTER_Y, WIDTH - 52);
 
 	//Vẽ khung trang menu
 	SetColor(BRIGHT_WHITE, BLACK);
@@ -567,11 +635,13 @@ void DrawMatchList() {
 	FixConsoleWindows();
 	system("color F1");
 	//Vẽ nút Tr? v?
+	SetColor(BRIGHT_WHITE, YELLOW);
 	GotoXY(CENTER_X + 3, CENTER_Y + 20);
 	cout << "Press ESC to back to menu";
 
+	SetColor(BRIGHT_WHITE, BLACK);
 	//Vẽ chữ LOAD GAME
-	int logo_x = 22, logo_y = 1;
+	int logo_x = CENTER_X - 15, logo_y = 10;
 	int old_mode= _setmode(_fileno(stdout), _O_WTEXT);
 	wstring loadgame[6] = {
 		L"██╗      █████╗  █████╗ ██████╗    ██████╗  █████╗ ███╗   ███╗███████╗",
@@ -598,28 +668,32 @@ void DrawMatchList() {
 	//Vẽ mây
 	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
 	PrintCloud(40, 4, 3); //ở bên trên chữ caro tí
-	PrintCloud(150, 12, 3); //ở ngay dưới chữ "O"
+	PrintCloud(150, 16, 3); //ở ngay dưới chữ "O"
 	PrintCloud(WIDTH - 17, HEIGHT-7, 2); // Góc phải
 	PrintCloud(2, HEIGHT - 17, 1); // bên trái
 	GotoXY(CENTER_X, CENTER_Y);
 }
 void DrawPopUp(WORD wVirtualKeyCode) {
-	system("cls");
+	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	for (int i = 0;i < 8;++i) {
+		GotoXY(CENTER_X - 5, CENTER_Y - 2 + i);
+		for (int j = 0;j < 29;j++)
+			cout << " ";
+	}
+	PrintRectangle2lines(CENTER_Y - 3, CENTER_X - 6, 30, 9);
 	SetColor(BRIGHT_WHITE, BLACK);
 	switch (wVirtualKeyCode) {
 	case 0x4C:
-		PrintRectangle(CENTER_Y, CENTER_X - 3, 24, 3);
 		GotoXY(CENTER_X, CENTER_Y + 1);
 		cout << " Enter match name";
 		GotoXY(CENTER_X + 2, CENTER_Y + 2);
-		SaveGame();
 		break;
 	case VK_ESCAPE:
-		PrintRectangle(CENTER_Y, CENTER_X - 3, 27, 3);
 		GotoXY(CENTER_X, CENTER_Y + 1);
 		cout << "Are you sure to quit?";
 		GotoXY(CENTER_X + 2, CENTER_Y + 2);
 		cout << "  Yes(Y)   No(N)";
+		break;
 	}
 }
 void Draw_AskContinue() {
@@ -675,6 +749,7 @@ void DrawAbout(){
 	 SetColor(BRIGHT_WHITE, BLACK);
 }
 void DrawLoadingPage() {
+	system("color F1");
 	SetColor(BRIGHT_WHITE, BLACK);
 	int width = 40, height = 9, i = 0, n = 0;
 	int top = CENTER_Y - 6, left = CENTER_X - 12;
@@ -702,6 +777,9 @@ void DrawHelp() {
 	int top= CENTER_Y - 20, left= CENTER_X - 4;
 	PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
 	PrintHelpLogo(top,left);
+	SetColor(BRIGHT_WHITE, YELLOW);
+	GotoXY(CENTER_X + 2, CENTER_Y + 20);
+	cout << "Press ESC to back to match";
 
 	//Phím di chuyển
 	SetColor(BRIGHT_WHITE, BLACK);
