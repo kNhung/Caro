@@ -24,7 +24,5 @@ void ShowCursor(bool show);
 void DisableMouseInput();
 void FixConsoleWindows();
 void SetColor(int backgoundColor, int textColor);
-void TextColor(int color);
-void SetColor(int backgoundColor, int textColor);
 
 #endif

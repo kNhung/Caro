@@ -11,6 +11,9 @@ void PrintTree(int left, int top);
 void PrintCloud(int left, int top, int type);
 void PrintLine(int top, int left, int length);
 void Button(int top, int left, int width, int height, string label);
+void PrintPencil(int top, int left);
+void PrintX(int top, int left, int size);
+void PrintO(int top, int left, int size);
 
 //In tiêu đề các lựa chọn ở trang Menu
 void PrintNEW();
@@ -20,9 +23,6 @@ void PrintEXIT();
 void PrintPVC();
 
 //In tiêu đề trang
-void PrintPencil(int top,int left);
-void PrintX(int top, int left,int size);
-void PrintO(int top, int left,int size);
 void PrintContinueLogo(int top, int left);
 void PrintInMatch(int top, int left);
 void PrintAboutLogo(int top, int left);

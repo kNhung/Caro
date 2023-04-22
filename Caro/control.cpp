@@ -179,23 +179,19 @@ void FixConsoleWindows() {
 	LONG style = GetWindowLong(consoleWindow, GWL_STYLE);
 	style = style & ~(WS_MAXIMIZEBOX) & ~(WS_THICKFRAME);
 	SetWindowLong(consoleWindow, GWL_STYLE, style);
-	SetFontInfo();
-	SetAndCenterWindow();
-	SetWindowSize(WIDTH, HEIGHT);
+	SetFontInfo(); 
+	SetAndCenterWindow(); //Đặt màn hình ở giữa
+	SetWindowSize(WIDTH, HEIGHT); //Cài đặt kích thước màn hình
 	SetScreenBufferSize(WIDTH, HEIGHT);
 	DisableSelection();
-	DisableMaximize();
-	SetConsoleTitle(L"Caro");
-	HideScrollBars();
+	DisableMaximize(); //Làm mờ nút phóng to thu nhỏ
+	SetConsoleTitle(L"Caro"); 
+	HideScrollBars(); //Ẩn thanh cuộn
 	ShowCursor(0);
-	DisableMouseInput();
+	DisableMouseInput(); //Vô hiệu hóa click chuột
 }
 void SetColor(int backgoundColor, int textColor) {
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	int colorCode = backgoundColor * 16 + textColor;
 	SetConsoleTextAttribute(hStdout, colorCode);
-}
-void TextColor(int color)
-{
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }

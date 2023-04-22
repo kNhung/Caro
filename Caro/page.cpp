@@ -76,8 +76,7 @@ void ShowMenu() {
 	}
 }
 void ShowGame() {
-	MODE = 2;
-	_LOADMARK = false;
+	MODE = 2; _LOADMARK = false;
 	StartGame();
 	ShowCursor(0);
 	int flag = 0;
@@ -254,6 +253,8 @@ void ShowAsk(WORD wVirtualKeyCode) {
 	switch (wVirtualKeyCode) {
 	case 0x4C: //L
 		SaveGame();
+		Sleep(800);
+		ShowGame();
 		break;
 	case VK_ESCAPE: //ESC
 		_COMMAND = toupper(_getch());

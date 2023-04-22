@@ -8,21 +8,47 @@
 void SaveGame() {
 	SetColor(BRIGHT_WHITE, BLACK);
 	string matchName;
-	getline(cin, matchName);
+	char c;
+	do{ //Nhập tên file
+		c = _getch();
+		if (48 < c && c < 57 || 65 < c && c < 90 || 97 < c && c < 122 || c=='_' || c=='-') {
+			matchName += c;
+			cout << c;
+		}
+		else if (c == 8) {
+			if (matchName.length() > 0) {
+				matchName.erase(matchName.end() - 1);
+				cout << c << ' ' << c;
+			}
+		}
+	} while(c!=13);
+
 	_MATCH_LIST_FILE.open("game_files.txt", ios::app);
 	if (!_MATCH_LIST_FILE) {
-		cout << "Cannot open file" << endl;
+		GotoXY(CENTER_X + 2, CENTER_Y + 3);
+		cout << "Cannot save";
 		return;
 	}
 	while (CheckExistedFile(matchName) == 1) {
-		cout << endl << "File existed!";
-		cin.ignore();
-		getline(cin, matchName);
-	}
-	while (CheckValidName(matchName) == 0) {
-		cout << endl << "Invalid name";
-		cin.ignore();
-		getline(cin, matchName);
+		GotoXY(CENTER_X + 2, CENTER_Y + 3);
+		cout << "  File existed!";
+		GotoXY(CENTER_X + 2, CENTER_Y + 2);
+		for (int i = 0;i < 10;++i)
+			cout << " ";
+		GotoXY(CENTER_X + 2, CENTER_Y + 2);
+		do { //Nhập tên file
+			c = _getch();
+			if (48 < c && c < 57 || 65 < c && c < 90 || 97 < c && c < 122 || c == '_' || c == '-') {
+				matchName += c;
+				cout << c;
+			}
+			else if (c == 8) {
+				if (matchName.length() > 0) {
+					matchName.erase(matchName.end() - 1);
+					cout << c << ' ' << c;
+				}
+			}
+		} while (c != 13);
 	}
 	_MATCH_LIST_FILE << matchName + ".txt" << endl;
 	SaveMatchInfo(matchName);
@@ -32,10 +58,10 @@ void SaveMatchInfo(string matchName) {
 	matchName += ".txt";
 	ofstream matchFile(matchName);
 	if (!matchFile) {
-		cout << "Cannot open matchFile";
+		cout << "  Cannot save!";
 		return;
 	}
-	cout << "Opened matchFile";
+	cout << "  Saved";
 	for (int i = 0;i < BOARD_SIZE;i++) {
 		for (int j = 0;j < BOARD_SIZE;j++) {
 			matchFile << _A[i][j].c << endl;
@@ -246,7 +272,7 @@ int TestBoard() {
 			break;
 		}
 	}
-	for (int i = row + 1, j = col + 1; i >= 0 && i < BOARD_SIZE, j >= 0 && j < BOARD_SIZE; i++, j++) {
+	for (int i = row + 1, j = col + 1; (i >= 0) && (i < BOARD_SIZE), j >= 0 && j < BOARD_SIZE; i++, j++) {
 		if (_A[i][j].c == _A[row][col].c) {
 			a[n++] = _A[i][j];
 		}

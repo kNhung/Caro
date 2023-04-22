@@ -160,6 +160,111 @@ void Button(int top, int left, int width, int height, string label) {
 	GotoXY(left + n + 1, top + (height / 2));
 	cout << label;
 }
+void PrintPencil(int top, int left) {
+	int old_mode = _setmode(_fileno(stdout), _O_U16TEXT);
+	wstring NEW[9] = { L"    ██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████			",
+						 L"  ██                                                                                                                          ████			",
+						 L" ██                                                                                                                         ██    ████		",
+						 L"██                                                                                                                         ██    █    █████   ",
+						 L"██                                                                                                                        ██    █          ████   ",
+						 L"██                                                                                                                         ██    █    █████   ",
+						 L" ██                                                                                                                         ██    ████       ",
+						 L"  ██                                                                                                                          ████			",
+						 L"    ██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████			" };
+	for (int i = 0; i < 9; i++) {
+		GotoXY(left, top + i);
+		wcout << NEW[i];
+	}
+	int current_mode = _setmode(_fileno(stdout), old_mode);
+}
+void PrintX(int top, int left, int size) {
+	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
+	if (size == 1) {
+		wstring logo[21] = {
+			L"████████                              ████████	",
+			L"████████                              ████████	",
+			L"████████                              ████████	",
+			L"     ████████                    ████████			",
+			L"     ████████                    ████████			",
+			L"     ████████                    ████████			",
+			L"          ████████          ████████				",
+			L"          ████████          ████████				",
+			L"          ████████          ████████				",
+			L"               ████████████████					",
+			L"               ████████████████					",
+			L"               ████████████████					",
+			L"          ████████          ████████				",
+			L"          ████████          ████████				",
+			L"          ████████          ████████				",
+			L"     ████████                    ████████			",
+			L"     ████████                    ████████			",
+			L"     ████████                    ████████			",
+			L"████████                              ████████	",
+			L"████████                              ████████	",
+			L"████████                              ████████	" };
+		for (int i = 0; i < 21; i++) {
+			GotoXY(left, i + top);
+			wcout << logo[i];
+		}
+	}
+	else if (size == 2) {
+		wstring logo[5] = {
+			L"██   ██",
+			L" ██ ██",
+			L"  ███",
+			L" ██ ██",
+			L"██   ██" };
+		for (int i = 0; i < 5; i++) {
+			GotoXY(left, i + top);
+			wcout << logo[i];
+		}
+	}
+	int currentMode = _setmode(_fileno(stdout), OldMode);
+}
+void PrintO(int top, int left, int size) {
+	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
+	if (size == 1) {
+		wstring logo[21] = {
+			L"    ████████████████████████████████████████		",
+			L"    ████████████████████████████████████████		",
+			L"    ████████████████████████████████████████		",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"████████                                ████████	",
+			L"    ████████████████████████████████████████		",
+			L"    ████████████████████████████████████████		",
+			L"    ████████████████████████████████████████		" };
+		for (int i = 0; i < 21; i++) {
+			GotoXY(left, i + top);
+			wcout << logo[i];
+		}
+	}
+	else if (size == 2) {
+		wstring logo[5] = {
+			L" █████",
+			L"██   ██",
+			L"██   ██",
+			L"██   ██",
+			L" █████" };
+		for (int i = 0; i < 5; i++) {
+			GotoXY(left, i + top);
+			wcout << logo[i];
+		}
+	}
+	int currentMode = _setmode(_fileno(stdout), OldMode);
+}
 
 //In tiêu đề các lựa chọn ở trang Menu
 void PrintNEW() 
@@ -229,111 +334,6 @@ void PrintPVC()
 }
 
 //In tiêu đề trang
-void PrintPencil(int top,int left) {
-	int old_mode = _setmode(_fileno(stdout), _O_U16TEXT);
-	wstring NEW[9] = {   L"    ██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████			",						
-						 L"  ██                                                                                                                          ████			",
-						 L" ██                                                                                                                         ██    ████		",
-						 L"██                                                                                                                         ██    █    █████   ",
-						 L"██                                                                                                                        ██    █          ████   ",
-						 L"██                                                                                                                         ██    █    █████   ",
-						 L" ██                                                                                                                         ██    ████       ",
-						 L"  ██                                                                                                                          ████			",
-						 L"    ██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████			"};
-	for (int i = 0; i < 9; i++) {
-		GotoXY(left, top + i);
-		wcout << NEW[i];
-	}
-	int current_mode = _setmode(_fileno(stdout), old_mode);
-}
-void PrintX(int top, int left, int size) {
-	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
-	if (size == 1) {
-		wstring logo[21] = {
-			L"████████                              ████████	",
-			L"████████                              ████████	",
-			L"████████                              ████████	",
-			L"     ████████                    ████████			",
-			L"     ████████                    ████████			",
-			L"     ████████                    ████████			",
-			L"          ████████          ████████				",
-			L"          ████████          ████████				",
-			L"          ████████          ████████				",
-			L"               ████████████████					",
-			L"               ████████████████					",
-			L"               ████████████████					",
-			L"          ████████          ████████				",
-			L"          ████████          ████████				",
-			L"          ████████          ████████				",
-			L"     ████████                    ████████			",
-			L"     ████████                    ████████			",
-			L"     ████████                    ████████			",
-			L"████████                              ████████	",
-			L"████████                              ████████	",
-			L"████████                              ████████	" };
-		for (int i = 0; i < 21; i++) {
-			GotoXY(left, i + top);
-			wcout << logo[i];
-		}
-	}
-	else if (size == 2) {
-		wstring logo[5] = {
-			L"██   ██",
-			L" ██ ██",
-			L"  ███",
-			L" ██ ██",
-			L"██   ██"};
-		for (int i = 0; i < 5; i++) {
-			GotoXY(left, i + top);
-			wcout << logo[i];
-		}
-	}
-	int currentMode = _setmode(_fileno(stdout), OldMode);
-}
-void PrintO(int top, int left, int size) {
-	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
-	if (size == 1) {
-		wstring logo[21] = {
-			L"    ████████████████████████████████████████		",
-			L"    ████████████████████████████████████████		",
-			L"    ████████████████████████████████████████		",
-			L"████████                                ████████	",
-			L"████████                                ████████	",
-			L"████████                                ████████	",
-			L"████████                                ████████	",
-			L"████████                                ████████	",
-			L"████████                                ████████	",
-			L"████████                                ████████	",
-			L"████████                                ████████	",
-			L"████████                                ████████	",
-			L"████████                                ████████	",
-			L"████████                                ████████	",
-			L"████████                                ████████	",
-			L"████████                                ████████	",
-			L"████████                                ████████	",
-			L"████████                                ████████	",
-			L"    ████████████████████████████████████████		",
-			L"    ████████████████████████████████████████		",
-			L"    ████████████████████████████████████████		" };
-		for (int i = 0; i < 21; i++) {
-			GotoXY(left, i + top);
-			wcout << logo[i];
-		}
-	}
-	else if(size==2) {
-		wstring logo[5] = {
-			L" █████",
-			L"██   ██",
-			L"██   ██",
-			L"██   ██",
-			L" █████" };
-		for (int i = 0; i < 5; i++) {
-			GotoXY(left, i + top);
-			wcout << logo[i];
-		}
-	}
-	int currentMode = _setmode(_fileno(stdout), OldMode);
-}
 void PrintContinueLogo(int top, int left) {
 	SetColor(BRIGHT_WHITE, BLACK);
 	int old_mode = _setmode(_fileno(stdout), _O_U16TEXT);
@@ -621,6 +621,7 @@ void DrawBoard() {
 			GotoXY(LEFT + j, 2 * i + TOP);
 			if (j % 4 == 0)cout << char(197);
 		}
+	//Vẽ hiệu ứng đổi lượt X O
 	if (_TURN == -1 || NEW_GAME == 1) {
 		SetColor(BRIGHT_WHITE, RED);
 		PrintX(TOP + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
@@ -633,10 +634,11 @@ void DrawBoard() {
 		SetColor(BRIGHT_WHITE, GOAL);
 		PrintO(TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
 	}
+
 	SetColor(LIGHT_AQUA, BLACK);
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT, 15, 2, "U:Undo");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 + 2, 15, 2, "H:Help");
-	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 2 + 4, 15, 2, "F:Flip");
+	//Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 2 + 4, 15, 2, "F:Flip");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 2 + 32, 15, 2, "L:Save");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 3 + 32 + 2, 15, 2, "ESC:Exit");
 	if (_LOADMARK)
@@ -720,6 +722,8 @@ void DrawPopUp(WORD wVirtualKeyCode) {
 	case 0x4C:
 		GotoXY(CENTER_X, CENTER_Y + 1);
 		cout << " Enter match name";
+		GotoXY(CENTER_X - 4, CENTER_Y + 4);
+		cout << "Only (a-z), (0-9), '_', '-'";
 		GotoXY(CENTER_X + 2, CENTER_Y + 2);
 		break;
 	case VK_ESCAPE:
