@@ -51,4 +51,33 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="effect.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="enter.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="error.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="lose.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="move.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="moveO.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="moveX.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="placed.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="win.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+  </ItemGroup>
 </Project>

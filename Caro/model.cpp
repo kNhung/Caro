@@ -317,10 +317,12 @@ int TestBoard() {
 }
 int test_inTestBoard(_POINT a[], int& n, int& led1, int& led2) {
 	if (n == 5 && (led1 == 0 || led2 == 0)) {
+		_PlaySound(6);
 		HighlightWin(a, n);
 		return(_TURN = true ? -1 : 1);
 	}
 	if (n > 5) {
+		_PlaySound(6);
 		HighlightWin(a, n);
 		return(_TURN = true ? -1 : 1);
 	}
@@ -347,20 +349,22 @@ void HighlightWin(_POINT a[], int& n) {
 	}
 }
 int ProcessFinish(int pWhoWin) {
-	int top = 15, left = 43;
+	PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
+	int top = 15, left = CENTER_X - 30;
 	int bg_color = BRIGHT_WHITE, text_color = LIGHT_AQUA;
 	switch (pWhoWin) {
-	case -1: {
+	case 1: {
 		system("cls");
+		PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
 		int old_mode = _setmode(_fileno(stdout), _O_WTEXT);
-		SetColor(bg_color, text_color);
+		SetColor(BRIGHT_WHITE, BLACK);
 		wstring logo[6] = {
-			 L" ██████╗░██╗░░░░░░█████╗░██╗░░░██╗███████╗██████╗░  ██╗░░██╗  ░██╗░░░░░░░██╗██╗███╗░░██╗	",
-			 L" ██╔══██╗██║░░░░░██╔══██╗╚██╗░██╔╝██╔════╝██╔══██╗  ╚██╗██╔╝  ░██║░░██╗░░██║██║████╗░██║	",
-			 L" ██████╔╝██║░░░░░███████║░╚████╔╝░█████╗░░██████╔╝  ░╚███╔╝░  ░╚██╗████╗██╔╝██║██╔██╗██║	",
-			 L" ██╔═══╝░██║░░░░░██╔══██║░░╚██╔╝░░██╔══╝░░██╔══██╗  ░██╔██╗░  ░░████╔═████║░██║██║╚████║	",
-			 L" ██║░░░░░███████╗██║░░██║░░░██║░░░███████╗██║░░██║  ██╔╝╚██╗  ░░╚██╔╝░╚██╔╝░██║██║░╚███║	",
-			 L" ╚═╝░░░░░╚══════╝╚═╝░░╚═╝░░░╚═╝░░░╚══════╝╚═╝░░╚═╝  ╚═╝░░╚═╝  ░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚══╝	" };
+			 L" ██████╗ ██╗      █████╗ ██╗   ██╗███████╗██████╗   ██╗  ██╗   ██╗       ██╗██╗███╗  ██╗	",
+			 L" ██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗  ╚██╗██╔╝   ██║  ██╗  ██║██║████╗ ██║	",
+			 L" ██████╔╝██║     ███████║ ╚████╔╝ █████╗  ██████╔╝   ╚███╔╝    ╚██╗████╗██╔╝██║██╔██╗██║	",
+			 L" ██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██╗   ██╔██╗     ████╔═████║ ██║██║╚████║	",
+			 L" ██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║  ██╔╝╚██╗    ╚██╔╝ ╚██╔╝ ██║██║ ╚███║	",
+			 L" ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝  ╚═╝  ╚═╝     ╚═╝   ╚═╝  ╚═╝╚═╝  ╚══╝	" };
 
 		for (int i = 0; i < 6; i++) {
 			GotoXY(left, i + top);
@@ -369,17 +373,18 @@ int ProcessFinish(int pWhoWin) {
 		int current_mode = _setmode(_fileno(stdout), old_mode);
 		break;
 	}
-	case 1: {
+	case -1: {
 		system("cls");
+		PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
 		int old_mode = _setmode(_fileno(stdout), _O_WTEXT);
 		SetColor(bg_color, text_color);
 		wstring logo[6] = {
-			L"██████╗░██╗░░░░░░█████╗░██╗░░░██╗███████╗██████╗░  ░█████╗░  ░██╗░░░░░░░██╗██╗███╗░░██╗",
-			L"██╔══██╗██║░░░░░██╔══██╗╚██╗░██╔╝██╔════╝██╔══██╗  ██╔══██╗  ░██║░░██╗░░██║██║████╗░██║",
-			L"██████╔╝██║░░░░░███████║░╚████╔╝░█████╗░░██████╔╝  ██║░░██║  ░╚██╗████╗██╔╝██║██╔██╗██║",
-			L"██╔═══╝░██║░░░░░██╔══██║░░╚██╔╝░░██╔══╝░░██╔══██╗  ██║░░██║  ░░████╔═████║░██║██║╚████║",
-			L"██║░░░░░███████╗██║░░██║░░░██║░░░███████╗██║░░██║  ╚█████╔╝  ░░╚██╔╝░╚██╔╝░██║██║░╚███║",
-			L"╚═╝░░░░░╚══════╝╚═╝░░╚═╝░░░╚═╝░░░╚══════╝╚═╝░░╚═╝  ░╚════╝░  ░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚══╝" };
+			L"██████╗ ██╗      █████╗ ██╗   ██╗███████╗██████╗    █████╗    ██╗       ██╗██╗███╗  ██╗",
+			L"██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗  ██╔══██╗   ██║  ██╗  ██║██║████╗ ██║",
+			L"██████╔╝██║     ███████║ ╚████╔╝ █████╗  ██████╔╝  ██║  ██║   ╚██╗████╗██╔╝██║██╔██╗██║",
+			L"██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██╗  ██║  ██║    ████╔═████║ ██║██║╚████║",
+			L"██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║  ╚█████╔╝    ╚██╔╝ ╚██╔╝ ██║██║ ╚███║",
+			L"╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝   ╚════╝      ╚═╝   ╚═╝  ╚═╝╚═╝  ╚══╝" };
 		for (int i = 0; i < 6; i++) {
 			GotoXY(left, i + top);
 			wcout << logo[i];
@@ -389,22 +394,23 @@ int ProcessFinish(int pWhoWin) {
 	}
 	case 0: {
 		system("cls");
+		PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
 		int old_mode = _setmode(_fileno(stdout), _O_WTEXT);
 		SetColor(bg_color, text_color);
 		wstring logo[13] = {
-			L"               ██╗░░██╗░█████╗░  			 ",
+			L"               ██╗  ██╗ █████╗   			 ",
 			L"               ╚██╗██╔╝██╔══██╗  			 ",
-			L"               ░╚███╔╝░██║░░██║  			 ",
-			L"               ░██╔██╗░██║░░██║  			 ",
+			L"                ╚███╔╝ ██║  ██║  			 ",
+			L"                ██╔██╗ ██║  ██║  			 ",
 			L"               ██╔╝╚██╗╚█████╔╝  			 ",
-			L"               ╚═╝░░╚═╝░╚════╝░  		     ",
+			L"               ╚═╝  ╚═╝ ╚════╝   		     ",
 			L"												 ",
-			L"██████╗░░█████╗░██████╗░░██╗░░░░░░░██╗██╗██╗██╗",
-			L"██╔══██╗██╔══██╗██╔══██╗░██║░░██╗░░██║██║██║██║",
-			L"██║░░██║███████║██████╔╝░╚██╗████╗██╔╝██║██║██║",
-			L"██║░░██║██╔══██║██╔══██╗░░████╔═████║░╚═╝╚═╝╚═╝",
-			L"██████╔╝██║░░██║██║░░██║░░╚██╔╝░╚██╔╝░██╗██╗██╗",
-			L"╚═════╝░╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚═╝╚═╝", };
+			L"██████╗  █████╗ ██████╗  ██╗       ██╗██╗██╗██╗",
+			L"██╔══██╗██╔══██╗██╔══██╗ ██║  ██╗  ██║██║██║██║",
+			L"██║  ██║███████║██████╔╝ ╚██╗████╗██╔╝██║██║██║",
+			L"██║  ██║██╔══██║██╔══██╗  ████╔═████║ ╚═╝╚═╝╚═╝",
+			L"██████╔╝██║  ██║██║  ██║  ╚██╔╝ ╚██╔╝ ██╗██╗██╗",
+			L"╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝╚═╝", };
 
 		for (int i = 0; i < 13; i++) {
 			GotoXY(left + 10, i + (top - 5));
@@ -421,7 +427,8 @@ int ProcessFinish(int pWhoWin) {
 
 //Hỏi
 int AskContinue() {
-	int top = 25, left = 43, flag = 0;
+	int top = 15, left = CENTER_X - 30;
+	int flag = 0;
 	int bg_color = BRIGHT_WHITE, text_color = BLUE;
 	KEY_EVENT_RECORD keyevent;
 	EDGE bien = { 0,0,left + 10, left + 50 };
@@ -440,6 +447,7 @@ int AskContinue() {
 				break;
 			}
 			case VK_RETURN: {
+				_PlaySound(3);
 				switch (_X) {
 				case 53: {
 					flag = 1;
@@ -492,6 +500,7 @@ void Save_1_move(int& y, int& x) {
 }
 void ExitGame() {
 	ShowLoadingPage();
+	_PlaySound(4);
 	ShowMenu();
 }
 void RemoveMatchFile(string matchName) {
@@ -505,4 +514,10 @@ void RemoveMatchFile(string matchName) {
 }
 void GabageCollect() {
 	return;
+}
+void _PlaySound(int i)
+{
+	vector<const wchar_t*> soundFile{ L"moveO.wav", L"moveX.wav",
+		L"move.wav", L"enter.wav", L"error.wav", L"placed.wav", L"win.wav", L"lose.wav",  L"background.wav", L"effect.wav" };
+	PlaySound(soundFile[i], NULL, SND_FILENAME | SND_ASYNC);
 }

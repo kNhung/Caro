@@ -2,6 +2,7 @@
 #ifndef _MY_MODEL
 #define _MY_MODEL
 #include "header.h"
+#pragma comment(lib, "Winmm.lib")
 
 //Lưu game
 void SaveGame();
@@ -39,6 +40,7 @@ void Save_1_move(int& y, int& x);
 void ExitGame();
 void RemoveMatchFile(string matchName);
 void GabageCollect();
+void _PlaySound(int i);
 
 #endif
 

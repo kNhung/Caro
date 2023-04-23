@@ -40,6 +40,7 @@ void MoveUp() {
 }
 void KeyMove(int* x, int* y, int col, int row, EDGE b, KEY_EVENT_RECORD a) {
 //Di chuyển con trỏ chuột về các hướng bằng các phím A,W,S,D và các phím mũi tên
+	_PlaySound(0);
 	switch (a.wVirtualKeyCode) {
 	case VK_UP:case 0x57: {
 		*y = *y - row;

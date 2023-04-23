@@ -12,12 +12,14 @@ void ShowPage(int page) {
 	}
 }
 void ShowLoadingPage() {
+	_PlaySound(4);
 	system("cls");
 	DrawLoadingPage();
 	Sleep(700);
 	system("cls");
 }
 void ShowMenu() {
+	_PlaySound(4);
 	ShowCursor(0);
 	HANDLE word;
 	MODE = 1;
@@ -34,6 +36,7 @@ void ShowMenu() {
 		GotoXY(_X, _Y);
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 'W') {
+			_PlaySound(3);
 			MoveUp();
 			//Xóa con trỏ ở vị trí cũ + unhighlight option trước
 			SetColor(backgroundColor, backgroundColor);
@@ -48,6 +51,7 @@ void ShowMenu() {
 			PrintCurrentHighlight(previousOption);
 		}
 		else if (_COMMAND == 'S') {
+			_PlaySound(3);
 			MoveDown();
 			//Xóa con trỏ ở vị trí cũ + unhighlight  option trước
 			SetColor(backgroundColor, backgroundColor);
@@ -62,12 +66,14 @@ void ShowMenu() {
 			PrintCurrentHighlight(previousOption);
 		}
 		else if (_COMMAND == 13 && _Y == _MENU[4].y) {
+			_PlaySound(4);
 			SetColor(BRIGHT_WHITE, BLACK);
 			system("cls");
 			GabageCollect();
 			return;
 		}
 		else if (_COMMAND == 13) {
+			_PlaySound(3);
 			ShowLoadingPage();
 			for (int i = 0;i < MENU_SIZE;i++)
 				if (_Y == _MENU[i].y)
@@ -76,6 +82,7 @@ void ShowMenu() {
 	}
 }
 void ShowGame() {
+	_PlaySound(4);
 	MODE = 2; _LOADMARK = false;
 	StartGame();
 	ShowCursor(0);
@@ -89,14 +96,17 @@ void ShowGame() {
 				KeyMove(&_X, &_Y, 4, 2, bien, keyevent);
 				switch (keyevent.wVirtualKeyCode) {
 				case (VK_ESCAPE): case (0x4C): { //ESC or L
+					_PlaySound(3);
 					ShowAsk(keyevent.wVirtualKeyCode);
 					break;
 				}
 				case (0x48): { //H
+					_PlaySound(4);
 					_LOADMARK = true;
 					ShowHelp();
 					break; }
 				case (VK_RETURN): { //Enter
+					_PlaySound(1);
 					switch (CheckBoard(_X, _Y)) {
 					case -1: {
 						SetColor(BRIGHT_WHITE, RED);
@@ -124,15 +134,21 @@ void ShowGame() {
 					}
 					if (validEnter == true) {
 						switch (ProcessFinish(TestBoard())) {
-						case -1:case 1:case 0: {
+						case -1:case 1: {
+							_PlaySound(4);
 							flag = AskContinue();
 							break;
 						}
+						case 0: 
+							_PlaySound(7);
+							flag = AskContinue();
+							break;
 						}
 					}
 					break;
 				}
 				case (0x55): { //U - Undo
+					_PlaySound(4);
 					if (_LAST_POINT.c != 0) { //Xét trường hợp Undo 2 lần trên 1 ô
 						//Hiệu ứng đổi lượt
 						if (_TURN == 1) {
@@ -178,10 +194,12 @@ void ShowGame() {
 }
 void ShowAbout() {
 	//V? About ? dây...
+	_PlaySound(4);
 	DrawAbout();
 	while (1) {
 		_COMMAND = toupper(_getch()); //_getch() chu khong phai getch()
 		if (_COMMAND == 27) {
+			_PlaySound(4);
 			ShowLoadingPage();
 			ShowMenu();
 			return;
@@ -203,6 +221,7 @@ void ShowFileGame() {
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 'W') {
 			MoveUp();
+			_PlaySound(3);
 			//Xóa con trỏ ở vị trí cũ 
 			SetColor(BRIGHT_WHITE, BRIGHT_WHITE);
 			PrintLeftCursor(_Y + 5, CENTER_X - 6);
@@ -214,6 +233,7 @@ void ShowFileGame() {
 		}
 		else if (_COMMAND == 'S') {
 			MoveDown();
+			_PlaySound(3);
 			//Xóa con trỏ ở vị trí cũ 
 			SetColor(BRIGHT_WHITE, BRIGHT_WHITE);
 			PrintLeftCursor(_Y - 5, CENTER_X - 6);
@@ -224,8 +244,10 @@ void ShowFileGame() {
 			PrintRightCursor(_Y, CENTER_X + 32);
 		}
 		else if (_COMMAND == 27) {
+			_PlaySound(4);
 			ShowLoadingPage();
 			ShowMenu();
+			_PlaySound(4);
 		}
 		else if (_COMMAND == 13) {
 			ShowLoadingPage();
@@ -259,10 +281,13 @@ void ShowAsk(WORD wVirtualKeyCode) {
 	case VK_ESCAPE: //ESC
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 'Y') {
+			_PlaySound(4);
 			ExitGame();
 		}
 		else if (_COMMAND == 'N')
+			_PlaySound(4);
 			ShowGame();
+			DrawExistedData();
 	}
 }
 void ShowHelp() {

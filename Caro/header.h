@@ -13,6 +13,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <vector>
+#include <mmsystem.h>
 using namespace std;
 
 #define WIDTH 232

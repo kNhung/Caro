@@ -250,6 +250,30 @@ void PrintO(int top, int left, int size) {
 			GotoXY(left, i + top);
 			wcout << logo[i];
 		}
+		top += 2, left += 7;
+		SetColor(BRIGHT_WHITE, BLACK);
+		wstring logo1[21] = {
+			L"███████████████████████████████████",
+			L"███                             ███",
+			L"███                             ███",
+			L"███                             ███",
+			L"███                             ███",
+			L"███                             ███",
+			L"███                             ███",
+			L"███                             ███",
+			L"███                             ███",
+			L"███                             ███",
+			L"███                             ███",
+			L"███                             ███",
+			L"███                             ███",
+			L"███                             ███",
+			L"███                             ███",
+			L"███                             ███",
+			L"███████████████████████████████████" };
+		for (int i = 0; i < 21; i++) {
+			GotoXY(left, i + top);
+			wcout << logo1[i];
+		}
 	}
 	else if (size == 2) {
 		wstring logo[5] = {
@@ -530,9 +554,9 @@ void DrawMenu() {
 	PrintPencil(4, 52);
 	SetColor(BRIGHT_WHITE, BLACK);
 	PrintMenuLogo(CENTER_Y - 20, CENTER_X - 2);
-	SetColor(BRIGHT_WHITE, RED);
+	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
 	PrintX(CENTER_Y, 5,1);
-	SetColor(BRIGHT_WHITE, GOAL);
+	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
 	PrintO(CENTER_Y, WIDTH - 52,1);
 
 	//Vẽ khung trang menu
@@ -735,7 +759,8 @@ void DrawPopUp(WORD wVirtualKeyCode) {
 	}
 }
 void Draw_AskContinue() {
-	int top = 25, left = 43;
+	int top = 25, left = CENTER_X - 30;
+	//int top = 25, left = 43;
 	PrintRectangle(top, left, 90, 6);
 	GotoXY(left + 25, top + 1); cout << "Do you want to continue playing or exit ? ";
 	int width = 15, height = 2;

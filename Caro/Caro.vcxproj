@@ -109,6 +109,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -141,6 +142,17 @@
     <ClInclude Include="model.h" />
     <ClInclude Include="page.h" />
     <ClInclude Include="view.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="effect.wav" />
+    <Media Include="enter.wav" />
+    <Media Include="error.wav" />
+    <Media Include="lose.wav" />
+    <Media Include="move.wav" />
+    <Media Include="moveO.wav" />
+    <Media Include="moveX.wav" />
+    <Media Include="placed.wav" />
+    <Media Include="win.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
