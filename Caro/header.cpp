@@ -19,3 +19,4 @@ bool NEW_GAME;
 ofstream _MATCH_LIST_FILE;
 int MATCH_LIST_SIZE;
 vector<_LIST> _MATCH_LIST;
+int SOUND;

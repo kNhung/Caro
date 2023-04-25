@@ -22,6 +22,7 @@ void ShowMenu() {
 	_PlaySound(4);
 	ShowCursor(0);
 	HANDLE word;
+	SOUND = 1;
 	MODE = 1;
 	NEW_GAME = 1;
 	_X = CENTER_X - 14;_Y = CENTER_Y - 3;
@@ -78,6 +79,12 @@ void ShowMenu() {
 			for (int i = 0;i < MENU_SIZE;i++)
 				if (_Y == _MENU[i].y)
 					ShowPage(_MENU[i].c);
+		}
+		else if (_COMMAND == 'M') {
+			if (SOUND == 0)
+				SOUND = 1;
+			else
+				SOUND = 0;
 		}
 	}
 }
@@ -183,6 +190,12 @@ void ShowGame() {
 						_TURN = !_TURN;
 						break;
 					}
+				}
+				case (0x4D): {
+					if (SOUND == 0)
+						SOUND = 1;
+					else
+						SOUND = 0;
 				}
 				}
 			}

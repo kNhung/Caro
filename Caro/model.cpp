@@ -519,5 +519,7 @@ void _PlaySound(int i)
 {
 	vector<const wchar_t*> soundFile{ L"moveO.wav", L"moveX.wav",
 		L"move.wav", L"enter.wav", L"error.wav", L"placed.wav", L"win.wav", L"lose.wav",  L"background.wav", L"effect.wav" };
-	PlaySound(soundFile[i], NULL, SND_FILENAME | SND_ASYNC);
+	if (SOUND == 1) {
+		PlaySound(soundFile[i], NULL, SND_FILENAME | SND_ASYNC);
+	}
 }
