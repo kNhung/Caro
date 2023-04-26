@@ -11,7 +11,7 @@ void SaveGame() {
 	char c;
 	do{ //Nhập tên file
 		c = _getch();
-		if (48 < c && c < 57 || 65 < c && c < 90 || 97 < c && c < 122 || c=='_' || c=='-') {
+		if (48 < c && c < 57 || 65 < c && c < 90 || 97 < c && c < 122 || c == '_' || c == '-') {
 			matchName += c;
 			cout << c;
 		}
@@ -21,6 +21,8 @@ void SaveGame() {
 				cout << c << ' ' << c;
 			}
 		}
+		else if (c == 27)
+			ShowGame();
 	} while(c!=13);
 
 	_MATCH_LIST_FILE.open("game_files.txt", ios::app);
@@ -48,6 +50,8 @@ void SaveGame() {
 					cout << c << ' ' << c;
 				}
 			}
+			else if (c == 13)
+				ShowGame();
 		} while (c != 13);
 	}
 	_MATCH_LIST_FILE << matchName + ".txt" << endl;
@@ -179,7 +183,7 @@ void ResetData() {
 void StartGame() {
 	system("cls");
 	DrawBoard();
-	if (NEW_GAME == 1) {
+	if (NEW_GAME == 1 || _LAST_POINT.x==0&&_LAST_POINT.y==0) {
 		ResetData();
 		ShowCursor(1);
 	}
