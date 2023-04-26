@@ -155,7 +155,6 @@ void ShowGame() {
 							break;
 						}
 						case 0: {
-							_PlaySound(7);
 							flag = AskContinue();
 							if (_EXIT) return;
 							break;
