@@ -71,7 +71,10 @@ void SaveMatchInfo(string matchName) {
 			matchFile << _A[i][j].c << endl;
 		}
 	}
-	matchFile << _LAST_POINT.x << endl << _LAST_POINT.y << endl << _LAST_POINT.c;
+	matchFile << _LAST_POINT.x << endl 
+			<< _LAST_POINT.y << endl 
+			<< _LAST_POINT.c << endl 
+			<< _MODEPLAY;
 	matchFile.close();
 }
 int CheckExistedFile(string fileName) {
@@ -143,7 +146,7 @@ void GetMatchListSize() {
 }
 void LoadGame(string matchName) {
 	int i = 0, j = 0, m = 0, value = 0;
-	int numbers[BOARD_SIZE * BOARD_SIZE + 3];
+	int numbers[BOARD_SIZE * BOARD_SIZE + 4];
 	ifstream matchFile(matchName);
 	if (!matchFile) {
 		cout << "Cannot open match file";
@@ -163,7 +166,8 @@ void LoadGame(string matchName) {
 		}
 	_LAST_POINT.x = numbers[m];++m;
 	_LAST_POINT.y = numbers[m];++m;
-	_LAST_POINT.c = numbers[m];
+	_LAST_POINT.c = numbers[m];++m;
+	_MODEPLAY = numbers[m];
 	_TURN = !_LAST_POINT.c; _COMMAND = -1;
 }
 void ResetData() {
@@ -357,12 +361,12 @@ int CheckWin(_POINT a[], int& n, _POINT& led1, _POINT& led2) {
 	if (n == 5 && (led1.c == 0 || led2.c == 0)) {
 		_PlaySound(6);
 		HighlightWin(a, n);
-		return(_TURN = true ? -1 : 1);
+		return(_TURN == true ? 1 : -1);
 	}
 	if (n > 5) {
 		_PlaySound(6);
 		HighlightWin(a, n);
-		return(_TURN == true ? -1 : 1);
+		return(_TURN == true ? 1 : -1);
 	}
 	ResetToCheck(a, n, led1, led2);
 	return 2;
