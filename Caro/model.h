@@ -36,7 +36,6 @@ void HLChoice(int& x, int& y, int width);
 
 //Các chức năng khác
 _POINT XYinMatrix(int& x, int& y, int& row, int& col);
-void Save_1_move(int& y, int& x);
 void ExitGame();
 void RemoveMatchFile(string matchName);
 void GabageCollect();

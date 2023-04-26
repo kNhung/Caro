@@ -323,12 +323,12 @@ int test_inTestBoard(_POINT a[], int& n, int& led1, int& led2) {
 	if (n == 5 && (led1 == 0 || led2 == 0)) {
 		_PlaySound(6);
 		HighlightWin(a, n);
-		return(_TURN = true ? -1 : 1);
+		return(_TURN == true ? 1 : -1);
 	}
 	if (n > 5) {
 		_PlaySound(6);
 		HighlightWin(a, n);
-		return(_TURN = true ? -1 : 1);
+		return(_TURN == true ? 1 : -1);
 	}
 	ResetToCheck(a, n, led1, led2);
 	return 2;
@@ -453,7 +453,7 @@ int AskContinue() {
 			case VK_RETURN: {
 				_PlaySound(3);
 				switch (_X) {
-				case 53: {
+				case 82: {
 					flag = 1;
 					NEW_GAME = 1;
 					StartGame();
@@ -497,10 +497,6 @@ _POINT XYinMatrix(int& x, int& y,int& row,int& col) {
 				return _A[i][j];
 			}
 	}
-}
-void Save_1_move(int& y, int& x) {
-	y = _Y;
-	x = _X;
 }
 void ExitGame() {
 	ShowLoadingPage();
