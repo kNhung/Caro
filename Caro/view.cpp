@@ -766,9 +766,9 @@ void Draw_AskContinue() {
 	PrintRectangle(top, left, 90, 6);
 	GotoXY(left + 25, top + 1); cout << "Do you want to continue playing or exit ? ";
 	int width = 15, height = 2;
-	Button(top + 2, left + 10, width, height, "New Game");
+	Button(top + 2, left + 25, width, height, "New Game");
 	Button(top + 2, left + 50, width, height, "Exit");
-	_X = left + 10, _Y = top + 2;
+	_X = left + 25, _Y = top + 2;
 	GotoXY(_X, _Y);
 	ShowCursor(0);
 }
