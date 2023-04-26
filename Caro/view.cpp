@@ -177,6 +177,33 @@ void PrintPencil(int top, int left) {
 	}
 	int current_mode = _setmode(_fileno(stdout), old_mode);
 }
+void PrintHelicopter(int x, int y) {
+	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
+	wstring logo1[5] = {
+		L"▀▀▀▀█▀▀▀▀",
+		L"─▄▀█▀▀█──────▄",
+		L"█▄▄█▄▄██████▀",
+		L"▀▀█▀▀▀█▀▀",
+		L"─▀▀▀▀▀▀▀" };
+	for (int i = 0; i < 5; i++) {
+		GotoXY(x, i + y);
+		wcout << logo1[i];
+	}
+	int currentMode = _setmode(_fileno(stdout), OldMode);
+}
+void PrintCastle(int x,int y) {
+	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
+	wstring logo2[5] = {
+		L"─────────█▄██▄█",
+		L"█▄█▄█▄█▄█▐█┼██▌█▄█▄█▄█▄█",
+		L"███┼█████▐████▌█████┼███",
+		L"█████████▐████▌█████████" };
+	for (int i = 0; i < 4; i++) {
+		GotoXY(x, i + y);
+		wcout << logo2[i];
+	}
+	int currentMode = _setmode(_fileno(stdout), OldMode);
+}
 void PrintX(int top, int left, int size) {
 	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
 	if (size == 1) {
@@ -605,9 +632,7 @@ void DrawBoard() {
 		if (j % 4 == 0 && j < BOARD_SIZE * 4)cout << char(207);
 		else cout << char(205);
 		if (j > BOARD_SIZE * 4) {
-			GotoXY(LEFT + j, TOP + (BOARD_SIZE * 2 - (4 * 2)) / 2);
-			cout << char(205);
-			GotoXY(LEFT + j, TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2);
+			GotoXY(LEFT + j, TOP + ((BOARD_SIZE * 2) / 2));
 			cout << char(205);
 		}
 	}
@@ -648,15 +673,15 @@ void DrawBoard() {
 	//Vẽ hiệu ứng đổi lượt X O
 	if (_TURN == 1 || NEW_GAME == 1) {
 		SetColor(BRIGHT_WHITE, RED);
-		PrintX(TOP + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
+		PrintX(TOP + 6, LEFT + BOARD_SIZE * 4 + 12, 2);
 		SetColor(BRIGHT_WHITE, GRAY);
-		PrintO(TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
+		PrintO(TOP + ((BOARD_SIZE * 2) / 2) + 6, LEFT + BOARD_SIZE * 4 + 12, 2);
 	}
 	else if (_TURN == 0) {
 		SetColor(BRIGHT_WHITE, GRAY);
-		PrintX(TOP + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
+		PrintX(TOP + 6, LEFT + BOARD_SIZE * 4 + 12, 2);
 		SetColor(BRIGHT_WHITE, GREEN);
-		PrintO(TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
+		PrintO(TOP + ((BOARD_SIZE * 2)/ 2) + 6, LEFT + BOARD_SIZE * 4 + 12, 2);
 	}
 
 	SetColor(LIGHT_AQUA, BLACK);
@@ -664,6 +689,8 @@ void DrawBoard() {
 		GotoXY(LEFT, TOP + BOARD_SIZE * 2 + 1);
 		cout << "UNAVAILABLE !!!";
 	}
+	GotoXY(LEFT + BOARD_SIZE * 4 + 10, TOP + 2); SetColor(LIGHT_AQUA, RED); cout << "  PLAYER 1  "; SetColor(BRIGHT_WHITE, BLACK);
+	GotoXY(LEFT + BOARD_SIZE * 4 + 10, TOP + ((BOARD_SIZE * 2)/ 2) + 2); SetColor(LIGHT_AQUA, GREEN); cout << "  PLAYER 2  "; SetColor(BRIGHT_WHITE, BLACK);
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT, 15, 2, "U:Undo");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 + 2, 15, 2, "H:Help");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 2 + 4, 15, 2, "M:Sound");
@@ -906,27 +933,6 @@ void DrawHelp() {
 	PrintCloud(WIDTH - 17, HEIGHT - 7, 2); // Góc phải
 	PrintCloud(155, 10, 3);
 	PrintCloud(2, HEIGHT - 17, 1); // bên trái 
-
-	//Trực thăng
-	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
-	wstring logo1[5] = {
-		L"▀▀▀▀█▀▀▀▀",
-		L"─▄▀█▀▀█──────▄",
-		L"█▄▄█▄▄██████▀",
-		L"▀▀█▀▀▀█▀▀",
-		L"─▀▀▀▀▀▀▀" };
-	for (int i = 0; i < 5; i++) {
-		GotoXY(20, i + top);
-		wcout << logo1[i];
-	}
-	wstring logo2[5] = {
-		L"─────────█▄██▄█",
-		L"█▄█▄█▄█▄█▐█┼██▌█▄█▄█▄█▄█",
-		L"███┼█████▐████▌█████┼███",
-		L"█████████▐████▌█████████"};
-	for (int i = 0; i < 4; i++) {
-		GotoXY(CENTER_X, i + HEIGHT - 18);
-		wcout << logo2[i];
-	}
-	int currentMode = _setmode(_fileno(stdout), OldMode);
+	PrintHelicopter(20, top);
+	PrintCastle(CENTER_X, HEIGHT - 18);
 }

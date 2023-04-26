@@ -12,6 +12,8 @@ void PrintCloud(int left, int top, int type);
 void PrintLine(int top, int left, int length);
 void Button(int top, int left, int width, int height, string label);
 void PrintPencil(int top, int left);
+void PrintHelicopter(int x, int y);
+void PrintCastle(int x, int y);
 void PrintX(int top, int left, int size);
 void PrintO(int top, int left, int size);
 
