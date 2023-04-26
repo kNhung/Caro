@@ -187,6 +187,12 @@ void ShowGame() {
 				}
 				break;
 			}
+			case (0x4D): {
+				if (SOUND == 0)
+					SOUND = 1;
+				else
+					SOUND = 0;
+			}
 			}
 		}
 		if ((_TURN == true && _MODEPLAY == _MENU[2].c) || _MODEPLAY == _MENU[0].c)
