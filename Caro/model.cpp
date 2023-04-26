@@ -209,38 +209,9 @@ int CheckBoard(int pX, int pY) {
 	}
 	return 0;
 }
-
-void PVC(KEY_EVENT_RECORD key, TURN_BOT tb[]) {
-	random_device rd;
-	mt19937 rng(rd());
-	uniform_int_distribution<int> uni(0, 1);
-	int max = 0;
-	_POINT turn_b;
-	for (int i = 0; i < 4; i++) {
-		if (tb[i].led[0].c == 0 || tb[i].led[1].c == 0) {
-			if ((tb[i].led[0].c == 0 && tb[i].led[1].c == 0 && tb[i].sz >= max) || tb[i].sz > max) {
-				max = tb[i].sz;
-				do {
-					int rd = uni(rng);
-					turn_b = tb[i].led[rd];
-					if (turn_b.c == 0)break;
-				} while (1);
-			}
-		}
-	}
-	_X = turn_b.x; _Y = turn_b.y;
-	GotoXY(_X, _Y);
-	SetColor(BRIGHT_WHITE, GREEN);
-	cout << "O";
-	_LAST_POINT.c = 0;
-	key.bKeyDown = true;
-	key.wVirtualKeyCode = VK_RETURN;
-}
-
-
+int TestBoard(KEY_EVENT_RECORD key) {
 //Kiểm tra thắng thua, người 1 hay _Turn=true thắng thì trả về -1 người còn lại thắng trả về 1,
 //hòa nhau trả về 0 còn chưa phân định ai thắng trả về 2
-int TestBoard(KEY_EVENT_RECORD key) {
 	_POINT led1 = { 0,0,2 }, led2 = { 0,0,2 };
 	int row = 0, col = 0;
 	int result = 2, n = 0, m = 0;
@@ -605,4 +576,30 @@ void _PlaySound(int i)
 	if (SOUND == 1) {
 		PlaySound(soundFile[i], NULL, SND_FILENAME | SND_ASYNC);
 	}
+}
+void PVC(KEY_EVENT_RECORD key, TURN_BOT tb[]) {
+	random_device rd;
+	mt19937 rng(rd());
+	uniform_int_distribution<int> uni(0, 1);
+	int max = 0;
+	_POINT turn_b;
+	for (int i = 0; i < 4; i++) {
+		if (tb[i].led[0].c == 0 || tb[i].led[1].c == 0) {
+			if ((tb[i].led[0].c == 0 && tb[i].led[1].c == 0 && tb[i].sz >= max) || tb[i].sz > max) {
+				max = tb[i].sz;
+				do {
+					int rd = uni(rng);
+					turn_b = tb[i].led[rd];
+					if (turn_b.c == 0)break;
+				} while (1);
+			}
+		}
+	}
+	_X = turn_b.x; _Y = turn_b.y;
+	GotoXY(_X, _Y);
+	SetColor(BRIGHT_WHITE, GREEN);
+	cout << "O";
+	_LAST_POINT.c = 0;
+	key.bKeyDown = true;
+	key.wVirtualKeyCode = VK_RETURN;
 }
