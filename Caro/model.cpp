@@ -187,14 +187,11 @@ void ResetData() {
 void StartGame() {
 	system("cls");
 	DrawBoard();
-	if (NEW_GAME == 1 || _LAST_POINT.x==0&&_LAST_POINT.y==0) {
+	ShowCursor(true);
+	if (NEW_GAME == 1 || _LAST_POINT.x==0&&_LAST_POINT.y==0) 
 		ResetData();
-		ShowCursor(1);
-	}
-	else {
+	else 
 		DrawExistedData();
-		ShowCursor(1);
-	}
 }
 
 //Kiểm tra bàn cờ
@@ -394,9 +391,9 @@ int ProcessFinish(int pWhoWin) {
 	PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
 	int top = 5, left = CENTER_X - 30;
 	int bg_color = BRIGHT_WHITE, text_color = LIGHT_AQUA;
+	ShowCursor(false);
 	switch (pWhoWin) {
 	case 1: {
-		ShowCursor(0);
 		system("cls");
 		PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
 		int old_mode = _setmode(_fileno(stdout), _O_WTEXT);
@@ -516,6 +513,8 @@ int AskContinue() {
 	EDGE bien = { 0,0,left + 25, left + 50 };
 	int width = 15, height = 2;
 	Draw_AskContinue();
+	SetColor(bg_color, text_color);
+	HLChoice(_X, _Y, width + 1);
 	while (1) {
 		ReadInputKey(keyevent);
 		if (keyevent.bKeyDown) {

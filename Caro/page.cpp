@@ -22,7 +22,6 @@ void ShowLoadingPage() {
 void ShowMenu() {
 	if (_EXIT) return;
 	_PlaySound(4);
-	ShowCursor(0);
 	HANDLE word;
 	SOUND = 1;
 	MODE = 1;
@@ -36,6 +35,7 @@ void ShowMenu() {
 	SetColor(backgroundColor, textColor);
 	int previousOption = 0;
 	while (1) {
+		ShowCursor(false);
 		GotoXY(_X, _Y);
 		_COMMAND = toupper(_getch());
 		if (_COMMAND == 'W') {
@@ -98,13 +98,12 @@ void ShowGame() {
 	else {
 		_PlaySound(4);
 		StartGame();
-		ShowCursor(0);
 		int row_console = 0, column_console = 0, row = 0, col = 0, flag = 0;
-		//int flag = 0;
 		KEY_EVENT_RECORD keyevent;
 		EDGE bien = { TOP + 1,TOP + BOARD_SIZE * 2 - 1,LEFT + 2,LEFT + BOARD_SIZE * 4 - 2 };
 		bool validEnter = true;
 		while (1) {
+			ShowCursor(true);
 			ReadInputKey(keyevent);
 			if (keyevent.bKeyDown) {
 				KeyMove(&_X, &_Y, 4, 2, bien, keyevent);

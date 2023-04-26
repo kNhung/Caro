@@ -188,7 +188,7 @@ void FixConsoleWindows() {
 	DisableMaximize(); //Làm mờ nút phóng to thu nhỏ
 	SetConsoleTitle(L"Caro"); 
 	HideScrollBars(); //Ẩn thanh cuộn
-	ShowCursor(0);
+	ShowCursor(false);
 	DisableMouseInput(); //Vô hiệu hóa click chuột
 }
 void SetColor(int backgoundColor, int textColor) {
