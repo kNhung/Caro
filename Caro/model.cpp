@@ -384,7 +384,6 @@ void HighlightWin(_POINT a[], int& n) {
 		int color = i; Sleep(600);
 		for (int j = 0; j < n; j++) {
 			GotoXY(a[j].x, a[j].y);
-			//if (color == 7)color++;
 			SetColor(BRIGHT_WHITE, color++);
 			if (_TURN == true)cout << "X";
 			else cout << "O";
