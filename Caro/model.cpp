@@ -233,7 +233,7 @@ void PVC(KEY_EVENT_RECORD key, TURN_BOT tb[]) {
 	}
 	_X = turn_b.x; _Y = turn_b.y;
 	GotoXY(_X, _Y);
-	SetColor(BRIGHT_WHITE, YELLOW);
+	SetColor(BRIGHT_WHITE, GREEN);
 	cout << "O";
 	key.bKeyDown = true;
 	key.wVirtualKeyCode = VK_RETURN;
@@ -348,6 +348,7 @@ int TestBoard(KEY_EVENT_RECORD key) {
 		PVC(key, tb);
 	}
 	result = CheckWin(a, n, led1, led2); if (result != 2)return result;
+	for (int i = 0; i < 4; i++) tb[i] = { 0,{{0,0},{0,0}} };
 
 	int flag = 0;
 	for (int i = 0; i < BOARD_SIZE; i++)

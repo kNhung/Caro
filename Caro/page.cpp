@@ -120,13 +120,13 @@ void ShowGame() {
 					//Hiệu ứng đổi lượt
 					SetColor(BRIGHT_WHITE, GRAY);
 					PrintX(TOP + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
-					SetColor(BRIGHT_WHITE, YELLOW);
+					SetColor(BRIGHT_WHITE, GREEN);
 					PrintO(TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
 					GotoXY(_LAST_POINT.x, _LAST_POINT.y);
 					break;
 				}
 				case 1: {
-					SetColor(BRIGHT_WHITE, YELLOW);
+					SetColor(BRIGHT_WHITE, GREEN);
 					cout << "O";
 					//Hiệu ứng đổi lượt
 					SetColor(BRIGHT_WHITE, RED);
@@ -162,7 +162,7 @@ void ShowGame() {
 						if (_TURN == true) {
 							SetColor(BRIGHT_WHITE, GRAY);
 							PrintX(TOP + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
-							SetColor(BRIGHT_WHITE, YELLOW);
+							SetColor(BRIGHT_WHITE, GREEN);
 							PrintO(TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
 							GotoXY(_LAST_POINT.x, _LAST_POINT.y);
 						}

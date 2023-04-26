@@ -681,7 +681,7 @@ void DrawExistedData() {
 					SetColor(BRIGHT_WHITE, RED);
 					cout << "X"; break; }
 				case 1: {
-					SetColor(BRIGHT_WHITE, GOAL);
+					SetColor(BRIGHT_WHITE, GREEN);
 					cout << "O"; break; }
 				}
 			}
