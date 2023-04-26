@@ -69,4 +69,5 @@ extern ofstream _MATCH_LIST_FILE;
 extern int MATCH_LIST_SIZE;
 extern vector<_LIST> _MATCH_LIST;
 extern int SOUND; //0: no sound; 1: sound
+extern bool _EXIT;
 #endif

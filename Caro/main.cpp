@@ -5,8 +5,10 @@
 #include "page.h"
 
 int main() {
+	_EXIT = 0;
 	FixConsoleWindows(); //View
 	GetMatchListSize();
 	ShowMenu(); //View
+	system("cls");
 	return 0;
 };
