@@ -14,6 +14,7 @@
 #include <cstdlib>
 #include <vector>
 #include <mmsystem.h>
+#include<random>
 using namespace std;
 
 #define WIDTH 232
@@ -50,11 +51,15 @@ struct _LIST {
 struct EDGE {
 	int top = 0, bottom = 0, left = 0, right = 0;
 };
+struct TURN_BOT {
+	int sz;
+	_POINT led[2];
+};
 
 extern _POINT _A[BOARD_SIZE][BOARD_SIZE];
 extern _POINT _MENU[MENU_SIZE];
 extern _POINT _LAST_POINT; //Nằm trong CheckBoard(int pX, int pY) để lưu điểm cuối mà người chơi đánh
-extern bool _LOADMARK;
+extern int _MODEPLAY;
 extern bool _TURN; //Lượt đánh 1:X  0:O
 extern int _COMMAND; //Phím mà người chơi nhấn
 extern int _X, _Y;

@@ -5,9 +5,9 @@
 
 void ShowPage(int page) {
 	switch (page) {
-	case 1: ShowGame(); break;
+	case 1: {_MODEPLAY = _MENU[0].c; ShowGame(); break; }
 	case 2: ShowFileGame(); break;
-	case 3: /*Danh voi may;*/ break;
+	case 3: {_MODEPLAY = _MENU[2].c; ShowGame(); break; }
 	case 4: ShowAbout(); break;
 	}
 }
@@ -90,82 +90,83 @@ void ShowMenu() {
 }
 void ShowGame() {
 	_PlaySound(4);
-	MODE = 2; _LOADMARK = false;
 	StartGame();
 	ShowCursor(0);
-	int flag = 0;
+	int row_console = 0, column_console = 0, row = 0, col = 0, flag = 0;
+	//int flag = 0;
 	KEY_EVENT_RECORD keyevent;
 	EDGE bien = { TOP + 1,TOP + BOARD_SIZE * 2 - 1,LEFT + 2,LEFT + BOARD_SIZE * 4 - 2 };
 	bool validEnter = true;
 	while (1) {
-			ReadInputKey(keyevent);
-			if (keyevent.bKeyDown) {
-				KeyMove(&_X, &_Y, 4, 2, bien, keyevent);
-				switch (keyevent.wVirtualKeyCode) {
-				case (VK_ESCAPE): case (0x4C): { //ESC or L
-					_PlaySound(3);
-					ShowAsk(keyevent.wVirtualKeyCode);
+		ReadInputKey(keyevent);
+		if (keyevent.bKeyDown) {
+			KeyMove(&_X, &_Y, 4, 2, bien, keyevent);
+			switch (keyevent.wVirtualKeyCode) {
+			case (VK_ESCAPE): case (0x4C): {
+				_PlaySound(3);
+				ShowAsk(keyevent.wVirtualKeyCode);
+				break;
+			}
+			case (0x48): {
+				_PlaySound(4);
+				ShowHelp();
+				break; }
+			case (VK_RETURN): {
+				_PlaySound(1);
+				switch (CheckBoard(_X, _Y)) {
+				case -1: {
+					SetColor(BRIGHT_WHITE, RED);
+					cout << "X";
+					//Hiệu ứng đổi lượt
+					SetColor(BRIGHT_WHITE, GRAY);
+					PrintX(TOP + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
+					SetColor(BRIGHT_WHITE, YELLOW);
+					PrintO(TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
+					GotoXY(_LAST_POINT.x, _LAST_POINT.y);
 					break;
 				}
-				case (0x48): { //H
-					_PlaySound(4);
-					_LOADMARK = true;
-					ShowHelp();
-					break; }
-				case (VK_RETURN): { //Enter
-					_PlaySound(1);
-					switch (CheckBoard(_X, _Y)) {
-					case -1: {
-						SetColor(BRIGHT_WHITE, RED);
-						cout << "X";
-						//Hiệu ứng đổi lượt
-						SetColor(BRIGHT_WHITE, GRAY);
-						PrintX(TOP + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
-						SetColor(BRIGHT_WHITE, GOAL);
-						PrintO(TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
-						GotoXY(_LAST_POINT.x, _LAST_POINT.y);
-						break;
-					}
-					case 1: {
-						SetColor(BRIGHT_WHITE, GOAL);
-						cout << "O";
-						//Hiệu ứng đổi lượt
-						SetColor(BRIGHT_WHITE, RED);
-						PrintX(TOP + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
-						SetColor(BRIGHT_WHITE, GRAY);
-						PrintO(TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
-						GotoXY(_LAST_POINT.x, _LAST_POINT.y);
-						break;
-					}
-					case 0: validEnter = false;
-					}
-					if (validEnter == true) {
-						switch (ProcessFinish(TestBoard())) {
-						case -1:case 1: {
-							_PlaySound(4);
-							flag = AskContinue();
-							break;
-						}
-						case 0: 
-							_PlaySound(7);
-							flag = AskContinue();
-							break;
-						}
-					}
+				case 1: {
+					SetColor(BRIGHT_WHITE, YELLOW);
+					cout << "O";
+					//Hiệu ứng đổi lượt
+					SetColor(BRIGHT_WHITE, RED);
+					PrintX(TOP + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
+					SetColor(BRIGHT_WHITE, GRAY);
+					PrintO(TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
+					GotoXY(_LAST_POINT.x, _LAST_POINT.y);
 					break;
 				}
-				case (0x55): { //U - Undo
+				case 0: validEnter = false;
+				}
+				if (validEnter == true) {
+					switch (ProcessFinish(TestBoard(keyevent))) {
+					case -1:case 1: {
+						_PlaySound(4);
+						flag = AskContinue();
+						break;
+					}
+					case 0: {
+						_PlaySound(7);
+						flag = AskContinue();
+						break;
+					}
+					}
+				}
+				break;
+			}
+			case (0x55): {
+				if (_MODEPLAY == _MENU[0].c) {
 					_PlaySound(4);
 					if (_LAST_POINT.c != 0) { //Xét trường hợp Undo 2 lần trên 1 ô
 						//Hiệu ứng đổi lượt
-						if (_TURN == 1) {
+						if (_TURN == true) {
 							SetColor(BRIGHT_WHITE, GRAY);
 							PrintX(TOP + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
-							SetColor(BRIGHT_WHITE, GOAL);
+							SetColor(BRIGHT_WHITE, YELLOW);
 							PrintO(TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
 							GotoXY(_LAST_POINT.x, _LAST_POINT.y);
 						}
-						else if (_TURN == -1) {
+						else if (_TURN == false) {
 							SetColor(BRIGHT_WHITE, RED);
 							PrintX(TOP + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
 							SetColor(BRIGHT_WHITE, GRAY);
@@ -173,38 +174,30 @@ void ShowGame() {
 							GotoXY(_LAST_POINT.x, _LAST_POINT.y);
 						}
 
-						_X = _LAST_POINT.x, _Y = _LAST_POINT.y;
+						_X = _LAST_POINT.x;
+						_Y = _LAST_POINT.y;
 						GotoXY(_X, _Y);
-						cout << " ";
-						for (int i = 0;i < BOARD_SIZE;++i)
-							if (_A[i][0].y == _Y) {
-								for (int j = 0;j < BOARD_SIZE;++j)
-									if (_A[i][j].x == _X) {
-										_A[i][j].c = 0;
-										_LAST_POINT.c = 0;
-										break;
-									}
-								break;
-							}
+						cout << char(32);
 						GotoXY(_X, _Y);
+						XYinMatrix(_X, _Y, row, col);
+						_A[row][col].c = 0;
 						_TURN = !_TURN;
-						break;
+						_LAST_POINT.c = 0;
 					}
 				}
-				case (0x4D): {
-					if (SOUND == 0)
-						SOUND = 1;
-					else
-						SOUND = 0;
-				}
-				}
+				break;
 			}
+			}
+		}
+		if ((_TURN == true && _MODEPLAY == _MENU[2].c) || _MODEPLAY == _MENU[0].c)
 			keyevent.bKeyDown = false;
-			validEnter = true;
-			if (flag == 2)break;
+		validEnter = true;
+		if (flag == 2)break;
 	}
+	ShowLoadingPage();
 	ShowMenu();
 }
+
 void ShowAbout() {
 	//V? About ? dây...
 	_PlaySound(4);

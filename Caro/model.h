@@ -21,9 +21,10 @@ void StartGame();
 
 //Kiểm tra bàn cờ
 int CheckBoard(int pX, int pY);
-int TestBoard();
-int test_inTestBoard(_POINT a[], int& n, int& led1, int& led2);
-void ResetToCheck(_POINT a[], int& n, int& led1, int& led2);
+void PVC(KEY_EVENT_RECORD key, TURN_BOT tb[]);//Đấu với máy
+int TestBoard(KEY_EVENT_RECORD key);
+int CheckWin(_POINT a[], int& n, _POINT& led1, _POINT& led2);
+void ResetToCheck(_POINT a[], int& n, _POINT& led1, _POINT& led2);
 
 //Xử lí chiến thắng
 void HighlightWin(_POINT a[], int& n);

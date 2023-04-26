@@ -660,18 +660,16 @@ void DrawBoard() {
 	}
 
 	SetColor(LIGHT_AQUA, BLACK);
+	if (_MODEPLAY == _MENU[2].c) {
+		GotoXY(LEFT, TOP + BOARD_SIZE * 2 + 1);
+		cout << "UNAVAILABLE !!!";
+	}
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT, 15, 2, "U:Undo");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 + 2, 15, 2, "H:Help");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 2 + 4, 15, 2, "M:Sound");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 2 + 32, 15, 2, "L:Save");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 3 + 32 + 2, 15, 2, "ESC:Exit");
-	if (_LOADMARK)
-	{
-		DrawExistedData();
-		_LOADMARK = 0;
-	}
-	if (NEW_GAME)
-		GotoXY(_A[0][0].x, _A[0][0].y);
+	
 }
 void DrawExistedData() {
 	for (int i = 0;i < BOARD_SIZE;i++)
@@ -688,8 +686,12 @@ void DrawExistedData() {
 				}
 			}
 		}
-	_X = _LAST_POINT.x;_Y = _LAST_POINT.y;
+	_X = _A[0][0].x; _Y = _A[0][0].y;
 	GotoXY(_X, _Y);
+	if (_LAST_POINT.x != 0 && _LAST_POINT.y != 0) {
+		_X = _LAST_POINT.x; _Y = _LAST_POINT.y;
+		GotoXY(_X, _Y);
+	}
 }
 void DrawMatchList() {
 	FixConsoleWindows();
