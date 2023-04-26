@@ -646,16 +646,16 @@ void DrawBoard() {
 			if (j % 4 == 0)cout << char(197);
 		}
 	//Vẽ hiệu ứng đổi lượt X O
-	if (_TURN == -1 || NEW_GAME == 1) {
+	if (_TURN == 1 || NEW_GAME == 1) {
 		SetColor(BRIGHT_WHITE, RED);
 		PrintX(TOP + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
 		SetColor(BRIGHT_WHITE, GRAY);
 		PrintO(TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
 	}
-	else if (_TURN == 1) {
+	else if (_TURN == 0) {
 		SetColor(BRIGHT_WHITE, GRAY);
 		PrintX(TOP + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
-		SetColor(BRIGHT_WHITE, GOAL);
+		SetColor(BRIGHT_WHITE, GREEN);
 		PrintO(TOP + ((BOARD_SIZE * 2 - (4 * 2)) / 2) + 4 * 2 + 4, LEFT + BOARD_SIZE * 4 + 12, 2);
 	}
 
