@@ -260,7 +260,7 @@ void PrintO(int top, int left, int size) {
 			L"███                             ███",
 			L"███                             ███",
 			L"███                             ███",
-			L"███                             ███",
+			L"███       SOUND ON/OFF: M       ███",
 			L"███                             ███",
 			L"███                             ███",
 			L"███                             ███",
@@ -662,7 +662,7 @@ void DrawBoard() {
 	SetColor(LIGHT_AQUA, BLACK);
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT, 15, 2, "U:Undo");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 + 2, 15, 2, "H:Help");
-	//Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 2 + 4, 15, 2, "F:Flip");
+	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 2 + 4, 15, 2, "M:Sound");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 2 + 32, 15, 2, "L:Save");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 3 + 32 + 2, 15, 2, "ESC:Exit");
 	if (_LOADMARK)
