@@ -115,7 +115,7 @@ void ShowGame() {
 					if (_EXIT) return;
 					break;
 				}
-				case (0x48): {
+				case (0x48): { //H: Help
 					_PlaySound(4);
 					ShowHelp();
 					if (_EXIT) return;
