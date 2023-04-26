@@ -237,7 +237,6 @@ void PVC(KEY_EVENT_RECORD key, TURN_BOT tb[]) {
 	cout << "O";
 	key.bKeyDown = true;
 	key.wVirtualKeyCode = VK_RETURN;
-
 }
 
 
