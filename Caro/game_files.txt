@@ -1,4 +1,2 @@
 Test1.txt
 Test2_bot.txt
-TEST.txt
-Test3_bot.txt

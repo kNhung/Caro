@@ -235,6 +235,7 @@ void PVC(KEY_EVENT_RECORD key, TURN_BOT tb[]) {
 	GotoXY(_X, _Y);
 	SetColor(BRIGHT_WHITE, GREEN);
 	cout << "O";
+	_LAST_POINT.c = 0;
 	key.bKeyDown = true;
 	key.wVirtualKeyCode = VK_RETURN;
 }
