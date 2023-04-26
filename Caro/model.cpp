@@ -11,7 +11,7 @@ void SaveGame() {
 	char c;
 	do{ //Nhập tên file
 		c = _getch();
-		if (48 < c && c < 57 || 65 < c && c < 90 || 97 < c && c < 122 || c == '_' || c == '-') {
+		if (48 <= c && c <= 57 || 65 <= c && c <= 90 || 97 <= c && c <= 122 || c == '_' || c == '-') {
 			matchName += c;
 			cout << c;
 		}
@@ -40,7 +40,7 @@ void SaveGame() {
 		GotoXY(CENTER_X + 2, CENTER_Y + 2);
 		do { //Nhập tên file
 			c = _getch();
-			if (48 < c && c < 57 || 65 < c && c < 90 || 97 < c && c < 122 || c == '_' || c == '-') {
+			if (48 <= c && c <= 57 || 65 <= c && c <= 90 || 97 <= c && c <= 122 || c == '_' || c == '-') {
 				matchName += c;
 				cout << c;
 			}
@@ -348,8 +348,13 @@ void ResetToCheck(_POINT a[], int& n, _POINT& led1, _POINT& led2) {
 
 //Xử lí hiệu ứng thắng/thua/hòa
 void HighlightWin(_POINT a[], int& n) {
-	for (int i = 1; i < 10; i++) {
-		int color = i; Sleep(600);
+	int tmp = 6;
+	for (int i = 1; tmp; i++) {
+		int color = i; Sleep(100);
+		if (i == 10) {
+			tmp--;
+			i = 0;
+		}
 		for (int j = 0; j < n; j++) {
 			GotoXY(a[j].x, a[j].y);
 			SetColor(BRIGHT_WHITE, color++);
@@ -369,31 +374,33 @@ int ProcessFinish(int pWhoWin) {
 		PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
 		int old_mode = _setmode(_fileno(stdout), _O_WTEXT);
 		SetColor(BRIGHT_WHITE, BLACK);
-		wstring logo[12] = {
-			 L"   ██████╗ ██╗      █████╗ ██╗   ██╗███████╗██████╗                           ",
-			 L"   ██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗                          ",
-			 L"   ██████╔╝██║     ███████║ ╚████╔╝ █████╗  ██████╔╝                          ",
-			 L"   ██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██╗                          ",
-			 L"   ██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║                          ",
-			 L"   ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝                          ",
-			 L"                                ██╗  ██╗   ██╗       ██╗██╗███╗  ██╗	     ",
-			 L"                                ╚██╗██╔╝   ██║  ██╗  ██║██║████╗ ██║	     ",
-			 L"                                 ╚███╔╝    ╚██╗████╗██╔╝██║██╔██╗██║	     ",
-			 L"                                 ██╔██╗     ████╔═████║ ██║██║╚████║	     ",
-			 L"                                ██╔╝╚██╗    ╚██╔╝ ╚██╔╝ ██║██║ ╚███║	     ",
-			 L"                                ╚═╝  ╚═╝     ╚═╝   ╚═╝  ╚═╝╚═╝  ╚══╝	     " };
-		PrintHelicopter(40, 15);
-		PrintHelicopter(150, 5);
+		wstring logo[14] = {
+			 L"   ██████╗ ██╗      █████╗ ██╗   ██╗███████╗██████╗     ██╗  ██╗              ",
+			 L"   ██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗    ╚██╗██╔╝              ",
+			 L"   ██████╔╝██║     ███████║ ╚████╔╝ █████╗  ██████╔╝     ╚███╔╝               ",
+			 L"   ██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██╗     ██╔██╗               ",
+			 L"   ██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║    ██╔╝╚██╗              ",
+			 L"   ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝    ╚═╝  ╚═╝              ",
+			 L"                                                                              ",
+			 L"                                                                              ",
+			 L"                                           ██╗       ██╗██╗███╗  ██╗	██╗  ",
+			 L"                                           ██║  ██╗  ██║██║████╗ ██║	██║  ",
+			 L"                                           ╚██╗████╗██╔╝██║██╔██╗██║	██║  ",
+			 L"                                            ████╔═████║ ██║██║╚████║	╚═╝  ",
+			 L"                                            ╚██╔╝ ╚██╔╝ ██║██║ ╚███║	██╗  ",
+			 L"                                             ╚═╝   ╚═╝  ╚═╝╚═╝  ╚══╝	╚═╝  " };
+		PrintHelicopter(55, 15);
+		PrintHelicopter(155, 5);
 		int count = 0;
 		int color[] = { RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE, RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE,RED };
 		while (count++ < 8) {
 			SetColor(BRIGHT_WHITE, color[count]);
-			for (int i = 0; i < 6; i++) {
+			for (int i = 0; i < 7; i++) {
 				GotoXY(left, top + i);
 				wcout << logo[i];
 				GotoXY(left, top + 8 + i);
-				wcout << logo[6 + i];
-				Sleep(100);
+				wcout << logo[7 + i];
+				Sleep(75);
 			}
 			Sleep(250);
 		}
@@ -406,31 +413,33 @@ int ProcessFinish(int pWhoWin) {
 		PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
 		int old_mode = _setmode(_fileno(stdout), _O_WTEXT);
 		SetColor(bg_color, text_color);
-		wstring logo[12] = {
-			 L"   ██████╗ ██╗      █████╗ ██╗   ██╗███████╗██████╗                           ",
-			 L"   ██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗                          ",
-			 L"   ██████╔╝██║     ███████║ ╚████╔╝ █████╗  ██████╔╝                          ",
-			 L"   ██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██╗                          ",
-			 L"   ██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║                          ",
-			 L"   ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝                          ",
-			 L"                                 █████╗    ██╗       ██╗██╗███╗  ██╗	     ",
-			 L"                                ██╔══██╗   ██║  ██╗  ██║██║████╗ ██║	     ",
-			 L"                                ██║  ██║   ╚██╗████╗██╔╝██║██╔██╗██║	     ",
-			 L"                                ██║  ██║    ████╔═████║ ██║██║╚████║	     ",
-			 L"                                ╚█████╔╝    ╚██╔╝ ╚██╔╝ ██║██║ ╚███║	     ",
-			 L"                                 ╚════╝      ╚═╝   ╚═╝  ╚═╝╚═╝  ╚══╝	     " };
-		PrintHelicopter(40, 15);
-		PrintHelicopter(150, 5);
+		wstring logo[14] = {
+			 L"   ██████╗ ██╗      █████╗ ██╗   ██╗███████╗██████╗       █████╗              ",
+			 L"   ██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗     ██╔══██╗              ",
+			 L"   ██████╔╝██║     ███████║ ╚████╔╝ █████╗  ██████╔╝     ██║  ██║              ",
+			 L"   ██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██╗     ██║  ██║              ",
+			 L"   ██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║     ╚█████╔╝              ",
+			 L"   ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝      ╚════╝              ",
+			 L"                                                                              ",
+			 L"                                                                              ",
+			 L"                                           ██╗       ██╗██╗███╗  ██╗	██╗  ",
+			 L"                                           ██║  ██╗  ██║██║████╗ ██║	██║  ",
+			 L"                                           ╚██╗████╗██╔╝██║██╔██╗██║	██║  ",
+			 L"                                            ████╔═████║ ██║██║╚████║	╚═╝  ",
+			 L"                                            ╚██╔╝ ╚██╔╝ ██║██║ ╚███║	██╗  ",
+			 L"                                             ╚═╝   ╚═╝  ╚═╝╚═╝  ╚══╝	╚═╝  " };
+		PrintHelicopter(55, 15);
+		PrintHelicopter(155, 5);
 		int count = 0;
 		int color[] = { RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE, RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE,RED };
 		while (count++ < 8) {
 			SetColor(BRIGHT_WHITE, color[count]);
-			for (int i = 0; i < 6; i++) {
+			for (int i = 0; i < 7; i++) {
 				GotoXY(left, top + i);
 				wcout << logo[i];
 				GotoXY(left, top + 8 + i);
-				wcout << logo[6 + i];
-				Sleep(100);
+				wcout << logo[7 + i];
+				Sleep(75);
 			}
 			Sleep(250);
 		}
