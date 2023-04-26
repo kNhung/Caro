@@ -235,6 +235,7 @@ void PVC(KEY_EVENT_RECORD key, TURN_BOT tb[]) {
 	GotoXY(_X, _Y);
 	SetColor(BRIGHT_WHITE, GREEN);
 	cout << "O";
+	_LAST_POINT.c = 0;
 	key.bKeyDown = true;
 	key.wVirtualKeyCode = VK_RETURN;
 }
@@ -392,26 +393,42 @@ void HighlightWin(_POINT a[], int& n) {
 }
 int ProcessFinish(int pWhoWin) {
 	PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
-	int top = 15, left = CENTER_X - 30;
+	int top = 5, left = CENTER_X - 30;
 	int bg_color = BRIGHT_WHITE, text_color = LIGHT_AQUA;
 	switch (pWhoWin) {
 	case 1: {
+		ShowCursor(0);
 		system("cls");
 		PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
 		int old_mode = _setmode(_fileno(stdout), _O_WTEXT);
 		SetColor(BRIGHT_WHITE, BLACK);
-		wstring logo[6] = {
-			 L" ██████╗ ██╗      █████╗ ██╗   ██╗███████╗██████╗   ██╗  ██╗   ██╗       ██╗██╗███╗  ██╗	",
-			 L" ██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗  ╚██╗██╔╝   ██║  ██╗  ██║██║████╗ ██║	",
-			 L" ██████╔╝██║     ███████║ ╚████╔╝ █████╗  ██████╔╝   ╚███╔╝    ╚██╗████╗██╔╝██║██╔██╗██║	",
-			 L" ██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██╗   ██╔██╗     ████╔═████║ ██║██║╚████║	",
-			 L" ██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║  ██╔╝╚██╗    ╚██╔╝ ╚██╔╝ ██║██║ ╚███║	",
-			 L" ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝  ╚═╝  ╚═╝     ╚═╝   ╚═╝  ╚═╝╚═╝  ╚══╝	" };
-
-		for (int i = 0; i < 6; i++) {
-			GotoXY(left, i + top);
-			wcout << logo[i];
+		wstring logo[12] = {
+			 L" ██████╗ ██╗      █████╗ ██╗   ██╗███████╗██████╗                             ",
+			 L" ██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗                            ",
+			 L" ██████╔╝██║     ███████║ ╚████╔╝ █████╗  ██████╔╝                            ",
+			 L" ██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██╗                            ",
+			 L" ██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║                            ",
+			 L" ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝                            ",
+			 L"                                ██╗  ██╗   ██╗       ██╗██╗███╗  ██╗	     ",
+			 L"                                ╚██╗██╔╝   ██║  ██╗  ██║██║████╗ ██║	     ",
+			 L"                                 ╚███╔╝    ╚██╗████╗██╔╝██║██╔██╗██║	     ",
+			 L"                                 ██╔██╗     ████╔═████║ ██║██║╚████║	     ",
+			 L"                                ██╔╝╚██╗    ╚██╔╝ ╚██╔╝ ██║██║ ╚███║	     ",
+			 L"                                ╚═╝  ╚═╝     ╚═╝   ╚═╝  ╚═╝╚═╝  ╚══╝	     " };
+		int count = 0;
+		int color[] = { RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE, RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE,RED };
+		while (count++ < 8) {
+			SetColor(BRIGHT_WHITE, color[count]);
+			for (int i = 0; i < 6; i++) {
+				GotoXY(left, top + i);
+				wcout << logo[i];
+				GotoXY(left, top + 8 + i);
+				wcout << logo[6 + i];
+				Sleep(100);
+			}
+			Sleep(250);
 		}
+		SetColor(BRIGHT_WHITE, BLACK);
 		int current_mode = _setmode(_fileno(stdout), old_mode);
 		break;
 	}
@@ -420,17 +437,33 @@ int ProcessFinish(int pWhoWin) {
 		PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
 		int old_mode = _setmode(_fileno(stdout), _O_WTEXT);
 		SetColor(bg_color, text_color);
-		wstring logo[6] = {
-			L"██████╗ ██╗      █████╗ ██╗   ██╗███████╗██████╗    █████╗    ██╗       ██╗██╗███╗  ██╗",
-			L"██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗  ██╔══██╗   ██║  ██╗  ██║██║████╗ ██║",
-			L"██████╔╝██║     ███████║ ╚████╔╝ █████╗  ██████╔╝  ██║  ██║   ╚██╗████╗██╔╝██║██╔██╗██║",
-			L"██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██╗  ██║  ██║    ████╔═████║ ██║██║╚████║",
-			L"██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║  ╚█████╔╝    ╚██╔╝ ╚██╔╝ ██║██║ ╚███║",
-			L"╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝   ╚════╝      ╚═╝   ╚═╝  ╚═╝╚═╝  ╚══╝" };
-		for (int i = 0; i < 6; i++) {
-			GotoXY(left, i + top);
-			wcout << logo[i];
+		wstring logo[12] = {
+			 L" ██████╗ ██╗      █████╗ ██╗   ██╗███████╗██████╗                             ",
+			 L" ██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗                            ",
+			 L" ██████╔╝██║     ███████║ ╚████╔╝ █████╗  ██████╔╝                            ",
+			 L" ██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██╗                            ",
+			 L" ██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║                            ",
+			 L" ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝                            ",
+			 L"                                 █████╗    ██╗       ██╗██╗███╗  ██╗	     ",
+			 L"                                ██╔══██╗   ██║  ██╗  ██║██║████╗ ██║	     ",
+			 L"                                ██║  ██║   ╚██╗████╗██╔╝██║██╔██╗██║	     ",
+			 L"                                ██║  ██║    ████╔═████║ ██║██║╚████║	     ",
+			 L"                                ╚█████╔╝    ╚██╔╝ ╚██╔╝ ██║██║ ╚███║	     ",
+			 L"                                 ╚════╝      ╚═╝   ╚═╝  ╚═╝╚═╝  ╚══╝	     " };
+		int count = 0;
+		int color[] = { RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE, RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE,RED };
+		while (count++ < 8) {
+			SetColor(BRIGHT_WHITE, color[count]);
+			for (int i = 0; i < 6; i++) {
+				GotoXY(left, top + i);
+				wcout << logo[i];
+				GotoXY(left, top + 8 + i);
+				wcout << logo[6 + i];
+				Sleep(100);
+			}
+			Sleep(250);
 		}
+		SetColor(BRIGHT_WHITE, BLACK);
 		int current_mode = _setmode(_fileno(stdout), old_mode);
 		break;
 	}
@@ -439,25 +472,33 @@ int ProcessFinish(int pWhoWin) {
 		PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
 		int old_mode = _setmode(_fileno(stdout), _O_WTEXT);
 		SetColor(bg_color, text_color);
-		wstring logo[13] = {
+		wstring logo[12] = {
 			L"               ██╗  ██╗ █████╗   			 ",
 			L"               ╚██╗██╔╝██╔══██╗  			 ",
 			L"                ╚███╔╝ ██║  ██║  			 ",
 			L"                ██╔██╗ ██║  ██║  			 ",
 			L"               ██╔╝╚██╗╚█████╔╝  			 ",
 			L"               ╚═╝  ╚═╝ ╚════╝   		     ",
-			L"												 ",
 			L"██████╗  █████╗ ██████╗  ██╗       ██╗██╗██╗██╗",
 			L"██╔══██╗██╔══██╗██╔══██╗ ██║  ██╗  ██║██║██║██║",
 			L"██║  ██║███████║██████╔╝ ╚██╗████╗██╔╝██║██║██║",
 			L"██║  ██║██╔══██║██╔══██╗  ████╔═████║ ╚═╝╚═╝╚═╝",
 			L"██████╔╝██║  ██║██║  ██║  ╚██╔╝ ╚██╔╝ ██╗██╗██╗",
 			L"╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝╚═╝", };
-
-		for (int i = 0; i < 13; i++) {
-			GotoXY(left + 10, i + (top - 5));
-			wcout << logo[i];
+		int count = 0;
+		int color[] = { RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE, RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE,RED };
+		while (count++ < 8) {
+			SetColor(BRIGHT_WHITE, color[count]);
+			for (int i = 0; i < 6; i++) {
+				GotoXY(left, top + i);
+				wcout << logo[i];
+				GotoXY(left, top + 8 + i);
+				wcout << logo[6 + i];
+				Sleep(100);
+			}
+			Sleep(250);
 		}
+		SetColor(BRIGHT_WHITE, BLACK);
 		int current_mode = _setmode(_fileno(stdout), old_mode);
 		break;
 	}

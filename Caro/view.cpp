@@ -762,7 +762,6 @@ void DrawPopUp(WORD wVirtualKeyCode) {
 }
 void Draw_AskContinue() {
 	int top = 25, left = CENTER_X - 30;
-	//int top = 25, left = 43;
 	PrintRectangle(top, left, 90, 6);
 	GotoXY(left + 25, top + 1); cout << "Do you want to continue playing or exit ? ";
 	int width = 15, height = 2;
