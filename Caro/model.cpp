@@ -474,7 +474,7 @@ int AskContinue() {
 	int flag = 0;
 	int bg_color = BRIGHT_WHITE, text_color = BLUE;
 	KEY_EVENT_RECORD keyevent;
-	EDGE bien = { 0,0,left + 10, left + 50 };
+	EDGE bien = { 0,0,left + 25, left + 50 };
 	int width = 15, height = 2;
 	Draw_AskContinue();
 	while (1) {
@@ -484,7 +484,7 @@ int AskContinue() {
 			case VK_LCONTROL:case 0x41:case VK_RCONTROL:case 0x44: {
 				SetColor(bg_color, bg_color);
 				HLChoice(_X, _Y, width + 1);
-				KeyMove(&_X, &_Y, 40, 0, bien, keyevent);
+				KeyMove(&_X, &_Y, 25, 0, bien, keyevent);
 				SetColor(bg_color, text_color);
 				HLChoice(_X, _Y, width + 1);
 				break;
@@ -492,7 +492,7 @@ int AskContinue() {
 			case VK_RETURN: {
 				_PlaySound(3);
 				switch (_X) {
-				case 82: {
+				case (CENTER_X-5): {
 					flag = 1;
 					NEW_GAME = 1;
 					StartGame();
