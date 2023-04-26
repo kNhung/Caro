@@ -187,14 +187,11 @@ void ResetData() {
 void StartGame() {
 	system("cls");
 	DrawBoard();
-	if (NEW_GAME == 1 || _LAST_POINT.x==0&&_LAST_POINT.y==0) {
+	ShowCursor(true);
+	if (NEW_GAME == 1 || _LAST_POINT.x==0&&_LAST_POINT.y==0) 
 		ResetData();
-		ShowCursor(1);
-	}
-	else {
+	else 
 		DrawExistedData();
-		ShowCursor(1);
-	}
 }
 
 //Kiểm tra bàn cờ
@@ -355,7 +352,6 @@ void HighlightWin(_POINT a[], int& n) {
 		int color = i; Sleep(600);
 		for (int j = 0; j < n; j++) {
 			GotoXY(a[j].x, a[j].y);
-			//if (color == 7)color++;
 			SetColor(BRIGHT_WHITE, color++);
 			if (_TURN == true)cout << "X";
 			else cout << "O";
@@ -364,26 +360,42 @@ void HighlightWin(_POINT a[], int& n) {
 }
 int ProcessFinish(int pWhoWin) {
 	PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
-	int top = 15, left = CENTER_X - 30;
+	int top = 5, left = CENTER_X - 30;
 	int bg_color = BRIGHT_WHITE, text_color = LIGHT_AQUA;
+	ShowCursor(false);
 	switch (pWhoWin) {
 	case 1: {
 		system("cls");
 		PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
 		int old_mode = _setmode(_fileno(stdout), _O_WTEXT);
-		SetColor(BRIGHT_WHITE, RED);
-		wstring logo[6] = {
-			 L" ██████╗ ██╗      █████╗ ██╗   ██╗███████╗██████╗   ██╗  ██╗   ██╗       ██╗██╗███╗  ██╗	",
-			 L" ██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗  ╚██╗██╔╝   ██║  ██╗  ██║██║████╗ ██║	",
-			 L" ██████╔╝██║     ███████║ ╚████╔╝ █████╗  ██████╔╝   ╚███╔╝    ╚██╗████╗██╔╝██║██╔██╗██║	",
-			 L" ██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██╗   ██╔██╗     ████╔═████║ ██║██║╚████║	",
-			 L" ██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║  ██╔╝╚██╗    ╚██╔╝ ╚██╔╝ ██║██║ ╚███║	",
-			 L" ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝  ╚═╝  ╚═╝     ╚═╝   ╚═╝  ╚═╝╚═╝  ╚══╝	" };
-
-		for (int i = 0; i < 6; i++) {
-			GotoXY(left, i + top);
-			wcout << logo[i];
+		SetColor(BRIGHT_WHITE, BLACK);
+		wstring logo[12] = {
+			 L" ██████╗ ██╗      █████╗ ██╗   ██╗███████╗██████╗                             ",
+			 L" ██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗                            ",
+			 L" ██████╔╝██║     ███████║ ╚████╔╝ █████╗  ██████╔╝                            ",
+			 L" ██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██╗                            ",
+			 L" ██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║                            ",
+			 L" ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝                            ",
+			 L"                                ██╗  ██╗   ██╗       ██╗██╗███╗  ██╗	     ",
+			 L"                                ╚██╗██╔╝   ██║  ██╗  ██║██║████╗ ██║	     ",
+			 L"                                 ╚███╔╝    ╚██╗████╗██╔╝██║██╔██╗██║	     ",
+			 L"                                 ██╔██╗     ████╔═████║ ██║██║╚████║	     ",
+			 L"                                ██╔╝╚██╗    ╚██╔╝ ╚██╔╝ ██║██║ ╚███║	     ",
+			 L"                                ╚═╝  ╚═╝     ╚═╝   ╚═╝  ╚═╝╚═╝  ╚══╝	     " };
+		int count = 0;
+		int color[] = { RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE, RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE,RED };
+		while (count++ < 8) {
+			SetColor(BRIGHT_WHITE, color[count]);
+			for (int i = 0; i < 6; i++) {
+				GotoXY(left, top + i);
+				wcout << logo[i];
+				GotoXY(left, top + 8 + i);
+				wcout << logo[6 + i];
+				Sleep(100);
+			}
+			Sleep(250);
 		}
+		SetColor(BRIGHT_WHITE, BLACK);
 		int current_mode = _setmode(_fileno(stdout), old_mode);
 		break;
 	}
@@ -392,17 +404,33 @@ int ProcessFinish(int pWhoWin) {
 		PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
 		int old_mode = _setmode(_fileno(stdout), _O_WTEXT);
 		SetColor(bg_color, text_color);
-		wstring logo[6] = {
-			L"██████╗ ██╗      █████╗ ██╗   ██╗███████╗██████╗    █████╗    ██╗       ██╗██╗███╗  ██╗",
-			L"██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗  ██╔══██╗   ██║  ██╗  ██║██║████╗ ██║",
-			L"██████╔╝██║     ███████║ ╚████╔╝ █████╗  ██████╔╝  ██║  ██║   ╚██╗████╗██╔╝██║██╔██╗██║",
-			L"██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██╗  ██║  ██║    ████╔═████║ ██║██║╚████║",
-			L"██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║  ╚█████╔╝    ╚██╔╝ ╚██╔╝ ██║██║ ╚███║",
-			L"╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝   ╚════╝      ╚═╝   ╚═╝  ╚═╝╚═╝  ╚══╝" };
-		for (int i = 0; i < 6; i++) {
-			GotoXY(left, i + top);
-			wcout << logo[i];
+		wstring logo[12] = {
+			 L" ██████╗ ██╗      █████╗ ██╗   ██╗███████╗██████╗                             ",
+			 L" ██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗                            ",
+			 L" ██████╔╝██║     ███████║ ╚████╔╝ █████╗  ██████╔╝                            ",
+			 L" ██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██╗                            ",
+			 L" ██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║                            ",
+			 L" ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝                            ",
+			 L"                                 █████╗    ██╗       ██╗██╗███╗  ██╗	     ",
+			 L"                                ██╔══██╗   ██║  ██╗  ██║██║████╗ ██║	     ",
+			 L"                                ██║  ██║   ╚██╗████╗██╔╝██║██╔██╗██║	     ",
+			 L"                                ██║  ██║    ████╔═████║ ██║██║╚████║	     ",
+			 L"                                ╚█████╔╝    ╚██╔╝ ╚██╔╝ ██║██║ ╚███║	     ",
+			 L"                                 ╚════╝      ╚═╝   ╚═╝  ╚═╝╚═╝  ╚══╝	     " };
+		int count = 0;
+		int color[] = { RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE, RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE,RED };
+		while (count++ < 8) {
+			SetColor(BRIGHT_WHITE, color[count]);
+			for (int i = 0; i < 6; i++) {
+				GotoXY(left, top + i);
+				wcout << logo[i];
+				GotoXY(left, top + 8 + i);
+				wcout << logo[6 + i];
+				Sleep(100);
+			}
+			Sleep(250);
 		}
+		SetColor(BRIGHT_WHITE, BLACK);
 		int current_mode = _setmode(_fileno(stdout), old_mode);
 		break;
 	}
@@ -411,25 +439,33 @@ int ProcessFinish(int pWhoWin) {
 		PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
 		int old_mode = _setmode(_fileno(stdout), _O_WTEXT);
 		SetColor(bg_color, text_color);
-		wstring logo[13] = {
+		wstring logo[12] = {
 			L"               ██╗  ██╗ █████╗   			 ",
 			L"               ╚██╗██╔╝██╔══██╗  			 ",
 			L"                ╚███╔╝ ██║  ██║  			 ",
 			L"                ██╔██╗ ██║  ██║  			 ",
 			L"               ██╔╝╚██╗╚█████╔╝  			 ",
 			L"               ╚═╝  ╚═╝ ╚════╝   		     ",
-			L"												 ",
 			L"██████╗  █████╗ ██████╗  ██╗       ██╗██╗██╗██╗",
 			L"██╔══██╗██╔══██╗██╔══██╗ ██║  ██╗  ██║██║██║██║",
 			L"██║  ██║███████║██████╔╝ ╚██╗████╗██╔╝██║██║██║",
 			L"██║  ██║██╔══██║██╔══██╗  ████╔═████║ ╚═╝╚═╝╚═╝",
 			L"██████╔╝██║  ██║██║  ██║  ╚██╔╝ ╚██╔╝ ██╗██╗██╗",
 			L"╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝╚═╝", };
-
-		for (int i = 0; i < 13; i++) {
-			GotoXY(left + 10, i + (top - 5));
-			wcout << logo[i];
+		int count = 0;
+		int color[] = { RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE, RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE,RED };
+		while (count++ < 8) {
+			SetColor(BRIGHT_WHITE, color[count]);
+			for (int i = 0; i < 6; i++) {
+				GotoXY(left, top + i);
+				wcout << logo[i];
+				GotoXY(left, top + 8 + i);
+				wcout << logo[6 + i];
+				Sleep(100);
+			}
+			Sleep(250);
 		}
+		SetColor(BRIGHT_WHITE, BLACK);
 		int current_mode = _setmode(_fileno(stdout), old_mode);
 		break;
 	}
@@ -448,6 +484,8 @@ int AskContinue() {
 	EDGE bien = { 0,0,left + 25, left + 50 };
 	int width = 15, height = 2;
 	Draw_AskContinue();
+	SetColor(bg_color, text_color);
+	HLChoice(_X, _Y, width + 1);
 	while (1) {
 		ReadInputKey(keyevent);
 		if (keyevent.bKeyDown) {

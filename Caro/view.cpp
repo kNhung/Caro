@@ -762,7 +762,6 @@ void DrawPopUp(WORD wVirtualKeyCode) {
 }
 void Draw_AskContinue() {
 	int top = 25, left = CENTER_X - 30;
-	//int top = 25, left = 43;
 	PrintRectangle(top, left, 90, 6);
 	GotoXY(left + 25, top + 1); cout << "Do you want to continue playing or exit ? ";
 	int width = 15, height = 2;
@@ -770,7 +769,7 @@ void Draw_AskContinue() {
 	Button(top + 2, left + 50, width, height, "Exit");
 	_X = left + 25, _Y = top + 2;
 	GotoXY(_X, _Y);
-	ShowCursor(0);
+	ShowCursor(false);
 }
 void DrawAbout(){
 	SetColor(BRIGHT_WHITE, BLACK);
@@ -837,6 +836,7 @@ void DrawLoadingPage() {
 	PrintCloud(2, HEIGHT - 17, 1);
 }
 void DrawHelp() {
+	ShowCursor(false);
 	SetColor(BRIGHT_WHITE, BLACK);
 	int width = 40, height = 9, i = 0, n = 0;
 	int top= CENTER_Y - 20, left= CENTER_X - 4;
