@@ -879,7 +879,7 @@ void DrawBoard() {
 				cout << char(196);
 			}
 		}
-	//Sleep(10);
+	Sleep(10);
 	for (int i = 1; i < BOARD_SIZE; i++)
 		for (int j = 1; j < BOARD_SIZE * 4; j++) {
 			GotoXY(LEFT + j, 2 * i + TOP);
@@ -913,7 +913,10 @@ void DrawBoard() {
 		n = ceil((30 - PLAYER2.size() - 2) / 2 + 0.5);
 		GotoXY(LEFT + BOARD_SIZE * 4 + n, TOP + ((BOARD_SIZE * 2) / 2) + 3); cout << PLAYER2;
 	}
-	else cout << "BOT CARO";
+	else {
+		GotoXY(LEFT + BOARD_SIZE * 4 + n, TOP + ((BOARD_SIZE * 2) / 2) + 3);
+		cout << "BOT CARO";
+	}
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT, 15, 2, "U:Undo");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 + 2, 15, 2, "H:Help");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 2 + 4, 15, 2, "M:Sound");
@@ -971,10 +974,10 @@ void DrawMatchList() {
 
 	//Vẽ các phần tử của danh sách
 	for (int i = 0; i < MATCH_LIST_SIZE; i++) {
+		if (_MATCH_LIST[i].item == "\0")continue;
 		PrintRectangle(CENTER_Y - 1 + i * 4, CENTER_X, 30, 4 );
 		GotoXY(CENTER_X + 10, CENTER_Y - 1 + i * 4 + 2);
 		SetColor(BRIGHT_WHITE, BLACK);
-		if (_MATCH_LIST[i].item == "\0")continue;
 		cout << _MATCH_LIST[i].item; 
 		SetColor(BRIGHT_WHITE, LIGHT_AQUA);
 	}
