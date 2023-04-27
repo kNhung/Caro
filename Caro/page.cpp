@@ -210,7 +210,7 @@ void ShowGame() {
 					}
 					break;
 				}
-				case (0x55): {
+				case (0x55): { //U - Undo
 					if (_MODEPLAY == _MENU[0].c) {
 						_PlaySound(4);
 						if (_LAST_POINT.c != 0) { //Xét trường hợp Undo 2 lần trên 1 ô

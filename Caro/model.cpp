@@ -32,6 +32,7 @@ void SaveGame() {
 		return;
 	}
 	while (CheckExistedFile(matchName) == 1) {
+		matchName = "";
 		GotoXY(CENTER_X + 2, CENTER_Y + 3);
 		cout << "  File existed!";
 		GotoXY(CENTER_X + 2, CENTER_Y + 2);
@@ -50,9 +51,9 @@ void SaveGame() {
 					cout << c << ' ' << c;
 				}
 			}
-			else if (c == 27) {
+			else if (c == 27)
 				ShowGame();
-			}
+		
 		} while (c != 13||CheckExistedFile(matchName)==1);
 	}
 	if(MATCH_LIST_SIZE==0)_MATCH_LIST_FILE<< matchName + ".txt";
