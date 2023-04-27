@@ -707,7 +707,7 @@ void PrintCurrentHighlight(int& a) {
 void PrintLeftCursor(int top, int left)
 {
 	int old_mode = _setmode(_fileno(stdout), _O_U16TEXT);
-	wstring cursor[5] = { L"█▄   ",
+	wstring cursor[5] = {     L"█▄   ",
 							  L"███▄ ",
 							  L"█████",
 							  L"███▀ ",
@@ -720,7 +720,7 @@ void PrintLeftCursor(int top, int left)
 }
 void PrintRightCursor(int top, int left) {
 	int old_mode = _setmode(_fileno(stdout), _O_U16TEXT);
-	wstring cursor[5] = { L"   ▄█",
+	wstring cursor[5] = {   L"   ▄█",
 							L" ▄███",
 							L"█████",
 							L" ▀███",
@@ -835,11 +835,11 @@ void DrawBoard() {
 	RemoveScore(TOP + 8, LEFT + BOARD_SIZE * 4 + 76);
 	DrawScore(SCORE_X, TOP + 8, LEFT + BOARD_SIZE * 4 + 47);
 	DrawScore(SCORE_O, TOP + 8, LEFT + BOARD_SIZE * 4 + 77);
-	//Sleep(500);
+	Sleep(500);
 	GotoXY(LEFT, TOP); cout << char(201);
 	GotoXY(LEFT, TOP + BOARD_SIZE * 2); cout << char(200);
 	for (int j = 1; j < BOARD_SIZE * 4 + 30; j++) {
-		//Sleep(20);
+		Sleep(20);
 		GotoXY(LEFT + j, TOP);
 		if (j % 4 == 0 && j < BOARD_SIZE * 4)cout << char(209);
 		else cout << char(205);
@@ -857,7 +857,7 @@ void DrawBoard() {
 	GotoXY(LEFT + BOARD_SIZE * 4, TOP + BOARD_SIZE * 2); cout << char(202);
 	//Vẽ đường viền trái phải
 	for (int j = 1; j < BOARD_SIZE * 2; j++) {
-		//Sleep(20);
+		Sleep(20);
 		GotoXY(LEFT, j + TOP);
 		if (j % 2 == 0)cout << char(199);
 		else cout << char(186);
