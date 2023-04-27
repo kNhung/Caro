@@ -374,11 +374,14 @@ void HighlightWin(_POINT a[], int& n) {
 		}
 		for (int j = 0; j < n; j++) {
 			GotoXY(a[j].x, a[j].y);
-			SetColor(BRIGHT_WHITE, color++);
+			if(tmp==0)SetColor(LIGHT_AQUA,PURPLE);
+			else SetColor(BRIGHT_WHITE, color++);
 			if (_TURN == true)cout << "X";
 			else cout << "O";
 		}
 	}
+	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	Sleep(2000);
 }
 int ProcessFinish(int pWhoWin) {
 	PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
