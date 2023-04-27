@@ -53,7 +53,7 @@ void SaveGame() {
 			}
 			else if (c == 27)
 				ShowGame();
-			}
+		
 		} while (c != 13||CheckExistedFile(matchName)==1);
 	}
 	_MATCH_LIST_FILE.seekg(0, ios::end);
