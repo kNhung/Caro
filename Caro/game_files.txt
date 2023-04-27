@@ -1,5 +1,0 @@
-thanh.txt
-mai.txt
-nhi.txt
-vantrang.txt
-mmm.txt
