@@ -118,12 +118,17 @@ void InputName(){
 	//Vẽ khung trang menu
 	SetColor(BRIGHT_WHITE, BLACK);
 	PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
+	SetColor(BRIGHT_WHITE, PURPLE);
+	GotoXY(CENTER_X-3, CENTER_Y + 20); 
+	cout << "Press ENTER to start game !!!";
 
+	Animal(CENTER_Y - 6, CENTER_X, 1);
 	GotoXY(CENTER_X - 2, CENTER_Y);
 	SetColor(BRIGHT_WHITE, RED);
 	cout << "(X) PLAYER 1 's name : ";
 	getline(cin, PLAYER1);
-	GotoXY(CENTER_X - 2, CENTER_Y + 8);
+	Animal(CENTER_Y + 6, CENTER_X, 2);
+	GotoXY(CENTER_X - 2, CENTER_Y + 11);
 	SetColor(BRIGHT_WHITE, GREEN);
 	cout << "(O) PLAYER 2 's name : ";
 	if (_MODEPLAY == _MENU[0].c)
@@ -133,6 +138,7 @@ void InputName(){
 		PLAYER2 = "BOT CARO";
 		cin.get();
 	}
+	
 }
 void ShowGame() {
 	if (_EXIT) return;
