@@ -18,6 +18,7 @@ void PrintX(int top, int left, int size);
 void PrintO(int top, int left, int size);
 void DrawScore(int score, int top, int left);
 void RemoveScore(int top, int left);
+void Animal(int top, int left, int animal);
 
 //In tiêu đề các lựa chọn ở trang Menu
 void PrintNEW();

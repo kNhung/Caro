@@ -476,6 +476,39 @@ void RemoveScore(int top, int left) {
 		cout << logo[i];
 	}
 }
+void Animal(int top, int left,int animal) {
+	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
+	switch (animal) {
+	case 1: {
+		SetColor(BRIGHT_WHITE, AQUA);
+		wstring logo[6] = {
+			L"       ██         ██		  ",
+			L"      █ █         █ █		  ",
+			L"      █  █████████  █		  ",
+			L"      ███████████████		  ",
+			L"      █████ ████ ████		  ",
+			L"████  ██████▀  ▀█████  ████ " };
+		for (int i = 0; i < 6; i++) {
+			GotoXY(left, i + top);
+			wcout << logo[i];
+		}break;
+	}
+	case 2: {
+		SetColor(BRIGHT_WHITE,AQUA);
+		wstring logo[5] = {
+			L"      ████       ████		  ",
+			L"	    █  █████████  █		  ",
+			L"	    ███████████████		  ",
+			L"	    █████ ████ ████		  ",
+			L"████  ███████  ██████  ████ ", };
+		for (int i = 0; i < 5; i++) {
+			GotoXY(left, i + top);
+			wcout << logo[i];
+		}break;
+	}
+	}
+	int currentMode = _setmode(_fileno(stdout), OldMode);
+}
 
 //In tiêu đề các lựa chọn ở trang Menu
 void PrintNEW() 
@@ -793,7 +826,7 @@ void DesignBoard() {
 		L"╰╯" };
 	SetColor(BRIGHT_WHITE, BLACK);
 	for (int i = 0; i < 4; i++) {
-		GotoXY(LEFT + BOARD_SIZE * 4 + 64, i + TOP + 9);
+		GotoXY(LEFT + BOARD_SIZE * 4 + 65, i + TOP + 9);
 		wcout << logo2[i];
 	}
 	wstring logo3[2] = {
@@ -835,11 +868,11 @@ void DrawBoard() {
 	RemoveScore(TOP + 8, LEFT + BOARD_SIZE * 4 + 76);
 	DrawScore(SCORE_X, TOP + 8, LEFT + BOARD_SIZE * 4 + 47);
 	DrawScore(SCORE_O, TOP + 8, LEFT + BOARD_SIZE * 4 + 77);
-	Sleep(500);
+	Sleep(400);
 	GotoXY(LEFT, TOP); cout << char(201);
 	GotoXY(LEFT, TOP + BOARD_SIZE * 2); cout << char(200);
 	for (int j = 1; j < BOARD_SIZE * 4 + 30; j++) {
-		Sleep(20);
+		Sleep(10);
 		GotoXY(LEFT + j, TOP);
 		if (j % 4 == 0 && j < BOARD_SIZE * 4)cout << char(209);
 		else cout << char(205);
@@ -857,7 +890,7 @@ void DrawBoard() {
 	GotoXY(LEFT + BOARD_SIZE * 4, TOP + BOARD_SIZE * 2); cout << char(202);
 	//Vẽ đường viền trái phải
 	for (int j = 1; j < BOARD_SIZE * 2; j++) {
-		Sleep(20);
+		Sleep(10);
 		GotoXY(LEFT, j + TOP);
 		if (j % 2 == 0)cout << char(199);
 		else cout << char(186);
@@ -879,7 +912,7 @@ void DrawBoard() {
 				cout << char(196);
 			}
 		}
-	//Sleep(10);
+	Sleep(5);
 	for (int i = 1; i < BOARD_SIZE; i++)
 		for (int j = 1; j < BOARD_SIZE * 4; j++) {
 			GotoXY(LEFT + j, 2 * i + TOP);
@@ -913,7 +946,10 @@ void DrawBoard() {
 		n = ceil((30 - PLAYER2.size() - 2) / 2 + 0.5);
 		GotoXY(LEFT + BOARD_SIZE * 4 + n, TOP + ((BOARD_SIZE * 2) / 2) + 3); cout << PLAYER2;
 	}
-	else cout << "BOT CARO";
+	else {
+		GotoXY(LEFT + BOARD_SIZE * 4 + n, TOP + ((BOARD_SIZE * 2) / 2) + 3);
+		cout << "BOT CARO";
+	}
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT, 15, 2, "U:Undo");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 + 2, 15, 2, "H:Help");
 	Button(TOP + BOARD_SIZE * 2 + 2, LEFT + 15 * 2 + 4, 15, 2, "M:Sound");
@@ -949,8 +985,8 @@ void DrawMatchList() {
 	system("color F1");
 	//Vẽ nút Tr? v?
 	SetColor(BRIGHT_WHITE, YELLOW);
-	GotoXY(CENTER_X + 3, CENTER_Y + 20);
-	cout << "Press ESC to back to menu";
+	GotoXY(20, CENTER_Y + 20);
+	cout << "Press ESC to back to menu !!!";
 
 	SetColor(BRIGHT_WHITE, BLACK);
 	//Vẽ chữ LOAD GAME
@@ -971,10 +1007,10 @@ void DrawMatchList() {
 
 	//Vẽ các phần tử của danh sách
 	for (int i = 0; i < MATCH_LIST_SIZE; i++) {
+		if (_MATCH_LIST[i].item == "\0")continue;
 		PrintRectangle(CENTER_Y - 1 + i * 4, CENTER_X, 30, 4 );
 		GotoXY(CENTER_X + 10, CENTER_Y - 1 + i * 4 + 2);
 		SetColor(BRIGHT_WHITE, BLACK);
-		if (_MATCH_LIST[i].item == "\0")continue;
 		cout << _MATCH_LIST[i].item; 
 		SetColor(BRIGHT_WHITE, LIGHT_AQUA);
 	}
@@ -1094,7 +1130,7 @@ void DrawHelp() {
 	int top= CENTER_Y - 20, left= CENTER_X - 4;
 	PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
 	PrintHelpLogo(top,left);
-	SetColor(BRIGHT_WHITE, YELLOW);
+	SetColor(BRIGHT_WHITE, PURPLE);
 	GotoXY(CENTER_X + 2, CENTER_Y + 20);
 	cout << "Press ESC to back to match";
 
