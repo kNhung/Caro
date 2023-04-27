@@ -56,6 +56,7 @@ void SaveGame() {
 		
 		} while (c != 13||CheckExistedFile(matchName)==1);
 	}
+	GetMatchListSize();
 	if(MATCH_LIST_SIZE==0)_MATCH_LIST_FILE<< matchName + ".txt";
 	else {
 		_MATCH_LIST_FILE.seekg(0, ios::end);

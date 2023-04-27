@@ -285,6 +285,15 @@ void ShowFileGame() {
 	DrawMatchList();
 	_X = CENTER_X; _Y = CENTER_Y - 1;
 	SetColor(BRIGHT_WHITE, BLACK);
+	GetMatchListSize();
+	if (MATCH_LIST_SIZE == 0) {
+		GotoXY(_X, _Y);
+		cout << "The old file does not exist !!!";
+		cin.get(); 
+		ShowLoadingPage();
+		ShowMenu();
+		if (_EXIT)return;
+	}
 	PrintLeftCursor(_Y, CENTER_X - 6);
 	PrintRightCursor(_Y, CENTER_X + 32);
 	//int currentOption = 0;
