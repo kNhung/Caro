@@ -1137,29 +1137,38 @@ void DrawHelp() {
 	//Phím di chuyển
 	SetColor(BRIGHT_WHITE, BLACK);
 	int move_x = CENTER_X - 50, move_y = top + 8;
-	GotoXY(move_x, move_y);
+	GotoXY(move_x+20, move_y);
+	cout << "MOVE IN BOARD GAME";
+	GotoXY(move_x, move_y+1);
 	cout << "     ---    ";
-	GotoXY(move_x, move_y + 1);
-	cout << "    | W |   ";
 	GotoXY(move_x, move_y + 2);
-	cout << " --- --- ---      Use W, A, S, D to move";
+	cout << "    | W |         Player 1:             ";
 	GotoXY(move_x, move_y + 3);
-	cout << "| A | S | D |";
+	cout << " --- --- ---      Use W, A, S, D to move";
 	GotoXY(move_x, move_y + 4);
+	cout << "| A | S | D |";
+	GotoXY(move_x, move_y + 5);
+	cout << " --- --- --- ";
+
+	GotoXY(move_x, move_y + 7);
+	cout << "     ---    ";
+	GotoXY(move_x, move_y + 8);
+	cout << "    | ^ |         Player 2:             ";
+	GotoXY(move_x, move_y + 9);
+	cout << " --- --- ---      Use W, A, S, D to move";
+	GotoXY(move_x, move_y + 10);
+	cout << "| < | V | > |";
+	GotoXY(move_x, move_y + 11);
 	cout << " --- --- --- ";
 
 	//Phím Enter
-	GotoXY(move_x, move_y + 8);
-	cout << " ";
-	/*for (int i = 0; i < move_x; i++)
-		cout << char(95);*/
-	GotoXY(move_x, move_y + 8 );
+	GotoXY(move_x, move_y + 13 );
 	cout << " ------------ ";
-	GotoXY(move_x, move_y + 8 + 1);
-	cout << "|          " << char(191) << " |     Press Enter to";
-	GotoXY(move_x, move_y + 8 + 2);
-	cout << "| ENTER <" << char(196) << char(196) << char(217) << " |     place your mark";
-	GotoXY(move_x, move_y + 8 + 3);
+	GotoXY(move_x, move_y + 14);
+	cout << "|          " << char(191) << " |    Press Enter to";
+	GotoXY(move_x, move_y + 15);
+	cout << "| ENTER <" << char(196) << char(196) << char(217) << " |    place your mark";
+	GotoXY(move_x, move_y + 16);
 	cout << " ------------ ";
 
 	//Luật
@@ -1176,15 +1185,17 @@ void DrawHelp() {
 	GotoXY(rules_x, rules_y + 8);
 	cout << "own mark in a row vertically, horizontally,";
 	GotoXY(rules_x, rules_y + 10);
-	cout << "or diagonally wins the game. If all the squares";
+	cout << "or diagonally without blocked both ends ";
 	GotoXY(rules_x, rules_y + 12);
-	cout << "are filled and neither player has 5 in a row,";
+	cout<<"of that direction wins the game. If all the squares"; 
 	GotoXY(rules_x, rules_y + 14);
+	cout << "are filled and neither player has 5 in a row,";
+	GotoXY(rules_x, rules_y + 16);
 	cout << "the game is considered a Tie.";
 
 	//Ðuờng chia đôi
 	SetColor(BRIGHT_WHITE, BLACK);
-	for (int i = 0; i < 17; i++) {
+	for (int i = 0; i < 18; i++) {
 		GotoXY(CENTER_X + 8, top + 7 + i);
 		cout << "|";
 	}
