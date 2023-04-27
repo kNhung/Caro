@@ -365,23 +365,18 @@ void ResetToCheck(_POINT a[], int& n, _POINT& led1, _POINT& led2) {
 
 //Xử lí hiệu ứng thắng/thua/hòa
 void HighlightWin(_POINT a[], int& n) {
-	int tmp = 6;
-	for (int i = 1; tmp; i++) {
-		int color = i; Sleep(100);
-		if (i == 10) {
-			tmp--;
-			i = 0;
-		}
+	for (int i = 1; i<10; i++) {
+		int color = i; Sleep(600);
 		for (int j = 0; j < n; j++) {
 			GotoXY(a[j].x, a[j].y);
-			if(tmp==0)SetColor(LIGHT_AQUA,PURPLE);
+			if(i==9)SetColor(LIGHT_AQUA,PURPLE);
 			else SetColor(BRIGHT_WHITE, color++);
 			if (_TURN == true)cout << "X";
 			else cout << "O";
 		}
 	}
 	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
-	Sleep(2000);
+	Sleep(2500);
 }
 int ProcessFinish(int pWhoWin) {
 	PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
