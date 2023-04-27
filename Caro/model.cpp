@@ -32,6 +32,7 @@ void SaveGame() {
 		return;
 	}
 	while (CheckExistedFile(matchName) == 1) {
+		matchName = "";
 		GotoXY(CENTER_X + 2, CENTER_Y + 3);
 		cout << "  File existed!";
 		GotoXY(CENTER_X + 2, CENTER_Y + 2);
@@ -50,9 +51,9 @@ void SaveGame() {
 					cout << c << ' ' << c;
 				}
 			}
-			else if (c == 13)
+			else if (c == 27)
 				ShowGame();
-		} while (c != 13);
+		} while (c != 13 || CheckExistedFile(matchName) == 1);
 	}
 	_MATCH_LIST_FILE << matchName + ".txt" << endl;
 	SaveMatchInfo(matchName);
@@ -71,10 +72,10 @@ void SaveMatchInfo(string matchName) {
 			matchFile << _A[i][j].c << endl;
 		}
 	}
-	matchFile << _LAST_POINT.x << endl 
-			<< _LAST_POINT.y << endl 
-			<< _LAST_POINT.c << endl 
-			<< _MODEPLAY;
+	matchFile << _LAST_POINT.x << endl<< _LAST_POINT.y << endl;
+	if (_MODEPLAY == _MENU[2].c) matchFile << 0 << endl;
+	else matchFile << _LAST_POINT.c;
+	matchFile<< _MODEPLAY;
 	matchFile.close();
 }
 int CheckExistedFile(string fileName) {
