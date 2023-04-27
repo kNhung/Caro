@@ -405,8 +405,8 @@ int ProcessFinish(int pWhoWin) {
 		PrintHelicopter(55, 15);
 		PrintHelicopter(155, 5);
 		int count = 0;
-		int color[] = { RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE, RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE,RED };
-		while (count++ < 8) {
+		int color[] = { RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE, RED };
+		while (count < 5) {
 			SetColor(BRIGHT_WHITE, color[count]);
 			for (int i = 0; i < 7; i++) {
 				GotoXY(left, top + i);
@@ -415,7 +415,8 @@ int ProcessFinish(int pWhoWin) {
 				wcout << logo[7 + i];
 				Sleep(75);
 			}
-			Sleep(250);
+			count++;
+			Sleep(200);
 		}
 		SetColor(BRIGHT_WHITE, BLACK);
 		int current_mode = _setmode(_fileno(stdout), old_mode);
@@ -444,8 +445,8 @@ int ProcessFinish(int pWhoWin) {
 		PrintHelicopter(55, 15);
 		PrintHelicopter(155, 5);
 		int count = 0;
-		int color[] = { RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE, RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE,RED };
-		while (count++ < 8) {
+		int color[] = {GREEN,BRIGHT_WHITE, RED,BRIGHT_WHITE,GREEN};
+		while (count< 5) {
 			SetColor(BRIGHT_WHITE, color[count]);
 			for (int i = 0; i < 7; i++) {
 				GotoXY(left, top + i);
@@ -454,7 +455,8 @@ int ProcessFinish(int pWhoWin) {
 				wcout << logo[7 + i];
 				Sleep(75);
 			}
-			Sleep(250);
+			count++;
+			Sleep(200);
 		}
 		SetColor(BRIGHT_WHITE, BLACK);
 		int current_mode = _setmode(_fileno(stdout), old_mode);
@@ -482,8 +484,8 @@ int ProcessFinish(int pWhoWin) {
 		PrintHelicopter(55, 15);
 		PrintHelicopter(155, 5);
 		int count = 0;
-		int color[] = { RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE, RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE,RED };
-		while (count++ < 8) {
+		int color[] = { RED,BRIGHT_WHITE,GREEN,BRIGHT_WHITE, RED};
+		while (count < 5) {
 			SetColor(BRIGHT_WHITE, color[count]);
 			for (int i = 0; i < 6; i++) {
 				GotoXY(left, top + i);
@@ -492,7 +494,8 @@ int ProcessFinish(int pWhoWin) {
 				wcout << logo[6 + i];
 				Sleep(130);
 			}
-			Sleep(250);
+			count++;
+			Sleep(200);
 		}
 		SetColor(BRIGHT_WHITE, BLACK);
 		int current_mode = _setmode(_fileno(stdout), old_mode);
