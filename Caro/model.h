@@ -15,6 +15,7 @@ bool CheckSameString(string s1, string s2);
 void GetMatchListSize();
 void LoadGame(string matchName);
 void ResetData();
+void ResetScore();
 
 //Chơi game
 void StartGame();

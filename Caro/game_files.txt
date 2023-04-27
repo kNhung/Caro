@@ -1,3 +1,5 @@
 Test1.txt
 Test2_bot.txt
 Demo_Draw.txt
+thanh.txt
+tyty.txt

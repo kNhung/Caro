@@ -10,13 +10,15 @@ _POINT _MENU[MENU_SIZE] = {
 };
 _POINT _LAST_POINT;
 
+string PLAYER1, PLAYER2;
+int SCORE_X, SCORE_O;
 int _MODEPLAY;
 bool _TURN;
 int _COMMAND;
 int _X, _Y;
 int MODE; 
 bool NEW_GAME;
-ofstream _MATCH_LIST_FILE;
+fstream _MATCH_LIST_FILE;
 int MATCH_LIST_SIZE;
 vector<_LIST> _MATCH_LIST;
 int SOUND;

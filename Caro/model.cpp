@@ -50,11 +50,13 @@ void SaveGame() {
 					cout << c << ' ' << c;
 				}
 			}
-			else if (c == 13)
+			else if (c == 27) {
 				ShowGame();
-		} while (c != 13);
+			}
+		} while (c != 13||CheckExistedFile(matchName)==1);
 	}
-	_MATCH_LIST_FILE << matchName + ".txt" << endl;
+	_MATCH_LIST_FILE.seekg(0, ios::end);
+	_MATCH_LIST_FILE << endl << matchName + ".txt";
 	SaveMatchInfo(matchName);
 	_MATCH_LIST_FILE.close();
 }
@@ -71,10 +73,14 @@ void SaveMatchInfo(string matchName) {
 			matchFile << _A[i][j].c << endl;
 		}
 	}
-	matchFile << _LAST_POINT.x << endl 
-			<< _LAST_POINT.y << endl 
-			<< _LAST_POINT.c << endl 
-			<< _MODEPLAY;
+	matchFile << _LAST_POINT.x << endl << _LAST_POINT.y << endl;
+	if (_MODEPLAY == _MENU[2].c)matchFile << 0 << endl;
+	else matchFile << _LAST_POINT.c << endl;
+	matchFile << _MODEPLAY << endl
+		<< PLAYER1 << endl
+		<< PLAYER2 << endl
+		<< SCORE_X << endl
+		<< SCORE_O;
 	matchFile.close();
 }
 int CheckExistedFile(string fileName) {
@@ -152,9 +158,8 @@ void LoadGame(string matchName) {
 		cout << "Cannot open match file";
 		return;
 	}
-	while (!matchFile.eof()) {
-		matchFile >> numbers[m];
-		++m;
+	while (m< BOARD_SIZE * BOARD_SIZE + 4) {
+		matchFile >> numbers[m++];
 	}
 	m = 0;
 	for (int i = 0;i < BOARD_SIZE;i++)
@@ -168,7 +173,14 @@ void LoadGame(string matchName) {
 	_LAST_POINT.y = numbers[m];++m;
 	_LAST_POINT.c = numbers[m];++m;
 	_MODEPLAY = numbers[m];
-	_TURN = !_LAST_POINT.c; _COMMAND = -1;
+	matchFile >> PLAYER1;
+	matchFile >> PLAYER2;
+	matchFile >> SCORE_X;
+	matchFile >> SCORE_O;
+	if (_LAST_POINT.c == -1)
+		_TURN = false;
+	else _TURN = true;
+	_COMMAND = -1;
 }
 void ResetData() {
 	for (int i = 0; i < BOARD_SIZE; i++) {
@@ -181,6 +193,9 @@ void ResetData() {
 	_TURN = true; _COMMAND = -1;
 	_X = _A[0][0].x; _Y = _A[0][0].y;
 	GotoXY(_X, _Y);
+}
+void ResetScore() {
+	SCORE_X = 0; SCORE_O = 0;
 }
 
 //Khởi động game
@@ -330,11 +345,13 @@ int CheckWin(_POINT a[], int& n, _POINT& led1, _POINT& led2) {
 	if (n == 5 && (led1.c == 0 || led2.c == 0)) {
 		_PlaySound(6);
 		HighlightWin(a, n);
+		_TURN == true ? SCORE_X++ : SCORE_O++;
 		return(_TURN == true ? 1 : -1);
 	}
 	if (n > 5) {
 		_PlaySound(6);
 		HighlightWin(a, n);
+		_TURN == true ? SCORE_X++ : SCORE_O++;
 		return(_TURN == true ? 1 : -1);
 	}
 	ResetToCheck(a, n, led1, led2);

@@ -16,6 +16,8 @@ void PrintHelicopter(int x, int y);
 void PrintCastle(int x, int y);
 void PrintX(int top, int left, int size);
 void PrintO(int top, int left, int size);
+void DrawScore(int score, int top, int left);
+void RemoveScore(int top, int left);
 
 //In tiêu đề các lựa chọn ở trang Menu
 void PrintNEW();

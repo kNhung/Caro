@@ -6,9 +6,19 @@
 void ShowPage(int page) {
 	if (_EXIT) return;
 	switch (page) {
-	case 1: {_MODEPLAY = _MENU[0].c; ShowGame(); break; }
+	case 1: {
+		_MODEPLAY = _MENU[0].c; 
+		ResetScore();
+		InputName(); 
+		ShowGame();
+		break; }
 	case 2: ShowFileGame(); break;
-	case 3: {_MODEPLAY = _MENU[2].c; ShowGame(); break; }
+	case 3: {
+		_MODEPLAY = _MENU[2].c; 
+		ResetScore();
+		InputName(); 
+		ShowGame(); 
+		break; }
 	case 4: ShowAbout(); break;
 	}
 }
@@ -93,12 +103,43 @@ void ShowMenu() {
 		}
 	}
 }
+void InputName(){
+	system("cls");
+	//Vẽ tiêu đề trang menu
+	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	PrintPencil(4, 52);
+	SetColor(BRIGHT_WHITE, BLACK);
+	PrintMenuLogo(CENTER_Y - 20, CENTER_X - 2);
+	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	PrintX(CENTER_Y, 5, 1);
+	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	PrintO(CENTER_Y, WIDTH - 52, 1);
+
+	//Vẽ khung trang menu
+	SetColor(BRIGHT_WHITE, BLACK);
+	PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
+
+	GotoXY(CENTER_X - 2, CENTER_Y);
+	SetColor(BRIGHT_WHITE, RED);
+	cout << "(X) PLAYER 1 's name : ";
+	getline(cin, PLAYER1);
+	GotoXY(CENTER_X - 2, CENTER_Y + 8);
+	SetColor(BRIGHT_WHITE, GREEN);
+	cout << "(O) PLAYER 2 's name : ";
+	if (_MODEPLAY == _MENU[0].c)
+		getline(cin, PLAYER2);
+	else {
+		cout << "BOT CARO !!!";
+		PLAYER2 = "BOT CARO";
+		cin.get();
+	}
+}
 void ShowGame() {
 	if (_EXIT) return;
 	else {
 		_PlaySound(4);
 		StartGame();
-		int row_console = 0, column_console = 0, row = 0, col = 0, flag = 0;
+		int row_console = 0, column_console = 0, row = 0, col = 0, flag = 0, res = 0;
 		KEY_EVENT_RECORD keyevent;
 		EDGE bien = { TOP + 1,TOP + BOARD_SIZE * 2 - 1,LEFT + 2,LEFT + BOARD_SIZE * 4 - 2 };
 		bool validEnter = true;
@@ -296,7 +337,8 @@ void ShowFileGame() {
 	}
 }
 void ShowAsk(WORD wVirtualKeyCode) {
-	if (_EXIT) return;
+	int flag = 0;
+	if (_EXIT) return ;
 	else {
 		NEW_GAME = 0;
 		DrawPopUp(wVirtualKeyCode);
@@ -304,7 +346,7 @@ void ShowAsk(WORD wVirtualKeyCode) {
 		case 0x4C: //L
 			SaveGame();
 			Sleep(800);
-			ShowGame();
+			ExitGame();
 			break;
 		case VK_ESCAPE: //ESC
 			_COMMAND = toupper(_getch());

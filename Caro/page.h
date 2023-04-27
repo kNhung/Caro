@@ -7,6 +7,7 @@
 void ShowPage(int page);
 void ShowLoadingPage(); //Trang Loading...
 void ShowMenu(); //Trang Menu
+void InputName();//Nhập tên người chơi
 void ShowGame(); //Trang chơi game
 void ShowAbout(); //Trang chứa thông tin nhóm
 void ShowFileGame(); //Trang mở file đã lưu
