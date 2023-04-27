@@ -54,13 +54,13 @@ void KeyMove(int* x, int* y, int col, int row, EDGE b, KEY_EVENT_RECORD a) {
 			*y = b.top;
 		GotoXY(*x, *y);
 		break; }
-	case VK_LCONTROL:case 0x41: {
+	case VK_LEFT:case 0x41: {
 		*x = *x - col;
 		if (*x < b.left)
 			*x = b.right;
 		GotoXY(*x, *y);
 		break; }
-	case VK_RCONTROL:case 0x44: {
+	case VK_RIGHT:case 0x44: {
 		*x = *x + col;
 		if (*x > b.right)
 			*x = b.left;
