@@ -342,16 +342,12 @@ int TestBoard(KEY_EVENT_RECORD key) {
 	return 2;
 }
 int CheckWin(_POINT a[], int& n, _POINT& led1, _POINT& led2) {
-	if (n == 5 && (led1.c == 0 || led2.c == 0)) {
+	if ((n == 5 && (led1.c == 0 || led2.c == 0))||n>5) {
 		_PlaySound(6);
 		HighlightWin(a, n);
 		_TURN == true ? SCORE_X++ : SCORE_O++;
-		return(_TURN == true ? 1 : -1);
-	}
-	if (n > 5) {
-		_PlaySound(6);
-		HighlightWin(a, n);
-		_TURN == true ? SCORE_X++ : SCORE_O++;
+		if (SCORE_X == 10 || SCORE_O == 10)
+			ResetScore();
 		return(_TURN == true ? 1 : -1);
 	}
 	ResetToCheck(a, n, led1, led2);
