@@ -178,23 +178,26 @@ void ShowGame() {
 						SetColor(BRIGHT_WHITE, GREEN);
 						PrintO(TOP + ((BOARD_SIZE * 2) / 2) + 6, LEFT + BOARD_SIZE * 4 + 12, 2);
 						GotoXY(_LAST_POINT.x, _LAST_POINT.y);
+						if(_MODEPLAY==_MENU[2].c)Sleep(200);
 						break;
 					}
 					case 1: {
-						SetColor(BRIGHT_WHITE, GREEN);
-						cout << "O";
-						//Hiệu ứng đổi lượt
-						SetColor(BRIGHT_WHITE, RED);
-						PrintX(TOP + 6, LEFT + BOARD_SIZE * 4 + 12, 2);
-						SetColor(BRIGHT_WHITE, GRAY);
-						PrintO(TOP + ((BOARD_SIZE * 2) / 2) + 6, LEFT + BOARD_SIZE * 4 + 12, 2);
-						GotoXY(_LAST_POINT.x, _LAST_POINT.y);
+						if (_MODEPLAY == _MENU[0].c) {
+							SetColor(BRIGHT_WHITE, GREEN);
+							cout << "O";
+							//Hiệu ứng đổi lượt
+							SetColor(BRIGHT_WHITE, RED);
+							PrintX(TOP + 6, LEFT + BOARD_SIZE * 4 + 12, 2);
+							SetColor(BRIGHT_WHITE, GRAY);
+							PrintO(TOP + ((BOARD_SIZE * 2) / 2) + 6, LEFT + BOARD_SIZE * 4 + 12, 2);
+							GotoXY(_LAST_POINT.x, _LAST_POINT.y);
+						}
 						break;
 					}
 					case 0: validEnter = false;
 					}
 					if (validEnter == true) {
-						switch (ProcessFinish(TestBoard(keyevent))) {
+						switch (ProcessFinish(TestBoard())) {
 						case -1:case 1: {
 							_PlaySound(4);
 							flag = AskContinue();
@@ -252,8 +255,7 @@ void ShowGame() {
 				}
 				}
 			}
-			if ((_TURN == true && _MODEPLAY == _MENU[2].c) || _MODEPLAY == _MENU[0].c)
-				keyevent.bKeyDown = false;
+			keyevent.bKeyDown = false;
 			validEnter = true;
 			if (flag == 2)break;
 		}

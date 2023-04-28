@@ -857,6 +857,7 @@ void DrawBoard() {
 	//In logo
 	SetColor(BRIGHT_WHITE, BLACK);
 	PrintInMatch(3, CENTER_X - 20);
+	PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
 	PrintRectangle2lines(TOP, LEFT + BOARD_SIZE * 4 + 34, 62, BOARD_SIZE - 1);
 	PrintRectangle2lines(TOP + BOARD_SIZE + 1, LEFT + BOARD_SIZE * 4 + 34, 62, BOARD_SIZE - 1);
 	SetColor(BRIGHT_WHITE, RED);
@@ -1099,6 +1100,9 @@ void DrawAbout(){
 	 PrintCloud(155, 10, 3); 
 	 PrintCloud(2, HEIGHT - 17, 1); // bên trái 
 	 SetColor(BRIGHT_WHITE, BLACK);
+	 SetColor(BRIGHT_WHITE, PURPLE);
+	 GotoXY(CENTER_X + 2, CENTER_Y + 20);
+	 cout << "Press ESC to back to Menu";
 }
 void DrawLoadingPage() {
 	system("color F1");

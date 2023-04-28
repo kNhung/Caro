@@ -22,7 +22,7 @@ void StartGame();
 
 //Kiểm tra bàn cờ
 int CheckBoard(int pX, int pY);
-int TestBoard(KEY_EVENT_RECORD key);
+int TestBoard(/*KEY_EVENT_RECORD key*/);
 int CheckWin(_POINT a[], int& n, _POINT& led1, _POINT& led2);
 void ResetToCheck(_POINT a[], int& n, _POINT& led1, _POINT& led2);
 
@@ -41,7 +41,7 @@ void ExitGame();
 void RemoveMatchFile(string matchName);
 void GabageCollect();
 void _PlaySound(int i);
-void PVC(KEY_EVENT_RECORD key, TURN_BOT tb[]);//Đấu với máy
+void PVC(TURN_BOT tb[]);//Đấu với máy
 
 #endif
 

@@ -229,21 +229,24 @@ int CheckBoard(int pX, int pY) {
 	}
 	return 0;
 }
-int TestBoard(KEY_EVENT_RECORD key) {
+int TestBoard() {
 //Kiểm tra thắng thua, người 1 hay _Turn=true thắng thì trả về -1 người còn lại thắng trả về 1,
 //hòa nhau trả về 0 còn chưa phân định ai thắng trả về 2
 	_POINT led1 = { 0,0,2 }, led2 = { 0,0,2 };
 	int row = 0, col = 0;
 	int result = 2, n = 0, m = 0;
 
-	//Mang luu toa do duong chien thang
+	//Mảng lưu tọa độ đường chiến thắng
 	_POINT a[9];
 	_POINT p = XYinMatrix(_X, _Y, row, col);
-	TURN_BOT tb[4];
 	a[n++] = p;
+	TURN_BOT tb[4];
+	for (int i = 0; i < 4; i++) 
+		tb[i] = { 0,{led1,led2} };
+	
 
 	//Kiểm tra trên dòng
-	//Các đèn led tín hieu de kiem tra luat chan hai dau
+	//Các đèn led tín hiệu để kiểm tra luật chặn hai đầu
 	for (int i = col - 1; i >= 0 && i < BOARD_SIZE; i--) {
 		if (_A[row][i].c == _A[row][col].c)
 			a[n++] = _A[row][i];
@@ -289,7 +292,7 @@ int TestBoard(KEY_EVENT_RECORD key) {
 	result = CheckWin(a, n, led1, led2); if (result != 2)return result;
 
 	//Kiểm tra đường chéo chính
-	for (int i = row - 1, j = col - 1; i >= 0 && i < BOARD_SIZE, j >= 0 && j < BOARD_SIZE; i--, j--) {
+	for (int i = row - 1, j = col - 1; i >= 0 && i < BOARD_SIZE && j >= 0 && j < BOARD_SIZE; i--, j--) {
 		if (_A[i][j].c == _A[row][col].c) {
 			a[n++] = _A[i][j];
 		}
@@ -298,7 +301,7 @@ int TestBoard(KEY_EVENT_RECORD key) {
 			break;
 		}
 	}
-	for (int i = row + 1, j = col + 1; i >= 0 && i < BOARD_SIZE, j >= 0 && j < BOARD_SIZE; i++, j++) {
+	for (int i = row + 1, j = col + 1; i >= 0 && i < BOARD_SIZE && j >= 0 && j < BOARD_SIZE; i++, j++) {
 		if (_A[i][j].c == _A[row][col].c) {
 			a[n++] = _A[i][j];
 		}
@@ -312,7 +315,7 @@ int TestBoard(KEY_EVENT_RECORD key) {
 	result = CheckWin(a, n, led1, led2); if (result != 2)return result;
 
 	//Kiểm tra đường chéo phụ
-	for (int i = row + 1, j = col - 1; i >= 0 && i < BOARD_SIZE, j >= 0 && j < BOARD_SIZE; i++, j--) {
+	for (int i = row + 1, j = col - 1; i >= 0 && i < BOARD_SIZE && j >= 0 && j < BOARD_SIZE; i++, j--) {
 		if (_A[i][j].c == _A[row][col].c) {
 			a[n++] = _A[i][j];
 		}
@@ -322,7 +325,7 @@ int TestBoard(KEY_EVENT_RECORD key) {
 		}
 
 	}
-	for (int i = row - 1, j = col + 1; i >= 0 && i < BOARD_SIZE, j >= 0 && j < BOARD_SIZE; i--, j++) {
+	for (int i = row - 1, j = col + 1; i >= 0 && i < BOARD_SIZE && j >= 0 && j < BOARD_SIZE; i--, j++) {
 		if (_A[i][j].c == _A[row][col].c) {
 			a[n++] = _A[i][j];
 		}
@@ -333,10 +336,9 @@ int TestBoard(KEY_EVENT_RECORD key) {
 	}
 	if (_MODEPLAY == _MENU[2].c && _TURN == true) {
 		tb[m++] = { n,{led1,led2} };
-		PVC(key, tb);
+		PVC(tb);
 	}
 	result = CheckWin(a, n, led1, led2); if (result != 2)return result;
-	for (int i = 0; i < 4; i++) tb[i] = { 0,{{0,0},{0,0}} };
 
 	int flag = 0;
 	for (int i = 0; i < BOARD_SIZE; i++)
@@ -361,7 +363,7 @@ int CheckWin(_POINT a[], int& n, _POINT& led1, _POINT& led2) {
 void ResetToCheck(_POINT a[], int& n, _POINT& led1, _POINT& led2) {
 	a[n] = { 0 };
 	n = 1;
-	led1.c = 2; led2.c = 2;
+	led1 = { 0,0,2 }; led2 = { 0,0,2};
 }
 
 //Xử lí hiệu ứng thắng/thua/hòa
@@ -380,7 +382,6 @@ void HighlightWin(_POINT a[], int& n) {
 	Sleep(2500);
 }
 int ProcessFinish(int pWhoWin) {
-	PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
 	int top = 5, left = CENTER_X - 30;
 	int bg_color = BRIGHT_WHITE, text_color = LIGHT_AQUA;
 	ShowCursor(false);
@@ -606,29 +607,68 @@ void _PlaySound(int i)
 		PlaySound(soundFile[i], NULL, SND_FILENAME | SND_ASYNC);
 	}
 }
-void PVC(KEY_EVENT_RECORD key, TURN_BOT tb[]) {
-	random_device rd;
-	mt19937 rng(rd());
-	uniform_int_distribution<int> uni(0, 1);
-	int max = 0;
-	_POINT turn_b;
+
+void PVC(TURN_BOT tb[]) {
+	srand((unsigned char)time(0));
+	int max = 0, number = 0;
+	_POINT turn_b = { 0,0,2 };
+	TURN_BOT turn_bot;
 	for (int i = 0; i < 4; i++) {
 		if (tb[i].led[0].c == 0 || tb[i].led[1].c == 0) {
 			if ((tb[i].led[0].c == 0 && tb[i].led[1].c == 0 && tb[i].sz >= max) || tb[i].sz > max) {
 				max = tb[i].sz;
-				do {
-					int rd = uni(rng);
-					turn_b = tb[i].led[rd];
-					if (turn_b.c == 0)break;
-				} while (1);
+				turn_bot = tb[i];
 			}
 		}
 	}
-	_X = turn_b.x; _Y = turn_b.y;
-	GotoXY(_X, _Y);
+	number = rand() % 2;
+	turn_b = turn_bot.led[number];
+	if (turn_b.c != 0) turn_b = turn_bot.led[1-number];
+	bool stop = 0;
+	if (turn_b.x < 0 || turn_b.y < 0) {
+		for (int i = 0; i < BOARD_SIZE; i++) {
+			if (stop == 1) break;
+			for (int j = 0; j < BOARD_SIZE; j++)
+				if (_A[i][j].c == 0) {
+					_X = _A[0][0].x + j * 4;
+					_Y = _A[0][0].y + i * 2;
+					stop = 1;
+					break;
+				}
+		}
+	}
+	else {
+		_X = turn_b.x;
+		_Y = turn_b.y;
+	}
+	_TURN = false;
+	Sleep(200);
 	SetColor(BRIGHT_WHITE, GREEN);
+	GotoXY(_X, _Y);
+	_PlaySound(1);
 	cout << "O";
+	CheckBoard(_X, _Y);
+	switch (ProcessFinish(TestBoard())) {
+	case -1:case 1: {
+		_PlaySound(4);
+		AskContinue();
+		if (_EXIT) return;
+		break;
+	}
+	case 0: {
+		AskContinue();
+		if (_EXIT) return;
+		break;
+	}
+	}
+	_TURN = false;
+
+	SetColor(BRIGHT_WHITE, RED);
+	PrintX(TOP + 6, LEFT + BOARD_SIZE * 4 + 12, 2);
+	SetColor(BRIGHT_WHITE, GRAY);
+	PrintO(TOP + ((BOARD_SIZE * 2) / 2) + 6, LEFT + BOARD_SIZE * 4 + 12, 2);
+	GotoXY(_LAST_POINT.x, _LAST_POINT.y);
 	_LAST_POINT.c = 0;
-	key.bKeyDown = true;
-	key.wVirtualKeyCode = VK_RETURN;
+
 }
+
