@@ -36,10 +36,12 @@ int AskSaveGame();
 void HLChoice(int& x, int& y, int width);
 
 //Các chức năng khác
-_POINT XYinMatrix(int& x, int& y, int& row, int& col);
+_POINT XYinMatrix(const int& x, const int& y, int& row, int& col);
 void ExitGame();
-void RemoveMatchFile(string matchName);
-void GabageCollect();
+void RemoveMatchFile(string& matchName,int& pos);
+bool InputFileName(char& c);
+bool _True(char& c);
+void Input_Data(string& s, const int& max, const int& x, const int& y, bool (*condition)(char&)=_True);
 void _PlaySound(int i);
 void PVC(TURN_BOT tb[]);//Đấu với máy
 

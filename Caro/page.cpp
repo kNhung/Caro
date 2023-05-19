@@ -8,18 +8,19 @@ void ShowPage(int page) {
 	switch (page) {
 	case 1: {
 		_MODEPLAY = _MENU[0].c; 
+		isLoad = 0;
 		ResetScore();
 		InputName(); 
 		ShowGame();
 		break; }
-	case 2: ShowFileGame(); break;
+	case 2: {ShowFileGame(); break; }
 	case 3: {
 		_MODEPLAY = _MENU[2].c; 
 		ResetScore();
 		InputName(); 
 		ShowGame(); 
 		break; }
-	case 4: ShowAbout(); break;
+	case 4: {ShowAbout(); break; }
 	}
 }
 void ShowLoadingPage() {
@@ -83,7 +84,7 @@ void ShowMenu() {
 			_PlaySound(4);
 			SetColor(BRIGHT_WHITE, BLACK);
 			system("cls");
-			GabageCollect();
+			ByeBye();
 			return;
 		}
 		else if (_COMMAND == 13) {
@@ -121,22 +122,30 @@ void InputName(){
 	SetColor(BRIGHT_WHITE, PURPLE);
 	GotoXY(CENTER_X-3, CENTER_Y + 20); 
 	cout << "Press ENTER to start game !!!";
+	GotoXY(CENTER_X-8, CENTER_Y-8);
+	cout << "Names can only contain 20 characters !!!";
 
 	Animal(CENTER_Y - 6, CENTER_X, 1);
 	GotoXY(CENTER_X - 2, CENTER_Y);
 	SetColor(BRIGHT_WHITE, RED);
 	cout << "(X) PLAYER 1 's name : ";
-	getline(cin, PLAYER1);
+	Input_Data(PLAYER1, 20, CENTER_X + 22, CENTER_Y);
 	Animal(CENTER_Y + 6, CENTER_X, 2);
 	GotoXY(CENTER_X - 2, CENTER_Y + 11);
 	SetColor(BRIGHT_WHITE, GREEN);
 	cout << "(O) PLAYER 2 's name : ";
 	if (_MODEPLAY == _MENU[0].c)
-		getline(cin, PLAYER2);
+		Input_Data(PLAYER2, 20, CENTER_X +22, CENTER_Y + 11);
 	else {
 		cout << "BOT CARO !!!";
 		PLAYER2 = "BOT CARO";
-		cin.get();
+		while (1) {
+			if (_kbhit()) {
+				char c = _getch();
+				if(c==13)
+				break;
+			}
+		}
 	}
 	
 }
@@ -178,7 +187,7 @@ void ShowGame() {
 						SetColor(BRIGHT_WHITE, GREEN);
 						PrintO(TOP + ((BOARD_SIZE * 2) / 2) + 6, LEFT + BOARD_SIZE * 4 + 12, 2);
 						GotoXY(_LAST_POINT.x, _LAST_POINT.y);
-						if(_MODEPLAY==_MENU[2].c)Sleep(200);
+						if(_MODEPLAY==_MENU[2].c)Sleep(400);
 						break;
 					}
 					case 1: {
@@ -278,6 +287,22 @@ void ShowAbout() {
 		}
 	}
 }
+
+void FileNotFound() {
+	GotoXY(_X, _Y + 5);
+	cout << "File not found !!!";
+	while (1) {
+		if (_kbhit()) {
+			char c = _getch();
+			if (c == 27)
+				break;
+		}
+	}
+	ShowLoadingPage();
+	ShowMenu();
+	if (_EXIT)return;
+}
+
 void ShowFileGame() {
 	if (_EXIT) return;
 	HANDLE word;
@@ -287,67 +312,64 @@ void ShowFileGame() {
 	DrawMatchList();
 	_X = CENTER_X; _Y = CENTER_Y - 1;
 	SetColor(BRIGHT_WHITE, BLACK);
-	GetMatchListSize();
-	if (MATCH_LIST_SIZE == 0) {
-		GotoXY(_X, _Y);
-		cout << "The old file does not exist !!!";
-		cin.get(); 
-		ShowLoadingPage();
-		ShowMenu();
-		if (_EXIT)return;
-	}
-	PrintLeftCursor(_Y, CENTER_X - 6);
-	PrintRightCursor(_Y, CENTER_X + 32);
-	//int currentOption = 0;
-	while (1) {
-		_COMMAND = toupper(_getch());
-		if (_COMMAND == 'W') {
-			MoveUp();
-			_PlaySound(3);
-			//Xóa con trỏ ở vị trí cũ 
-			SetColor(BRIGHT_WHITE, BRIGHT_WHITE);
-			PrintLeftCursor(_Y + 5, CENTER_X - 6);
-			PrintRightCursor(_Y + 5, CENTER_X + 32);
-			//Di chuyển con trỏ 
-			SetColor(BRIGHT_WHITE, BLACK);
+	if (MATCH_LIST_SIZE == 0) FileNotFound();
+	else {
+		while (1) {
 			PrintLeftCursor(_Y, CENTER_X - 6);
 			PrintRightCursor(_Y, CENTER_X + 32);
-		}
-		else if (_COMMAND == 'S') {
-			MoveDown();
-			_PlaySound(3);
-			//Xóa con trỏ ở vị trí cũ 
-			SetColor(BRIGHT_WHITE, BRIGHT_WHITE);
-			PrintLeftCursor(_Y - 5, CENTER_X - 6);
-			PrintRightCursor(_Y - 5, CENTER_X + 32);
-			//Di chuyển con trỏ 
-			SetColor(BRIGHT_WHITE, BLACK);
-			PrintLeftCursor(_Y, CENTER_X - 6);
-			PrintRightCursor(_Y, CENTER_X + 32);
-		}
-		else if (_COMMAND == 27) { //ESC
-			_PlaySound(4);
-			ShowLoadingPage();
-			ShowMenu();
-			if (_EXIT) return;
-			_PlaySound(4);
-		}
-		else if (_COMMAND == 13) { //Enter
-			ShowLoadingPage();
-			for (int i = 0;i < MATCH_LIST_SIZE;i++) {
-				if (_Y == _MATCH_LIST[i].y) {
-					NEW_GAME = 0;
-					LoadGame(_MATCH_LIST[i].item);
-					ShowGame();
-					if (_EXIT) return;
+			_COMMAND = toupper(_getch());
+			if (_COMMAND == 'W') {
+				MoveUp();
+				_PlaySound(3);
+				//Xóa con trỏ ở vị trí cũ 
+				SetColor(BRIGHT_WHITE, BRIGHT_WHITE);
+				PrintLeftCursor(_Y + 5, CENTER_X - 6);
+				PrintRightCursor(_Y + 5, CENTER_X + 32);
+				//Di chuyển con trỏ 
+				SetColor(BRIGHT_WHITE, BLACK);
+				PrintLeftCursor(_Y, CENTER_X - 6);
+				PrintRightCursor(_Y, CENTER_X + 32);
+			}
+			else if (_COMMAND == 'S') {
+				MoveDown();
+				_PlaySound(3);
+				//Xóa con trỏ ở vị trí cũ 
+				SetColor(BRIGHT_WHITE, BRIGHT_WHITE);
+				PrintLeftCursor(_Y - 5, CENTER_X - 6);
+				PrintRightCursor(_Y - 5, CENTER_X + 32);
+				//Di chuyển con trỏ 
+				SetColor(BRIGHT_WHITE, BLACK);
+				PrintLeftCursor(_Y, CENTER_X - 6);
+				PrintRightCursor(_Y, CENTER_X + 32);
+			}
+			else if (_COMMAND == 27) { //ESC
+				_PlaySound(4);
+				ShowLoadingPage();
+				ShowMenu();
+				if (_EXIT) return;
+				_PlaySound(4);
+			}
+			else if (_COMMAND == 13) { //Enter
+				ShowLoadingPage();
+				for (int i = 0; i < MATCH_LIST_SIZE; i++) {
+					if (_Y == _MATCH_LIST[i].y) {
+						NEW_GAME = 0;
+						LoadGame(_MATCH_LIST[i].item);
+						_file_name = _MATCH_LIST[i].item;
+						isLoad = 1;
+						ShowGame();
+						if (_EXIT) return;
+					}
 				}
 			}
-		}
-		else if (_COMMAND == 0x7F) {
-			ShowLoadingPage();
-			for (int i = 0;i < MATCH_LIST_SIZE;i++) {
-				if (_Y == _MATCH_LIST[i].y) {
-					RemoveMatchFile(_MATCH_LIST[i].item);
+			else if (_COMMAND == 'D') {
+				for (int i = 0; i < MATCH_LIST_SIZE; i++) {
+					if (_Y == _MATCH_LIST[i].y) {
+						RemoveMatchFile(_MATCH_LIST[i].item,i);
+						DrawMatchList();
+						if (MATCH_LIST_SIZE == 0)FileNotFound();
+						break;
+					}
 				}
 			}
 		}
@@ -361,7 +383,13 @@ void ShowAsk(WORD wVirtualKeyCode) {
 		DrawPopUp(wVirtualKeyCode);
 		switch (wVirtualKeyCode) {
 		case 0x4C: //L
-			SaveGame();
+			if (isLoad == 1) {
+				for (int i = 0; i < 4; i++)
+					_file_name.pop_back();
+				SaveMatchInfo(_file_name);
+				isLoad = 0;
+			}
+			else SaveGame();
 			Sleep(800);
 			ExitGame();
 			break;

@@ -3,25 +3,7 @@
 #include "view.h"
 #include "page.h"
 
-//In hình ảnh, icon
-void PrintHeart(int top, int left) {
-	unsigned char logo[] = {//32,32,32,219,32,219,32,32,32
-		32,32,219,219,219,32,32,32,219,219,219,32,32
-		,32,219,219,219,219,219,32,219,219,219,219,219,32
-		,219,219,219,219,219,219,219,219,219,219,219,219,219
-		,219,219,219,219,219,219,219,219,219,219,219,219,219
-		,32,219,219,219,219,219,219,219,219,219,219,219,32
-		,32,32,219,219,219,219,219,219,219,219,219,32,32
-		,32,32,32,32,219,219,219,219,219,32,32,32,32 };
-	int num_lines = 7, num_chars = 13;
-	for (int i = 0; i < num_lines; i++)
-	{
-		GotoXY(left, i + top);
-		for (int j = 0; j < num_chars; j++)
-			putchar(logo[i * num_chars + j]);
-	}
 
-}
 void PrintRectangle2lines(int top, int left, int width, int height)
 {
 	GotoXY(left, top);
@@ -510,6 +492,34 @@ void Animal(int top, int left,int animal) {
 	int currentMode = _setmode(_fileno(stdout), OldMode);
 }
 
+void ByeBye() {
+	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
+	wstring logo[7] = {
+L" ▄▄▄▄▄▄▄ ▄▄   ▄▄ ▄▄▄▄▄▄ ▄▄    ▄ ▄▄▄   ▄    ▄▄   ▄▄ ▄▄▄▄▄▄▄ ▄▄   ▄▄ ",
+L"█       █  █ █  █      █  █  █ █   █ █ █  █  █ █  █       █  █ █  █",
+L"█▄     ▄█  █▄█  █  ▄   █   █▄█ █   █▄█ █  █  █▄█  █   ▄   █  █ █  █",
+L"  █   █ █       █ █▄█  █       █      ▄█  █       █  █ █  █  █▄█  █",
+L"  █   █ █   ▄   █      █  ▄    █     █▄   █▄     ▄█  █▄█  █       █",
+L"  █   █ █  █ █  █  ▄   █ █ █   █    ▄  █    █   █ █       █       █",
+L"  █▄▄▄█ █▄▄█ █▄▄█▄█ █▄▄█▄█  █▄▄█▄▄▄█ █▄█    █▄▄▄█ █▄▄▄▄▄▄▄█▄▄▄▄▄▄▄█", };
+	for (int i = 0; i < 7; i++) {
+		GotoXY(80,i + 25);
+		wcout << logo[i];
+	}
+	int currentMode = _setmode(_fileno(stdout), OldMode);
+	SetColor(BRIGHT_WHITE, AQUA);
+	PrintCloud(60, 5, 3);
+	PrintCloud(160, 43, 3);
+	SetColor(BRIGHT_WHITE, BLACK);
+	PrintHelicopter(40, 10);
+	PrintHelicopter(190, 40);
+	Sleep(2000);
+	//Close console
+	HWND hmnd = GetConsoleWindow();
+	SendMessage(hmnd, WM_CLOSE, 0, 0);
+}
+
+
 //In tiêu đề các lựa chọn ở trang Menu
 void PrintNEW() 
 {
@@ -658,6 +668,7 @@ void PrintLoadingLogo(int top, int left) {
 	}
 	int currentMode = _setmode(_fileno(stdout), OldMode);
 }
+
 void PrintHelpLogo(int top, int left) {
 	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
 	wstring logo[6] = {
@@ -673,6 +684,7 @@ void PrintHelpLogo(int top, int left) {
 	}
 	int currentMode = _setmode(_fileno(stdout), OldMode);
 }
+
 
 //Hiệu ứng
 void ClearPreviousHightlight(int& a) {
@@ -983,6 +995,7 @@ void DrawExistedData() {
 }
 void DrawMatchList() {
 	FixConsoleWindows();
+	system("cls");
 	system("color F1");
 	//Vẽ nút Tr? v?
 	SetColor(BRIGHT_WHITE, YELLOW);
@@ -991,7 +1004,7 @@ void DrawMatchList() {
 
 	SetColor(BRIGHT_WHITE, BLACK);
 	//Vẽ chữ LOAD GAME
-	int logo_x = CENTER_X - 15, logo_y = 10;
+	int logo_x = CENTER_X - 25, logo_y = 10;
 	int old_mode= _setmode(_fileno(stdout), _O_WTEXT);
 	wstring loadgame[6] = {
 		L"██╗      █████╗  █████╗ ██████╗    ██████╗  █████╗ ███╗   ███╗███████╗",
@@ -1007,22 +1020,22 @@ void DrawMatchList() {
 	int current_mode= _setmode(_fileno(stdout), old_mode);
 
 	//Vẽ các phần tử của danh sách
-	for (int i = 0; i < MATCH_LIST_SIZE; i++) {
-		if (_MATCH_LIST[i].item == "\0")continue;
-		PrintRectangle(CENTER_Y - 1 + i * 4, CENTER_X, 30, 4 );
-		GotoXY(CENTER_X + 10, CENTER_Y - 1 + i * 4 + 2);
-		SetColor(BRIGHT_WHITE, BLACK);
-		cout << _MATCH_LIST[i].item; 
-		SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	if (MATCH_LIST_SIZE != 0) {
+		for (int i = 0; i < MATCH_LIST_SIZE; i++) {
+			PrintRectangle(CENTER_Y - 1 + i * 4, CENTER_X, 30, 4);
+			GotoXY(CENTER_X + 10, CENTER_Y - 1 + i * 4 + 2);
+			SetColor(BRIGHT_WHITE, BLACK);
+			cout << _MATCH_LIST[i].item;
+			SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+		}
 	}
-
-	//Vẽ mây
-	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
-	PrintCloud(40, 4, 3); //ở bên trên chữ caro tí
-	PrintCloud(150, 16, 3); //ở ngay dưới chữ "O"
-	PrintCloud(WIDTH - 17, HEIGHT-7, 2); // Góc phải
-	PrintCloud(2, HEIGHT - 17, 1); // bên trái
-	GotoXY(CENTER_X, CENTER_Y);
+		//Vẽ mây
+		SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+		PrintCloud(40, 4, 3); //ở bên trên chữ caro tí
+		PrintCloud(150, 16, 3); //ở ngay dưới chữ "O"
+		PrintCloud(WIDTH - 17, HEIGHT - 7, 2); // Góc phải
+		PrintCloud(2, HEIGHT - 17, 1); // bên trái
+		GotoXY(CENTER_X, CENTER_Y);
 }
 void DrawPopUp(WORD wVirtualKeyCode) {
 	SetColor(BRIGHT_WHITE, LIGHT_AQUA);

@@ -8,22 +8,7 @@
 void SaveGame() {
 	SetColor(BRIGHT_WHITE, BLACK);
 	string matchName;
-	char c;
-	do{ //Nhập tên file
-		c = _getch();
-		if (48 <= c && c <= 57 || 65 <= c && c <= 90 || 97 <= c && c <= 122 || c == '_' || c == '-') {
-			matchName += c;
-			cout << c;
-		}
-		else if (c == 8) {
-			if (matchName.length() > 0) {
-				matchName.erase(matchName.end() - 1);
-				cout << c << ' ' << c;
-			}
-		}
-		else if (c == 27)
-			ShowGame();
-	} while(c!=13);
+	Input_Data(matchName, 10, CENTER_X + 2, CENTER_Y + 2,InputFileName);
 
 	_MATCH_LIST_FILE.open("game_files.txt", ios::app);
 	if (!_MATCH_LIST_FILE) {
@@ -39,22 +24,7 @@ void SaveGame() {
 		for (int i = 0;i < 10;++i)
 			cout << " ";
 		GotoXY(CENTER_X + 2, CENTER_Y + 2);
-		do { //Nhập tên file
-			c = _getch();
-			if (48 <= c && c <= 57 || 65 <= c && c <= 90 || 97 <= c && c <= 122 || c == '_' || c == '-') {
-				matchName += c;
-				cout << c;
-			}
-			else if (c == 8) {
-				if (matchName.length() > 0) {
-					matchName.erase(matchName.end() - 1);
-					cout << c << ' ' << c;
-				}
-			}
-			else if (c == 27)
-				ShowGame();
-		
-		} while (c != 13||CheckExistedFile(matchName)==1);
+		Input_Data(matchName, 10, CENTER_X + 2, CENTER_Y + 2);
 	}
 	GetMatchListSize();
 	if(MATCH_LIST_SIZE==0)_MATCH_LIST_FILE<< matchName + ".txt";
@@ -65,6 +35,7 @@ void SaveGame() {
 	SaveMatchInfo(matchName);
 	_MATCH_LIST_FILE.close();
 }
+
 void SaveMatchInfo(string matchName) {
 	matchName += ".txt";
 	ofstream matchFile(matchName);
@@ -155,6 +126,73 @@ void GetMatchListSize() {
 	}
 	file.close();
 }
+
+void RemoveMatchFile(string& matchName,int& pos) {
+	//Xoa ten file trong file luu ten cac file
+	ifstream input("game_files.txt");
+	if (!input) return;
+	ofstream output("new_game_files.txt");
+	string line;
+	int i = 0;
+	while (getline(input, line)) {
+		if (line != matchName) {
+			if (i == 0)output << line;
+			else output << endl << line;
+			i++;
+		}
+	}
+	input.close();
+	output.close();
+	remove("game_files.txt");
+	bool file = rename("new_game_files.txt", "game_files.txt");
+	remove(matchName.c_str());//Xóa file lưu dữ liệu
+
+	//xoa file trong mang cau truc & cap nhat lai toa do
+	for (int j = pos; j < MATCH_LIST_SIZE - 1; j++) {
+		_MATCH_LIST[j + 1].x = _MATCH_LIST[j].x;
+		_MATCH_LIST[j + 1].y = _MATCH_LIST[j].y;
+		_MATCH_LIST[j] = _MATCH_LIST[j + 1];
+	}
+	MATCH_LIST_SIZE--;
+	
+}
+
+bool InputFileName(char& c) {
+	if (48 <= c && c <= 57 || 65 <= c && c <= 90 || 97 <= c && c <= 122 || c == '_' || c == '-')
+		return 1;
+	return 0;
+}
+bool _True(char& c) {
+	return 1;
+}
+
+void Input_Data(string& s, const int& max, const int& x, const int& y,bool (*condition)(char&)) {
+	s.clear();
+	int x_tmp = x;
+	GotoXY(x, y);
+	int i = 0;
+	char c = '\0';
+	while (1) {
+		c = (char)_getch();
+		if (c == 0x0D) break;
+		if (c == 8) {
+			s.clear();
+			i = 0;
+			x_tmp = x;
+			GotoXY(x, y);
+			for (int j = 0; j < max; j++) cout << " ";
+			GotoXY(x, y);
+			continue;
+		}
+		if (i == max) continue;
+		if (condition(c)) {
+			s.push_back(c);
+			cout << s[i++];
+			GotoXY(++x_tmp, y);
+		}
+	}
+}
+
 void LoadGame(string matchName) {
 	int i = 0, j = 0, m = 0, value = 0;
 	int numbers[BOARD_SIZE * BOARD_SIZE + 4];
@@ -348,6 +386,7 @@ int TestBoard() {
 		return 0;
 	return 2;
 }
+
 int CheckWin(_POINT a[], int& n, _POINT& led1, _POINT& led2) {
 	if ((n == 5 && (led1.c == 0 || led2.c == 0))||n>5) {
 		_PlaySound(6);
@@ -571,7 +610,7 @@ void HLChoice(int& x, int& y, int width) {
 }
 
 //Các chức năng khác
-_POINT XYinMatrix(int& x, int& y,int& row,int& col) {
+_POINT XYinMatrix(const int& x,const int& y,int& row,int& col) {
 //Dựa vào vị trí con trỏ tìm phần tử được gán lượt đánh trong ma trận
 	for (int i = 0; i < BOARD_SIZE; i++) {
 		for (int j = 0; j < BOARD_SIZE; j++)
@@ -587,18 +626,7 @@ void ExitGame() {
 	_PlaySound(4);
 	ShowMenu();
 }
-void RemoveMatchFile(string matchName) {
-	int n = matchName.length();
-	char* c = new char[n + 1];
-	for (int i = 0;i < n;i++) {
-		c[i] = matchName[i];
-	}
-	c[n] = '\0';
-	remove(c);
-}
-void GabageCollect() {
-	return;
-}
+
 void _PlaySound(int i)
 {
 	vector<const wchar_t*> soundFile{ L"moveO.wav", L"moveX.wav",
@@ -642,7 +670,7 @@ void PVC(TURN_BOT tb[]) {
 		_Y = turn_b.y;
 	}
 	_TURN = false;
-	Sleep(200);
+	Sleep(400);
 	SetColor(BRIGHT_WHITE, GREEN);
 	GotoXY(_X, _Y);
 	_PlaySound(1);

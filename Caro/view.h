@@ -4,7 +4,6 @@
 #include "header.h"
 
 //In hình ảnh, icon
-void PrintHeart(int top, int left);
 void PrintRectangle2lines(int top, int left, int width, int height);
 void PrintRectangle(int top, int left, int width, int height);
 void PrintTree(int left, int top);
@@ -19,6 +18,7 @@ void PrintO(int top, int left, int size);
 void DrawScore(int score, int top, int left);
 void RemoveScore(int top, int left);
 void Animal(int top, int left, int animal);
+void ByeBye();
 
 //In tiêu đề các lựa chọn ở trang Menu
 void PrintNEW();

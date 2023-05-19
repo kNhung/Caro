@@ -1,4 +1,5 @@
 ﻿#pragma once
+#define _CRT_SECURE_NO_WARNINGS
 #ifndef _MY_HEADER
 #define _MY_HEADER
 #include <iostream>
@@ -56,6 +57,8 @@ struct TURN_BOT {
 	_POINT led[2];
 };
 
+extern bool isLoad;
+extern string _file_name;
 extern string PLAYER1, PLAYER2;
 extern int SCORE_X, SCORE_O;
 extern _POINT _A[BOARD_SIZE][BOARD_SIZE];
