@@ -129,13 +129,19 @@ void InputName(){
 	GotoXY(CENTER_X - 2, CENTER_Y);
 	SetColor(BRIGHT_WHITE, RED);
 	cout << "(X) PLAYER 1 's name : ";
-	Input_Data(PLAYER1, 20, CENTER_X + 22, CENTER_Y);
+	while (1) {
+		Input_Data(PLAYER1, 20, CENTER_X + 22, CENTER_Y);
+		if (PLAYER1 != "")break;
+	}
 	Animal(CENTER_Y + 6, CENTER_X, 2);
 	GotoXY(CENTER_X - 2, CENTER_Y + 11);
 	SetColor(BRIGHT_WHITE, GREEN);
 	cout << "(O) PLAYER 2 's name : ";
 	if (_MODEPLAY == _MENU[0].c)
-		Input_Data(PLAYER2, 20, CENTER_X +22, CENTER_Y + 11);
+		while (1) {
+			Input_Data(PLAYER2, 20, CENTER_X + 22, CENTER_Y + 11);
+			if (PLAYER2 != "")break;
+		}
 	else {
 		cout << "BOT CARO !!!";
 		PLAYER2 = "BOT CARO";
@@ -368,6 +374,7 @@ void ShowFileGame() {
 						RemoveMatchFile(_MATCH_LIST[i].item,i);
 						DrawMatchList();
 						if (MATCH_LIST_SIZE == 0)FileNotFound();
+						if (i != 0) _Y -= 4;
 						break;
 					}
 				}

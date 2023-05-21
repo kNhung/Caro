@@ -8,8 +8,10 @@
 void SaveGame() {
 	SetColor(BRIGHT_WHITE, BLACK);
 	string matchName;
-	Input_Data(matchName, 10, CENTER_X + 2, CENTER_Y + 2,InputFileName);
-
+	while (1) {
+		Input_Data(matchName, 10, CENTER_X + 2, CENTER_Y + 2, InputFileName);
+		if (matchName != "")break;
+	}
 	_MATCH_LIST_FILE.open("game_files.txt", ios::app);
 	if (!_MATCH_LIST_FILE) {
 		GotoXY(CENTER_X + 2, CENTER_Y + 3);
@@ -24,15 +26,19 @@ void SaveGame() {
 		for (int i = 0;i < 10;++i)
 			cout << " ";
 		GotoXY(CENTER_X + 2, CENTER_Y + 2);
-		Input_Data(matchName, 10, CENTER_X + 2, CENTER_Y + 2);
+		while (1) {
+			Input_Data(matchName, 10, CENTER_X + 2, CENTER_Y + 2, InputFileName);
+			if (matchName != "")break;
+		}
 	}
-	GetMatchListSize();
 	if(MATCH_LIST_SIZE==0)_MATCH_LIST_FILE<< matchName + ".txt";
 	else {
 		_MATCH_LIST_FILE.seekg(0, ios::end);
 		_MATCH_LIST_FILE << endl << matchName + ".txt";
 	}
 	SaveMatchInfo(matchName);
+	_MATCH_LIST_FILE.close();
+	GetMatchListSize();
 	_MATCH_LIST_FILE.close();
 }
 
@@ -148,11 +154,10 @@ void RemoveMatchFile(string& matchName,int& pos) {
 	remove(matchName.c_str());//Xóa file lưu dữ liệu
 
 	//xoa file trong mang cau truc & cap nhat lai toa do
-	for (int j = pos; j < MATCH_LIST_SIZE - 1; j++) {
-		_MATCH_LIST[j + 1].x = _MATCH_LIST[j].x;
-		_MATCH_LIST[j + 1].y = _MATCH_LIST[j].y;
-		_MATCH_LIST[j] = _MATCH_LIST[j + 1];
+	for (int j =pos+1; j < MATCH_LIST_SIZE; j++) {
+		_MATCH_LIST[j].y -= 4;
 	}
+	_MATCH_LIST.erase(_MATCH_LIST.begin() + pos);
 	MATCH_LIST_SIZE--;
 	
 }
