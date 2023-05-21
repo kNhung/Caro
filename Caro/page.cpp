@@ -390,6 +390,10 @@ void ShowFileGame() {
 				}
 			}
 			else if (_COMMAND == 'F') {
+				//Xóa con trỏ ở vị trí cũ 
+				SetColor(BRIGHT_WHITE, BRIGHT_WHITE);
+				PrintLeftCursor(_Y, CENTER_X - 6);
+				PrintRightCursor(_Y, CENTER_X + 32);
 				SearchFile();
 			}
 		}

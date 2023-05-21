@@ -763,18 +763,22 @@ void SearchFile() {
 				cout << _MATCH_LIST[i].item;
 				SetColor(BRIGHT_WHITE, LIGHT_AQUA);
 			}
-			SetColor(BRIGHT_WHITE, BLACK);
-			PrintLeftCursor(_MATCH_LIST[0].y, CENTER_X - 6);
-			PrintRightCursor(_MATCH_LIST[0].y, CENTER_X + 32);
 		}
 		else if(c==27) ShowFileGame();
-		for (int i = 0; i < SUB_ML_SIZE; i++) {
-			if (_SUB_ML[i].item == "\0")continue;
-			PrintRectangle(CENTER_Y - 1 + i * 4, CENTER_X, 30, 4);
-			GotoXY(CENTER_X + 10, CENTER_Y - 1 + i * 4 + 2);
+		if (SUB_ML_SIZE) {
+			for (int i = 0; i < SUB_ML_SIZE; i++) {
+				if (_SUB_ML[i].item == "\0")continue;
+				PrintRectangle(CENTER_Y - 1 + i * 4, CENTER_X, 30, 4);
+				GotoXY(CENTER_X + 10, CENTER_Y - 1 + i * 4 + 2);
+				SetColor(BRIGHT_WHITE, BLACK);
+				cout << _SUB_ML[i].item;
+				SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+			}
+			_Y = _SUB_ML[0].y;
+			//Di chuyển con trỏ 
 			SetColor(BRIGHT_WHITE, BLACK);
-			cout << _SUB_ML[i].item;
-			SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+			PrintLeftCursor(_Y, CENTER_X - 6);
+			PrintRightCursor(_Y, CENTER_X + 32);
 		}
 		GotoXY(CENTER_X + 8 + subName.length(), CENTER_Y - 5);
 		SetColor(BRIGHT_WHITE, BLACK);
