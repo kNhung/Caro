@@ -181,7 +181,7 @@ void ShowGame() {
 					ShowHelp();
 					if (_EXIT) return;
 					break; }
-				case (VK_RETURN): {
+				case (VK_RETURN): case(0x20): {
 					_PlaySound(1);
 					switch (CheckBoard(_X, _Y)) {
 					case -1: {

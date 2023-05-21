@@ -1001,6 +1001,13 @@ void DrawMatchList() {
 	SetColor(BRIGHT_WHITE, YELLOW);
 	GotoXY(20, CENTER_Y + 20);
 	cout << "Press ESC to back to menu !!!";
+	//Vẽ hướng dẫn tìm file
+	GotoXY(CENTER_X + 45, CENTER_Y + 2);
+	cout << "Press 'F' to search files";
+	GotoXY(CENTER_X + 45, CENTER_Y + 3);
+	cout << "Press Enter to move between files";
+	GotoXY(CENTER_X + 45, CENTER_Y + 4);
+	cout << "Press 'D' to delete files";
 
 	SetColor(BRIGHT_WHITE, BLACK);
 	//Vẽ chữ LOAD GAME
@@ -1179,14 +1186,22 @@ void DrawHelp() {
 	cout << " --- --- --- ";
 
 	//Phím Enter
-	GotoXY(move_x, move_y + 13 );
+	GotoXY(move_x+5, move_y + 13 );
 	cout << " ------------ ";
-	GotoXY(move_x, move_y + 14);
-	cout << "|          " << char(191) << " |    Press Enter to";
-	GotoXY(move_x, move_y + 15);
-	cout << "| ENTER <" << char(196) << char(196) << char(217) << " |    place your mark";
-	GotoXY(move_x, move_y + 16);
+	GotoXY(move_x+5, move_y + 14);
+	cout << "|          " << char(191) << " |";
+	GotoXY(move_x+5, move_y + 15);
+	cout << "| ENTER <" << char(196) << char(196) << char(217) << " |";
+	GotoXY(move_x+5, move_y + 16);
 	cout << " ------------ ";
+	GotoXY(move_x+30, move_y + 14);
+	cout << " ------------ ";
+	GotoXY(move_x+30, move_y + 15);
+	cout << "|    Space    |";
+	GotoXY(move_x+30, move_y + 16);
+	cout << " ------------ ";
+	GotoXY(move_x, move_y + 17);cout<<" Press Enter or Space to place your mark";
+	
 
 	//Luật
 	SetColor(BRIGHT_WHITE, BLACK);
