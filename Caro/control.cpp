@@ -22,6 +22,10 @@ void MoveDown() {
 		_Y += 4;
 		GotoXY(_X, _Y);
 	}
+	if (MODE == 4 && _Y < _SUB_ML[SUB_ML_SIZE - 1].y) {
+		_Y += 4;
+		GotoXY(_X, _Y);
+	}
 	if (MODE == 3 && _Y < _MATCH_LIST[MATCH_LIST_SIZE - 1].y) {
 		_Y += 4;
 		GotoXY(_X, _Y);
@@ -30,6 +34,10 @@ void MoveDown() {
 void MoveUp() {
 	if ((MODE == 2 && _Y > _A[0][0].y)
 		|| (MODE == 1 && _Y > _MENU[0].y)) {
+		_Y -= 4;
+		GotoXY(_X, _Y);
+	}
+	if (MODE == 4 && _Y > _SUB_ML[0].y) {
 		_Y -= 4;
 		GotoXY(_X, _Y);
 	}

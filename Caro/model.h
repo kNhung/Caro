@@ -44,6 +44,7 @@ bool _True(char& c);
 void Input_Data(string& s, const int& max, const int& x, const int& y, bool (*condition)(char&)=_True);
 void _PlaySound(int i);
 void PVC(TURN_BOT tb[]);//Đấu với máy
-
+void SearchFile(); //Tìm file
+bool CheckSubStr(string sub, string src); //Kiểm tra chuỗi con
 #endif
 

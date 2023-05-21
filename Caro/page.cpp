@@ -357,14 +357,24 @@ void ShowFileGame() {
 			}
 			else if (_COMMAND == 13) { //Enter
 				ShowLoadingPage();
-				for (int i = 0; i < MATCH_LIST_SIZE; i++) {
-					if (_Y == _MATCH_LIST[i].y) {
-						NEW_GAME = 0;
-						LoadGame(_MATCH_LIST[i].item);
-						_file_name = _MATCH_LIST[i].item;
-						isLoad = 1;
-						ShowGame();
-						if (_EXIT) return;
+				if (SUB_ML_SIZE > 0) {
+					for (int i = 0;i < SUB_ML_SIZE;i++) {
+						if (_Y == _SUB_ML[i].y) {
+							NEW_GAME = 0;
+							LoadGame(_SUB_ML[i].item);
+							ShowGame();
+							if (_EXIT) return;
+						}
+					}
+				}
+				else {
+					for (int i = 0;i < MATCH_LIST_SIZE;i++) {
+						if (_Y == _MATCH_LIST[i].y) {
+							NEW_GAME = 0;
+							LoadGame(_MATCH_LIST[i].item);
+							ShowGame();
+							if (_EXIT) return;
+						}
 					}
 				}
 			}
@@ -378,6 +388,9 @@ void ShowFileGame() {
 						break;
 					}
 				}
+			}
+			else if (_COMMAND == 'F') {
+				SearchFile();
 			}
 		}
 	}

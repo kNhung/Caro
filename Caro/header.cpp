@@ -23,5 +23,7 @@ bool NEW_GAME;
 fstream _MATCH_LIST_FILE;
 int MATCH_LIST_SIZE = 0;
 vector<_LIST> _MATCH_LIST;
+int SUB_ML_SIZE;
+vector<_LIST> _SUB_ML;
 int SOUND;
 bool _EXIT;

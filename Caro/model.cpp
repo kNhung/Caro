@@ -702,6 +702,97 @@ void PVC(TURN_BOT tb[]) {
 	PrintO(TOP + ((BOARD_SIZE * 2) / 2) + 6, LEFT + BOARD_SIZE * 4 + 12, 2);
 	GotoXY(_LAST_POINT.x, _LAST_POINT.y);
 	_LAST_POINT.c = 0;
-
 }
 
+void SearchFile() {
+	if (_EXIT) return;
+	MODE = 4;
+	string subName;
+	char c;
+	SetColor(BRIGHT_WHITE, BLACK);
+	PrintRectangle2lines(CENTER_Y - 7, CENTER_X, 30, 4);
+	GotoXY(CENTER_X + 8, CENTER_Y - 5);
+	for (int i = 0;i < 15;i++) cout << " ";
+	GotoXY(CENTER_X + 1, CENTER_Y - 5);
+	cout << " Find: ";
+	do { //Nhập tên file
+		c = _getch();
+		if (c == 13) {
+			if (subName == "") MODE = 3;
+			return;
+		}
+		if (48 <= c && c <= 57 || 65 <= c && c <= 90 || 97 <= c && c <= 122 || c == '_' || c == '-') {
+			subName += c;
+			cout << c;
+		}
+		else if (c == 8) {
+			if (subName.length() > 0) {
+				subName.erase(subName.end() - 1);
+				cout << c << ' ' << c;
+			}
+		}
+		SUB_ML_SIZE = 0;
+		if (SUB_ML_SIZE == 0) {
+			while (_SUB_ML.size())
+				_SUB_ML.pop_back();
+		}
+		if (subName != "") {
+			for (int i = 0;i < MATCH_LIST_SIZE;++i) {
+				if (CheckSubStr(subName, _MATCH_LIST[i].item)) {
+					_SUB_ML.push_back({ _MATCH_LIST[i].x,_MATCH_LIST[SUB_ML_SIZE].y,_MATCH_LIST[i].item });
+					++SUB_ML_SIZE;
+				}
+			}
+			SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+			for (int i = SUB_ML_SIZE;i < MATCH_LIST_SIZE;++i) {
+				GotoXY(CENTER_X, CENTER_Y - 1 + i * 4);
+				for (int j = 0;j < 5;++j) {
+					GotoXY(CENTER_X, CENTER_Y + i * 4 + j);
+					for (int k = 0;k < 31;++k) {
+						cout << " ";
+					}
+				}
+			}
+		}
+		else if (subName == "" && c == 8) {
+			for (int i = 0; i < MATCH_LIST_SIZE; i++) {
+				if (_MATCH_LIST[i].item == "\0")continue;
+				PrintRectangle(CENTER_Y - 1 + i * 4, CENTER_X, 30, 4);
+				GotoXY(CENTER_X + 10, CENTER_Y - 1 + i * 4 + 2);
+				SetColor(BRIGHT_WHITE, BLACK);
+				cout << _MATCH_LIST[i].item;
+				SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+			}
+			SetColor(BRIGHT_WHITE, BLACK);
+			PrintLeftCursor(_MATCH_LIST[0].y, CENTER_X - 6);
+			PrintRightCursor(_MATCH_LIST[0].y, CENTER_X + 32);
+		}
+		else if(c==27) ShowFileGame();
+		for (int i = 0; i < SUB_ML_SIZE; i++) {
+			if (_SUB_ML[i].item == "\0")continue;
+			PrintRectangle(CENTER_Y - 1 + i * 4, CENTER_X, 30, 4);
+			GotoXY(CENTER_X + 10, CENTER_Y - 1 + i * 4 + 2);
+			SetColor(BRIGHT_WHITE, BLACK);
+			cout << _SUB_ML[i].item;
+			SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+		}
+		GotoXY(CENTER_X + 8 + subName.length(), CENTER_Y - 5);
+		SetColor(BRIGHT_WHITE, BLACK);
+	} while (c != 13);
+}
+
+bool CheckSubStr(string sub, string src) {
+	int i = 0, j = 0;
+	while (i < src.length()) {
+		while (sub[j] == src[i]) {
+			++j;
+			++i;
+			if (j == sub.length())
+				return 1;
+		}
+		i -= j;
+		j = 0;
+		++i;
+	}
+	return 0;
+}

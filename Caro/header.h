@@ -68,11 +68,13 @@ extern int _MODEPLAY;//1:Đánh với người  3:Đánh với máy
 extern bool _TURN; //Lượt đánh 1:X  0:O
 extern int _COMMAND; //Phím mà người chơi nhấn
 extern int _X, _Y;
-extern int MODE; //1:menu 2:game 3:file game
+extern int MODE; //1:menu 2:game 3:file game 4:search file
 extern bool NEW_GAME; //1:reset data 2:mở game từ file
 extern fstream _MATCH_LIST_FILE;
 extern int MATCH_LIST_SIZE;
 extern vector<_LIST> _MATCH_LIST;
+extern int SUB_ML_SIZE;
+extern vector<_LIST> _SUB_ML;
 extern int SOUND; //0: no sound; 1: sound
 extern bool _EXIT;
 #endif

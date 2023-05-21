@@ -996,7 +996,7 @@ void DrawExistedData() {
 void DrawMatchList() {
 	FixConsoleWindows();
 	system("cls");
-	system("color F1");
+	system("color F0");
 	//Vẽ nút Tr? v?
 	SetColor(BRIGHT_WHITE, YELLOW);
 	GotoXY(20, CENTER_Y + 20);
