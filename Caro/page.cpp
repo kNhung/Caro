@@ -170,7 +170,7 @@ void ShowGame() {
 			if (keyevent.bKeyDown) {
 				KeyMove(&_X, &_Y, 4, 2, bien, keyevent);
 				switch (keyevent.wVirtualKeyCode) {
-				case (VK_ESCAPE): case (0x4C): {
+				case (VK_ESCAPE): case (0x4C): {//ecs: exit, L:Save game
 					_PlaySound(3);
 					ShowAsk(keyevent.wVirtualKeyCode);
 					if (_EXIT) return;
@@ -181,7 +181,7 @@ void ShowGame() {
 					ShowHelp();
 					if (_EXIT) return;
 					break; }
-				case (VK_RETURN): case(0x20): {
+				case (VK_RETURN): case(0x20): {//Enter or space: place mark
 					_PlaySound(1);
 					switch (CheckBoard(_X, _Y)) {
 					case -1: {
@@ -228,7 +228,7 @@ void ShowGame() {
 					}
 					break;
 				}
-				case (0x55): { //U - Undo
+				case (0x55): { //U: Undo
 					if (_MODEPLAY == _MENU[0].c) {
 						_PlaySound(4);
 						if (_LAST_POINT.c != 0) { //Xét trường hợp Undo 2 lần trên 1 ô

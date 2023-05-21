@@ -1185,7 +1185,7 @@ void DrawHelp() {
 	GotoXY(move_x, move_y + 11);
 	cout << " --- --- --- ";
 
-	//Phím Enter
+	//Phím Enter, Space
 	GotoXY(move_x+5, move_y + 13 );
 	cout << " ------------ ";
 	GotoXY(move_x+5, move_y + 14);
@@ -1200,7 +1200,7 @@ void DrawHelp() {
 	cout << "|    Space    |";
 	GotoXY(move_x+30, move_y + 16);
 	cout << " ------------ ";
-	GotoXY(move_x, move_y + 17);cout<<" Press Enter or Space to place your mark";
+	GotoXY(move_x+5, move_y + 17);cout<<" Press Enter or Space to place your mark";
 	
 
 	//Luật
