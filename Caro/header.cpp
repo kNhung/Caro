@@ -11,6 +11,7 @@ _POINT _MENU[MENU_SIZE] = {
 _POINT _LAST_POINT;
 
 bool isLoad = 0;
+bool isSearch = 0;
 string _file_name = "";
 string PLAYER1, PLAYER2;
 int SCORE_X, SCORE_O;

@@ -158,6 +158,8 @@ void InputName(){
 void ShowGame() {
 	if (_EXIT) return;
 	else {
+		if(isSearch==1)
+			isSearch = 0;
 		_PlaySound(4);
 		StartGame();
 		int row_console = 0, column_console = 0, row = 0, col = 0, flag = 0, res = 0;
@@ -357,7 +359,7 @@ void ShowFileGame() {
 			}
 			else if (_COMMAND == 13) { //Enter
 				ShowLoadingPage();
-				if (SUB_ML_SIZE > 0) {
+				if (isSearch==1) {
 					for (int i = 0;i < SUB_ML_SIZE;i++) {
 						if (_Y == _SUB_ML[i].y) {
 							NEW_GAME = 0;
@@ -391,6 +393,7 @@ void ShowFileGame() {
 			}
 			else if (_COMMAND == 'F') {
 				//Xóa con trỏ ở vị trí cũ 
+				isSearch = 1;
 				SetColor(BRIGHT_WHITE, BRIGHT_WHITE);
 				PrintLeftCursor(_Y, CENTER_X - 6);
 				PrintRightCursor(_Y, CENTER_X + 32);
