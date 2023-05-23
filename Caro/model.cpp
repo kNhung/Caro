@@ -704,20 +704,77 @@ void PVC(TURN_BOT tb[]) {
 	_LAST_POINT.c = 0;
 }
 
+//bool FindNotFound_1() {
+//	if (SUB_ML_SIZE == 0) {
+//		GotoXY(_X, _Y + 5);
+//		string tb= "File not found !!!";
+//		cout << tb;
+//		while (1) {
+//			if (_kbhit()) {
+//				char c = _getch();
+//				if (c == 13)
+//					break;
+//			}
+//		}
+//		GotoXY(_X, _Y + 5);
+//		for (int i = 0; i < tb.size(); i++) cout << " ";
+//		return 1;
+//	}
+//	return 0;
+//}
+
+void CoutListFile() {
+	for (int i = 0; i < MATCH_LIST_SIZE; i++) {
+		if (_MATCH_LIST[i].item == "\0")continue;
+		SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+		PrintRectangle(CENTER_Y - 1 + i * 4, CENTER_X, 30, 4);
+		GotoXY(CENTER_X + 10, CENTER_Y - 1 + i * 4 + 2);
+		SetColor(BRIGHT_WHITE, BLACK);
+		cout << _MATCH_LIST[i].item;
+		SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	}
+}
+
+void ClearListFile(int starPoint) {
+	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
+	for (int i = starPoint; i < MATCH_LIST_SIZE; ++i) {
+		GotoXY(CENTER_X, CENTER_Y - 1 + i * 4);
+		for (int j = 0; j < 5; ++j) {
+			GotoXY(CENTER_X, CENTER_Y + i * 4 + j);
+			for (int k = 0; k < 31; ++k) {
+				cout << " ";
+			}
+		}
+	}
+}
+
 void SearchFile() {
 	if (_EXIT) return;
 	MODE = 4;
-	string subName;
-	char c;
+	string subName = "";
+	char c = '\0';
+	SUB_ML_SIZE = 0;
 	SetColor(BRIGHT_WHITE, BLACK);
 	PrintRectangle2lines(CENTER_Y - 7, CENTER_X, 30, 4);
+
+	ClearListFile(SUB_ML_SIZE);
+	CoutListFile();
+
+	SetColor(BRIGHT_WHITE, BLACK);
 	GotoXY(CENTER_X + 8, CENTER_Y - 5);
-	for (int i = 0;i < 15;i++) cout << " ";
+	for (int i = 0; i < 15; i++) cout << " ";
 	GotoXY(CENTER_X + 1, CENTER_Y - 5);
 	cout << " Find: ";
 	do { //Nhập tên file
 		c = _getch();
 		if (c == 13) {
+			if (SUB_ML_SIZE == 0) continue;
+			else {
+				//Di chuyển con trỏ 
+				SetColor(BRIGHT_WHITE, BLACK);
+				PrintLeftCursor(_Y, CENTER_X - 6);
+				PrintRightCursor(_Y, CENTER_X + 32);
+			}
 			if (subName == "") MODE = 3;
 			return;
 		}
@@ -725,46 +782,35 @@ void SearchFile() {
 			subName += c;
 			cout << c;
 		}
-		else if (c == 8) {
+		if (c == 8) {
 			if (subName.length() > 0) {
 				subName.erase(subName.end() - 1);
 				cout << c << ' ' << c;
 			}
 		}
 		SUB_ML_SIZE = 0;
-		if (SUB_ML_SIZE == 0) {
-			while (_SUB_ML.size())
-				_SUB_ML.pop_back();
-		}
+		_SUB_ML.clear();
 		if (subName != "") {
-			for (int i = 0;i < MATCH_LIST_SIZE;++i) {
+			GotoXY(CENTER_X + 8, CENTER_Y);
+			cout << "                  ";
+			for (int i = 0; i < MATCH_LIST_SIZE; ++i) {
 				if (CheckSubStr(subName, _MATCH_LIST[i].item)) {
 					_SUB_ML.push_back({ _MATCH_LIST[i].x,_MATCH_LIST[SUB_ML_SIZE].y,_MATCH_LIST[i].item });
 					++SUB_ML_SIZE;
 				}
 			}
-			SetColor(BRIGHT_WHITE, LIGHT_AQUA);
-			for (int i = SUB_ML_SIZE;i < MATCH_LIST_SIZE;++i) {
-				GotoXY(CENTER_X, CENTER_Y - 1 + i * 4);
-				for (int j = 0;j < 5;++j) {
-					GotoXY(CENTER_X, CENTER_Y + i * 4 + j);
-					for (int k = 0;k < 31;++k) {
-						cout << " ";
-					}
-				}
-			}
+			ClearListFile(SUB_ML_SIZE);
 		}
-		else if (subName == "" && c == 8) {
-			for (int i = 0; i < MATCH_LIST_SIZE; i++) {
-				if (_MATCH_LIST[i].item == "\0")continue;
-				PrintRectangle(CENTER_Y - 1 + i * 4, CENTER_X, 30, 4);
-				GotoXY(CENTER_X + 10, CENTER_Y - 1 + i * 4 + 2);
-				SetColor(BRIGHT_WHITE, BLACK);
-				cout << _MATCH_LIST[i].item;
-				SetColor(BRIGHT_WHITE, LIGHT_AQUA);
-			}
+		if (subName == "" && c == 8) {
+			GotoXY(CENTER_X + 8, CENTER_Y);
+			cout << "                  ";
+			CoutListFile();
 		}
-		else if(c==27) ShowFileGame();
+		if (c == 27) {
+			SUB_ML_SIZE = 0;
+			_SUB_ML.clear();
+			ShowFileGame();
+		}
 		if (SUB_ML_SIZE) {
 			for (int i = 0; i < SUB_ML_SIZE; i++) {
 				if (_SUB_ML[i].item == "\0")continue;
@@ -775,14 +821,16 @@ void SearchFile() {
 				SetColor(BRIGHT_WHITE, LIGHT_AQUA);
 			}
 			_Y = _SUB_ML[0].y;
-			//Di chuyển con trỏ 
-			SetColor(BRIGHT_WHITE, BLACK);
-			PrintLeftCursor(_Y, CENTER_X - 6);
-			PrintRightCursor(_Y, CENTER_X + 32);
+		}
+		else {
+			if (subName != "") {
+				GotoXY(CENTER_X + 8, CENTER_Y);
+				cout << "No files found !";
+			}
 		}
 		GotoXY(CENTER_X + 8 + subName.length(), CENTER_Y - 5);
 		SetColor(BRIGHT_WHITE, BLACK);
-	} while (c != 13);
+	} while (1);
 }
 
 bool CheckSubStr(string sub, string src) {

@@ -58,7 +58,6 @@ struct TURN_BOT {
 };
 
 extern bool isLoad;
-extern bool isSearch;
 extern string _file_name;
 extern string PLAYER1, PLAYER2;
 extern int SCORE_X, SCORE_O;

@@ -1,1 +1,3 @@
 lan33.txt
+lan1.txt
+lan2.txt
