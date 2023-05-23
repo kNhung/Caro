@@ -1003,11 +1003,13 @@ void DrawMatchList() {
 	cout << "Press ESC to back to menu !!!";
 	//Vẽ hướng dẫn tìm file
 	GotoXY(CENTER_X + 45, CENTER_Y + 2);
-	cout << "Press 'F' to search files";
+	cout << "- Press 'O' to delete files";
 	GotoXY(CENTER_X + 45, CENTER_Y + 3);
-	cout << "Press Enter to move between files";
+	cout << "- Press 'F' to search files: ";
 	GotoXY(CENTER_X + 45, CENTER_Y + 4);
-	cout << "Press 'D' to delete files";
+	cout << "Press 'Enter' to finish typing file's name";
+	GotoXY(CENTER_X + 45, CENTER_Y + 5);
+	cout << "and press 'esc' to turn off Search mode !!!";
 
 	SetColor(BRIGHT_WHITE, BLACK);
 	//Vẽ chữ LOAD GAME

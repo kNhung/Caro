@@ -26,9 +26,6 @@ void ShowPage(int page) {
 void ShowLoadingPage() {
 	_PlaySound(4);
 	system("cls");
-	DrawLoadingPage();
-	Sleep(700);
-	system("cls");
 }
 void ShowMenu() {
 	if (_EXIT) return;
@@ -379,7 +376,7 @@ void ShowFileGame() {
 					}
 				}
 			}
-			else if (_COMMAND == 'D') {
+			else if (_COMMAND == 'O') {
 				for (int i = 0; i < MATCH_LIST_SIZE; i++) {
 					if (_Y == _MATCH_LIST[i].y) {
 						RemoveMatchFile(_MATCH_LIST[i].item,i);
