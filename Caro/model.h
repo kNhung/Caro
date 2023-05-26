@@ -39,6 +39,7 @@ void HLChoice(int& x, int& y, int width);
 _POINT XYinMatrix(const int& x, const int& y, int& row, int& col);
 void ExitGame();
 void RemoveMatchFile(string& matchName,int& pos);
+void RemoveFile();
 bool InputFileName(char& c);
 bool _True(char& c);
 void Input_Data(string& s, const int& max, const int& x, const int& y, bool (*condition)(char&)=_True);

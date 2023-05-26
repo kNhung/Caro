@@ -26,6 +26,7 @@ void ShowPage(int page) {
 void ShowLoadingPage() {
 	_PlaySound(4);
 	system("cls");
+	system("color F1");
 }
 void ShowMenu() {
 	if (_EXIT) return;
@@ -377,15 +378,7 @@ void ShowFileGame() {
 				}
 			}
 			else if (_COMMAND == 'O') {
-				for (int i = 0; i < MATCH_LIST_SIZE; i++) {
-					if (_Y == _MATCH_LIST[i].y) {
-						RemoveMatchFile(_MATCH_LIST[i].item,i);
-						DrawMatchList();
-						if (MATCH_LIST_SIZE == 0)FileNotFound();
-						if (i != 0) _Y -= 4;
-						break;
-					}
-				}
+				ShowAsk(0x4F);
 			}
 			else if (_COMMAND == 'F') {
 				//Xóa con trỏ ở vị trí cũ 
@@ -404,7 +397,7 @@ void ShowAsk(WORD wVirtualKeyCode) {
 		NEW_GAME = 0;
 		DrawPopUp(wVirtualKeyCode);
 		switch (wVirtualKeyCode) {
-		case 0x4C: //L
+		case 0x4C: {//L
 			if (isLoad == 1) {
 				for (int i = 0; i < 4; i++)
 					_file_name.pop_back();
@@ -414,8 +407,8 @@ void ShowAsk(WORD wVirtualKeyCode) {
 			else SaveGame();
 			Sleep(800);
 			ExitGame();
-			break;
-		case VK_ESCAPE: //ESC
+			break; }
+		case VK_ESCAPE: { //ESC
 			_COMMAND = toupper(_getch());
 			if (_COMMAND == 'Y') {
 				_PlaySound(4);
@@ -425,6 +418,19 @@ void ShowAsk(WORD wVirtualKeyCode) {
 				_PlaySound(4);
 			ShowGame();
 			DrawExistedData();
+			break; }
+		case 0x4F:{
+			_COMMAND = toupper(_getch());
+			if (_COMMAND == 'Y') {
+				_PlaySound(4);
+				RemoveFile();
+			}
+			else if (_COMMAND == 'N') {
+				_PlaySound(4);
+				DrawMatchList();
+				if (MATCH_LIST_SIZE == 0)FileNotFound();
+			}
+			break; }
 		}
 	}
 }

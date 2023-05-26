@@ -10,6 +10,7 @@ void ShowMenu(); //Trang Menu
 void InputName();//Nhập tên người chơi
 void ShowGame(); //Trang chơi game
 void ShowAbout(); //Trang chứa thông tin nhóm
+void FileNotFound();//Không tìm thấy file
 void ShowFileGame(); //Trang mở file đã lưu
 void ShowAsk(WORD wVirtualKeyCode); //Hiện câu hỏi
 void ShowHelp(); //Trang hướng dẫn chơi

@@ -1003,13 +1003,24 @@ void DrawMatchList() {
 	cout << "Press ESC to back to menu !!!";
 	//Vẽ hướng dẫn tìm file
 	GotoXY(CENTER_X + 45, CENTER_Y + 2);
-	cout << "- Press 'O' to delete files";
-	GotoXY(CENTER_X + 45, CENTER_Y + 3);
-	cout << "- Press 'F' to search files: ";
+	cout << "- Press        to delete files";
 	GotoXY(CENTER_X + 45, CENTER_Y + 4);
-	cout << "Press 'Enter' to finish typing file's name";
-	GotoXY(CENTER_X + 45, CENTER_Y + 5);
-	cout << "and press 'esc' to turn off Search mode !!!";
+	cout << "- Press        to search files: ";
+	GotoXY(CENTER_X + 45, CENTER_Y + 6);
+	cout << "Press              to finish typing file's name";
+	GotoXY(CENTER_X + 45, CENTER_Y + 8);
+	cout << "and press          to turn off Search mode !!!";
+
+	SetColor(BLACK, BRIGHT_WHITE);
+	GotoXY(CENTER_X + 54, CENTER_Y + 2);
+	cout << "  O  ";
+	GotoXY(CENTER_X + 54, CENTER_Y + 4);
+	cout << "  F  ";
+	GotoXY(CENTER_X + 52, CENTER_Y + 6);
+	cout << "  Enter  ";
+	GotoXY(CENTER_X + 56, CENTER_Y + 8);
+	cout << "  esc  ";
+
 
 	SetColor(BRIGHT_WHITE, BLACK);
 	//Vẽ chữ LOAD GAME
@@ -1057,19 +1068,27 @@ void DrawPopUp(WORD wVirtualKeyCode) {
 	PrintRectangle2lines(CENTER_Y - 3, CENTER_X - 6, 30, 9);
 	SetColor(BRIGHT_WHITE, BLACK);
 	switch (wVirtualKeyCode) {
-	case 0x4C:
+	case 0x4C: {
 		GotoXY(CENTER_X, CENTER_Y + 1);
 		cout << " Enter match name";
 		GotoXY(CENTER_X - 4, CENTER_Y + 4);
 		cout << "Only (a-z), (0-9), '_', '-'";
 		GotoXY(CENTER_X + 2, CENTER_Y + 2);
-		break;
-	case VK_ESCAPE:
+		break; }
+	case VK_ESCAPE: {
 		GotoXY(CENTER_X, CENTER_Y + 1);
 		cout << "Are you sure to quit?";
 		GotoXY(CENTER_X + 2, CENTER_Y + 2);
 		cout << "  Yes(Y)   No(N)";
-		break;
+		break; }
+	case 0x4F: {
+		GotoXY(CENTER_X-1, CENTER_Y -1);
+		cout << "Are you sure you want ";
+		GotoXY(CENTER_X , CENTER_Y );
+		cout<<"to delete this file";
+		GotoXY(CENTER_X + 1, CENTER_Y + 3);
+		cout << "  Yes(Y)   No(N)";
+		break; }
 	}
 }
 void Draw_AskContinue() {

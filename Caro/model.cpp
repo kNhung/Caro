@@ -162,6 +162,18 @@ void RemoveMatchFile(string& matchName,int& pos) {
 	
 }
 
+void RemoveFile() {
+	for (int i = 0; i < MATCH_LIST_SIZE; i++) {
+		if (_Y == _MATCH_LIST[i].y) {
+			RemoveMatchFile(_MATCH_LIST[i].item, i);
+			DrawMatchList();
+			if (MATCH_LIST_SIZE == 0)FileNotFound();
+			if (i != 0) _Y -= 4;//đặt mũi tên đúng vị trí ds file
+			break;
+		}
+	}
+}
+
 bool InputFileName(char& c) {
 	if (48 <= c && c <= 57 || 65 <= c && c <= 90 || 97 <= c && c <= 122 || c == '_' || c == '-')
 		return 1;
