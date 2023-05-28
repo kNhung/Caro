@@ -23,7 +23,7 @@ void ShowPage(int page) {
 	case 4: {ShowAbout(); break; }
 	}
 }
-void ShowLoadingPage() {
+void ResetPage() {
 	_PlaySound(4);
 	system("cls");
 	system("color F1");
@@ -87,7 +87,7 @@ void ShowMenu() {
 		}
 		else if (_COMMAND == 13) {
 			_PlaySound(3);
-			ShowLoadingPage();
+			ResetPage();
 			for (int i = 0;i < MENU_SIZE;i++) {
 				if (_EXIT) return;
 				if (_Y == _MENU[i].y)
@@ -272,7 +272,7 @@ void ShowGame() {
 			validEnter = true;
 			if (flag == 2)break;
 		}
-		ShowLoadingPage();
+		ResetPage();
 		ShowMenu();
 		if (_EXIT) return;
 	}
@@ -285,7 +285,7 @@ void ShowAbout() {
 		_COMMAND = toupper(_getch()); //_getch() chu khong phai getch()
 		if (_COMMAND == 27) {
 			_PlaySound(4);
-			ShowLoadingPage();
+			ResetPage();
 			ShowMenu();
 			return;
 		}
@@ -302,7 +302,7 @@ void FileNotFound() {
 				break;
 		}
 	}
-	ShowLoadingPage();
+	ResetPage();
 	ShowMenu();
 	if (_EXIT)return;
 }
@@ -348,18 +348,20 @@ void ShowFileGame() {
 			}
 			else if (_COMMAND == 27) { //ESC
 				_PlaySound(4);
-				ShowLoadingPage();
+				ResetPage();
 				ShowMenu();
 				if (_EXIT) return;
 				_PlaySound(4);
 			}
 			else if (_COMMAND == 13) { //Enter
-				ShowLoadingPage();
+				ResetPage();
 				if (SUB_ML_SIZE >0) {
 					for (int i = 0;i < SUB_ML_SIZE;i++) {
 						if (_Y == _SUB_ML[i].y) {
 							NEW_GAME = 0;
 							SUB_ML_SIZE = 0;
+							isLoad = 1;
+							_file_name = _SUB_ML[i].item;
 							LoadGame(_SUB_ML[i].item);
 							ShowGame();
 							if (_EXIT) return;
@@ -370,6 +372,8 @@ void ShowFileGame() {
 					for (int i = 0;i < MATCH_LIST_SIZE;i++) {
 						if (_Y == _MATCH_LIST[i].y) {
 							NEW_GAME = 0;
+							isLoad = 1;
+							_file_name = _MATCH_LIST[i].item;
 							LoadGame(_MATCH_LIST[i].item);
 							ShowGame();
 							if (_EXIT) return;
@@ -398,15 +402,29 @@ void ShowAsk(WORD wVirtualKeyCode) {
 		DrawPopUp(wVirtualKeyCode);
 		switch (wVirtualKeyCode) {
 		case 0x4C: {//L
-			if (isLoad == 1) {
-				for (int i = 0; i < 4; i++)
-					_file_name.pop_back();
-				SaveMatchInfo(_file_name);
-				isLoad = 0;
+			_COMMAND = toupper(_getch());
+			if (_COMMAND == 'Y') {
+				DrawBoardPopUp();
+				GotoXY(CENTER_X, CENTER_Y + 1);
+				cout << " Enter match name";
+				GotoXY(CENTER_X - 4, CENTER_Y + 4);
+				cout << "Only (a-z), (0-9), '_', '-'";
+				GotoXY(CENTER_X + 2, CENTER_Y + 2);
+				if (isLoad == 1) {
+					for (int i = 0; i < 4; i++)
+						_file_name.pop_back();
+					SaveMatchInfo(_file_name);
+					isLoad = 0;
+				}
+				else SaveGame();
+				Sleep(800);
+				ExitGame();
 			}
-			else SaveGame();
-			Sleep(800);
-			ExitGame();
+			else if (_COMMAND == 'N') {
+				_PlaySound(4);
+				ShowGame();
+				DrawExistedData();
+			}
 			break; }
 		case VK_ESCAPE: { //ESC
 			_COMMAND = toupper(_getch());

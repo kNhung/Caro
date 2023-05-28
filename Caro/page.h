@@ -5,7 +5,7 @@
 
 //Các hàm dùng để mở ra các trang
 void ShowPage(int page);
-void ShowLoadingPage(); //Trang Loading...
+void ResetPage(); //Trang Loading...
 void ShowMenu(); //Trang Menu
 void InputName();//Nhập tên người chơi
 void ShowGame(); //Trang chơi game

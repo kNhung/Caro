@@ -4,6 +4,42 @@
 #include "page.h"
 
 
+ static bool InputFileName(char& c) {
+	if (48 <= c && c <= 57 || 65 <= c && c <= 90 || 97 <= c && c <= 122 || c == '_' || c == '-')
+		return 1;
+	return 0;
+}
+bool _True(char& c) {
+	return 1;
+}
+
+void Input_Data(string& s, const int& max, const int& x, const int& y, bool (*condition)(char&)) {
+	s.clear();
+	int x_tmp = x;
+	GotoXY(x, y);
+	int i = 0;
+	char c = '\0';
+	while (1) {
+		c = (char)_getch();
+		if (c == 0x0D) break;
+		if (c == 8) {
+			s.clear();
+			i = 0;
+			x_tmp = x;
+			GotoXY(x, y);
+			for (int j = 0; j < max; j++) cout << " ";
+			GotoXY(x, y);
+			continue;
+		}
+		if (i == max) continue;
+		if (condition(c)) {
+			s.push_back(c);
+			cout << s[i++];
+			GotoXY(++x_tmp, y);
+		}
+	}
+}
+
 //Lưu game
 void SaveGame() {
 	SetColor(BRIGHT_WHITE, BLACK);
@@ -133,7 +169,7 @@ void GetMatchListSize() {
 	file.close();
 }
 
-void RemoveMatchFile(string& matchName,int& pos) {
+static void RemoveMatchFile(string& matchName,int& pos) {
 	//Xoa ten file trong file luu ten cac file
 	ifstream input("game_files.txt");
 	if (!input) return;
@@ -170,42 +206,6 @@ void RemoveFile() {
 			if (MATCH_LIST_SIZE == 0)FileNotFound();
 			if (i != 0) _Y -= 4;//đặt mũi tên đúng vị trí ds file
 			break;
-		}
-	}
-}
-
-bool InputFileName(char& c) {
-	if (48 <= c && c <= 57 || 65 <= c && c <= 90 || 97 <= c && c <= 122 || c == '_' || c == '-')
-		return 1;
-	return 0;
-}
-bool _True(char& c) {
-	return 1;
-}
-
-void Input_Data(string& s, const int& max, const int& x, const int& y,bool (*condition)(char&)) {
-	s.clear();
-	int x_tmp = x;
-	GotoXY(x, y);
-	int i = 0;
-	char c = '\0';
-	while (1) {
-		c = (char)_getch();
-		if (c == 0x0D) break;
-		if (c == 8) {
-			s.clear();
-			i = 0;
-			x_tmp = x;
-			GotoXY(x, y);
-			for (int j = 0; j < max; j++) cout << " ";
-			GotoXY(x, y);
-			continue;
-		}
-		if (i == max) continue;
-		if (condition(c)) {
-			s.push_back(c);
-			cout << s[i++];
-			GotoXY(++x_tmp, y);
 		}
 	}
 }
@@ -616,7 +616,7 @@ int AskSaveGame() {
 	system("cls");
 	PrintRectangle(CENTER_Y - 3, CENTER_X - 10, 30, 3);
 	GotoXY(CENTER_X - 5, CENTER_Y - 2);
-	cout << "Want to save the match?";
+	cout << "Would you like to save the match?";
 	GotoXY(CENTER_X - 5, CENTER_Y - 1);
 	cout << "  Yes(Y)    No(N)";
 	return toupper(_getch());
@@ -639,7 +639,7 @@ _POINT XYinMatrix(const int& x,const int& y,int& row,int& col) {
 	}
 }
 void ExitGame() {
-	ShowLoadingPage();
+	ResetPage();
 	_PlaySound(4);
 	ShowMenu();
 }
@@ -715,25 +715,6 @@ void PVC(TURN_BOT tb[]) {
 	GotoXY(_LAST_POINT.x, _LAST_POINT.y);
 	_LAST_POINT.c = 0;
 }
-
-//bool FindNotFound_1() {
-//	if (SUB_ML_SIZE == 0) {
-//		GotoXY(_X, _Y + 5);
-//		string tb= "File not found !!!";
-//		cout << tb;
-//		while (1) {
-//			if (_kbhit()) {
-//				char c = _getch();
-//				if (c == 13)
-//					break;
-//			}
-//		}
-//		GotoXY(_X, _Y + 5);
-//		for (int i = 0; i < tb.size(); i++) cout << " ";
-//		return 1;
-//	}
-//	return 0;
-//}
 
 void CoutListFile() {
 	for (int i = 0; i < MATCH_LIST_SIZE; i++) {

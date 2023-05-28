@@ -6,7 +6,6 @@
 //In hình ảnh, icon
 void PrintRectangle2lines(int top, int left, int width, int height);
 void PrintRectangle(int top, int left, int width, int height);
-void PrintTree(int left, int top);
 void PrintCloud(int left, int top, int type);
 void PrintLine(int top, int left, int length);
 void Button(int top, int left, int width, int height, string label);
@@ -32,7 +31,6 @@ void PrintContinueLogo(int top, int left);
 void PrintInMatch(int top, int left);
 void PrintAboutLogo(int top, int left);
 void PrintMenuLogo(int top, int left);
-void PrintLoadingLogo(int top, int left);
 void PrintHelpLogo(int top, int left);
 
 //Hiệu ứng
@@ -46,9 +44,9 @@ void DrawMenu();
 void DrawBoard();
 void DrawExistedData();
 void DrawMatchList();
+void DrawBoardPopUp();
 void DrawPopUp(WORD wVirtualKeyCode);
 void Draw_AskContinue();
 void DrawAbout();
-void DrawLoadingPage();
 void DrawHelp();
 #endif

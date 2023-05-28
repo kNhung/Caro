@@ -57,20 +57,8 @@ void PrintRectangle(int top, int left, int width, int height) {
 	GotoXY(left + width, top + height);
 	cout << char(217);
 }
-void PrintTree(int left, int top) {
-	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
-	wstring logo[5] = {
-		L"──▒▒▒▒▒▒▒▒───▒▒▒▒▒▒▒▒",
-		L"─▒▐▒▐▒▒▒▒▌▒─▒▒▌▒▒▐▒▒▌▒",
-		L"──▒▀▄█▒▄▀▒───▒▀▄▒▌▄▀▒",
-		L"─────██─────────██",
-		L"░░░▄▄██▄░░░░░░░▄██▄░░░"};
-	for (int i = 0; i < 5; i++) {
-		GotoXY(left, i + top);
-		wcout << logo[i];
-	}
-	int currentMode = _setmode(_fileno(stdout), OldMode);
-}
+
+
 void PrintCloud(int left, int top, int type) {
 	//Type 1: n?a trái ; 2: n?a ph?i ; 3: nguyên dám
 	int m = 0;
@@ -653,21 +641,6 @@ void PrintMenuLogo(int top, int left) {
 	}
 
 }
-void PrintLoadingLogo(int top, int left) {
-	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
-	wstring logo[6] = {
-		L"██╗       ████╗  █████╗ ██████╗ ██╗███╗  ██╗ ██████╗			",
-		L"██║	  ██╔══██╗██╔══██╗██╔══██╗██║████╗ ██║██╔════╝			",
-		L"██║	  ██║  ██║███████║██║  ██║██║██╔██╗██║██║  ██╗			",
-		L"██║	  ██║  ██║██╔══██║██║  ██║██║██║╚████║██║  ╚██╗			",
-		L"███████╗╚█████╔╝██║  ██║██████╔╝██║██║ ╚███║╚██████╔╝██╗██╗██╗",
-		L"╚══════╝ ╚════╝ ╚═╝  ╚═╝╚═════╝ ╚═╝╚═╝  ╚══╝ ╚═════╝ ╚═╝╚═╝╚═╝" };
-	for (int i = 0; i < 6; i++) {
-		GotoXY(left, i + top);
-		wcout << logo[i];
-	}
-	int currentMode = _setmode(_fileno(stdout), OldMode);
-}
 
 void PrintHelpLogo(int top, int left) {
 	int OldMode = _setmode(_fileno(stdout), _O_WTEXT);
@@ -1058,33 +1031,41 @@ void DrawMatchList() {
 		PrintCloud(2, HEIGHT - 17, 1); // bên trái
 		GotoXY(CENTER_X, CENTER_Y);
 }
-void DrawPopUp(WORD wVirtualKeyCode) {
+
+void DrawBoardPopUp() {
 	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
-	for (int i = 0;i < 8;++i) {
+	for (int i = 0; i < 8; ++i) {
 		GotoXY(CENTER_X - 5, CENTER_Y - 2 + i);
-		for (int j = 0;j < 29;j++)
+		for (int j = 0; j < 29; j++)
 			cout << " ";
 	}
 	PrintRectangle2lines(CENTER_Y - 3, CENTER_X - 6, 30, 9);
 	SetColor(BRIGHT_WHITE, BLACK);
+}
+
+void DrawPopUp(WORD wVirtualKeyCode) {
+	DrawBoardPopUp();
 	switch (wVirtualKeyCode) {
 	case 0x4C: {
+		GotoXY(CENTER_X - 1, CENTER_Y);
+		cout << "Are you sure you want ";
 		GotoXY(CENTER_X, CENTER_Y + 1);
-		cout << " Enter match name";
-		GotoXY(CENTER_X - 4, CENTER_Y + 4);
-		cout << "Only (a-z), (0-9), '_', '-'";
-		GotoXY(CENTER_X + 2, CENTER_Y + 2);
+		cout << "to save this match";
+		GotoXY(CENTER_X + 1, CENTER_Y + 3);
+		cout << "  Yes(Y)   No(N)";
 		break; }
 	case VK_ESCAPE: {
+		GotoXY(CENTER_X - 1, CENTER_Y);
+		cout << "Are you sure you want ";
 		GotoXY(CENTER_X, CENTER_Y + 1);
-		cout << "Are you sure to quit?";
-		GotoXY(CENTER_X + 2, CENTER_Y + 2);
+		cout << "to quit this match";
+		GotoXY(CENTER_X + 1, CENTER_Y + 3);
 		cout << "  Yes(Y)   No(N)";
 		break; }
 	case 0x4F: {
-		GotoXY(CENTER_X-1, CENTER_Y -1);
+		GotoXY(CENTER_X-1, CENTER_Y );
 		cout << "Are you sure you want ";
-		GotoXY(CENTER_X , CENTER_Y );
+		GotoXY(CENTER_X, CENTER_Y + 1);
 		cout<<"to delete this file";
 		GotoXY(CENTER_X + 1, CENTER_Y + 3);
 		cout << "  Yes(Y)   No(N)";
@@ -1146,29 +1127,7 @@ void DrawAbout(){
 	 GotoXY(CENTER_X + 2, CENTER_Y + 20);
 	 cout << "Press ESC to back to Menu";
 }
-void DrawLoadingPage() {
-	system("color F1");
-	SetColor(BRIGHT_WHITE, BLACK);
-	int width = 40, height = 9, i = 0, n = 0;
-	int top = CENTER_Y - 6, left = CENTER_X - 12;
-	PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
-	PrintLoadingLogo(top, left);
 
-	//Vẽ 3 trái tim nhỏ
-	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
-	for (int i = 0;i < 3;i++) {
-		GotoXY(left + 20 + 6 * i, top - 3);
-		cout << char(003) << "  ";
-	}
-	//Vẽ cây
-	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
-	PrintTree(left + 15, top + 24);
-	//Vẽ mây
-	SetColor(BRIGHT_WHITE, LIGHT_AQUA);
-	PrintCloud(WIDTH - 17, HEIGHT - 7, 2); // Góc phải
-	PrintCloud(155, 10, 3);
-	PrintCloud(2, HEIGHT - 17, 1);
-}
 void DrawHelp() {
 	ShowCursor(false);
 	SetColor(BRIGHT_WHITE, BLACK);
