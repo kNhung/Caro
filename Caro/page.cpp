@@ -16,6 +16,7 @@ void ShowPage(int page) {
 	case 2: {ShowFileGame(); break; }
 	case 3: {
 		_MODEPLAY = _MENU[2].c; 
+		isLoad = 0;
 		ResetScore();
 		InputName(); 
 		ShowGame(); 
