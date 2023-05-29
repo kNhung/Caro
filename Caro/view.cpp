@@ -1047,9 +1047,9 @@ void DrawPopUp(WORD wVirtualKeyCode) {
 	DrawBoardPopUp();
 	switch (wVirtualKeyCode) {
 	case 0x4C: {
-		GotoXY(CENTER_X - 1, CENTER_Y);
-		cout << "Are you sure you want ";
-		GotoXY(CENTER_X, CENTER_Y + 1);
+		GotoXY(CENTER_X+2, CENTER_Y);
+		cout << " Would you like ";
+		GotoXY(CENTER_X+1, CENTER_Y + 1);
 		cout << "to save this match";
 		GotoXY(CENTER_X + 1, CENTER_Y + 3);
 		cout << "  Yes(Y)   No(N)";

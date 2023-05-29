@@ -118,15 +118,17 @@ void InputName(){
 	SetColor(BRIGHT_WHITE, BLACK);
 	PrintRectangle2lines(0, 1, WIDTH - 1, HEIGHT - 1);
 	SetColor(BRIGHT_WHITE, PURPLE);
-	GotoXY(CENTER_X-3, CENTER_Y + 20); 
-	cout << "Press ENTER to start game !!!";
-	GotoXY(CENTER_X-8, CENTER_Y-8);
-	cout << "Names can only contain 20 characters !!!";
+	GotoXY(CENTER_X+3, CENTER_Y + 20);
+	cout << " ENTER -> START GAME !!!";
 
 	Animal(CENTER_Y - 6, CENTER_X, 1);
 	GotoXY(CENTER_X - 2, CENTER_Y);
 	SetColor(BRIGHT_WHITE, RED);
 	cout << "(X) PLAYER 1 's name : ";
+	GotoXY(CENTER_X + 22, CENTER_Y + 1);
+	SetColor(BRIGHT_WHITE, PURPLE);
+	cout << "* only 20 characters !";
+	SetColor(BRIGHT_WHITE, BLACK);
 	while (1) {
 		Input_Data(PLAYER1, 20, CENTER_X + 22, CENTER_Y);
 		if (PLAYER1 != "")break;
@@ -135,12 +137,19 @@ void InputName(){
 	GotoXY(CENTER_X - 2, CENTER_Y + 11);
 	SetColor(BRIGHT_WHITE, GREEN);
 	cout << "(O) PLAYER 2 's name : ";
-	if (_MODEPLAY == _MENU[0].c)
+	GotoXY(CENTER_X + 22, CENTER_Y + 12);
+	if (_MODEPLAY == _MENU[0].c) {
+		SetColor(BRIGHT_WHITE, PURPLE);
+		cout << "* only 20 characters !";
+		SetColor(BRIGHT_WHITE, BLACK);
 		while (1) {
 			Input_Data(PLAYER2, 20, CENTER_X + 22, CENTER_Y + 11);
 			if (PLAYER2 != "")break;
 		}
+	}
 	else {
+		GotoXY(CENTER_X + 22, CENTER_Y + 11);
+		SetColor(BRIGHT_WHITE, BLACK);
 		cout << "BOT CARO !!!";
 		PLAYER2 = "BOT CARO";
 		while (1) {
@@ -421,6 +430,10 @@ void ShowAsk(WORD wVirtualKeyCode) {
 				ExitGame();
 			}
 			else if (_COMMAND == 'N') {
+				if (isMenu == 1) {
+					isMenu = 0;
+					ExitGame();
+				}
 				_PlaySound(4);
 				ShowGame();
 				DrawExistedData();
@@ -429,8 +442,9 @@ void ShowAsk(WORD wVirtualKeyCode) {
 		case VK_ESCAPE: { //ESC
 			_COMMAND = toupper(_getch());
 			if (_COMMAND == 'Y') {
+				isMenu = 1;
+				ShowAsk(0x4C);
 				_PlaySound(4);
-				ExitGame();
 			}
 			else if (_COMMAND == 'N')
 				_PlaySound(4);
